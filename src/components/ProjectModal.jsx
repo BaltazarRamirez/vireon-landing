@@ -49,30 +49,30 @@ function ProjectModal({ project, onClose }) {
       onClick={onClose}
       role="presentation"
     >
+      <button
+        type="button"
+        onClick={onClose}
+        className="absolute top-5 right-5 z-20 grid h-11 w-11 place-items-center rounded-full border border-white/15 bg-slate-950/90 text-xl text-slate-200 shadow-[0_8px_30px_rgba(2,6,23,0.45)] transition hover:border-cyan-200/40 hover:text-white sm:top-8 sm:right-8"
+        aria-label="Cerrar detalle del proyecto"
+      >
+        &times;
+      </button>
+
       <div
-        className="animate-modal-panel relative max-h-[94vh] w-full max-w-6xl overflow-hidden rounded-t-4xl border border-white/10 bg-slate-950 shadow-[0_40px_120px_rgba(2,6,23,0.75)] sm:rounded-4xl"
+        className="animate-modal-panel relative mt-16 max-h-[calc(94vh-4rem)] w-full max-w-6xl overflow-hidden rounded-t-4xl border border-white/10 bg-slate-950 shadow-[0_40px_120px_rgba(2,6,23,0.75)] sm:mt-0 sm:max-h-[94vh] sm:rounded-4xl"
         onClick={(event) => event.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-labelledby="project-modal-title"
       >
-        <button
-          type="button"
-          onClick={onClose}
-          className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full border border-white/10 bg-slate-900/80 text-slate-300 transition hover:border-cyan-200/40 hover:text-white"
-          aria-label="Cerrar detalle del proyecto"
-        >
-          &times;
-        </button>
-
-        <div className="overflow-y-auto max-h-[94vh]">
-          <div className="relative h-56 overflow-hidden sm:h-72">
+        <div className="max-h-[calc(94vh-4rem)] overflow-y-auto sm:max-h-[94vh]">
+          <div className="relative h-56 overflow-hidden bg-slate-900 sm:h-72">
             <img
               src={currentImage.src}
               alt={currentImage.alt}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-contain"
             />
-            <div className="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-950/20 to-transparent" />
+            <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-slate-950 via-transparent to-transparent" />
 
             {hasMultipleImages && (
               <>

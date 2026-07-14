@@ -79,6 +79,22 @@ function App() {
 
   const closeMenu = () => setMenuOpen(false);
 
+  const goToSection = (sectionId) => {
+    setMenuOpen(false);
+    window.setTimeout(() => {
+      const target = document.getElementById(sectionId);
+      if (!target) {
+        return;
+      }
+
+      const headerOffset = 112;
+      const top =
+        target.getBoundingClientRect().top + window.scrollY - headerOffset;
+
+      window.scrollTo({ top, behavior: "smooth" });
+    }, 80);
+  };
+
   return (
     <main className="relative min-h-screen overflow-x-hidden text-slate-100">
       <div className="pointer-events-none absolute inset-0">
@@ -88,10 +104,10 @@ function App() {
       </div>
 
       <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-slate-950/55 backdrop-blur-2xl">
-        <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8">
+        <nav className="mx-auto grid max-w-7xl grid-cols-[1fr_auto] items-center gap-4 px-5 py-4 sm:px-8 lg:grid-cols-[1fr_auto_1fr]">
           <a
             href="#inicio"
-            className="group flex items-center"
+            className="group flex items-center justify-self-start"
             aria-label="Ir al inicio"
             onClick={closeMenu}
           >
@@ -102,11 +118,15 @@ function App() {
             />
           </a>
 
-          <div className="hidden items-center gap-8 rounded-full border border-white/10 bg-white/3 px-6 py-3 text-sm text-slate-300 lg:flex">
+          <div className="hidden items-center gap-8 justify-self-center rounded-full border border-white/10 bg-white/3 px-6 py-3 text-sm text-slate-300 lg:flex">
             {navItems.map((item) => (
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
+                onClick={(event) => {
+                  event.preventDefault();
+                  goToSection(item.toLowerCase());
+                }}
                 className="transition hover:text-cyan-200"
               >
                 {item}
@@ -114,40 +134,42 @@ function App() {
             ))}
           </div>
 
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noreferrer"
-            className="hidden rounded-full bg-cyan-300 px-5 py-3 text-sm font-bold text-slate-950 shadow-[0_0_30px_rgba(103,232,249,0.45)] transition duration-300 hover:-translate-y-0.5 hover:bg-white lg:inline-flex"
-          >
-            Hablemos
-          </a>
+          <div className="flex items-center justify-self-end">
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="hidden rounded-full bg-cyan-300 px-5 py-3 text-sm font-bold text-slate-950 shadow-[0_0_30px_rgba(103,232,249,0.45)] transition duration-300 hover:-translate-y-0.5 hover:bg-white lg:inline-flex"
+            >
+              Hablemos
+            </a>
 
-          <button
-            type="button"
-            onClick={() => setMenuOpen((open) => !open)}
-            className="grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-white/5 text-white transition hover:border-cyan-200/40 lg:hidden"
-            aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
-            aria-expanded={menuOpen}
-          >
-            <span className="relative block h-3.5 w-4">
-              <span
-                className={`absolute left-0 block h-0.5 w-4 rounded-full bg-current transition duration-300 ${
-                  menuOpen ? "top-1.5 rotate-45" : "top-0"
-                }`}
-              />
-              <span
-                className={`absolute left-0 top-1.5 block h-0.5 w-4 rounded-full bg-current transition duration-300 ${
-                  menuOpen ? "opacity-0" : "opacity-100"
-                }`}
-              />
-              <span
-                className={`absolute left-0 block h-0.5 w-4 rounded-full bg-current transition duration-300 ${
-                  menuOpen ? "top-1.5 -rotate-45" : "top-3"
-                }`}
-              />
-            </span>
-          </button>
+            <button
+              type="button"
+              onClick={() => setMenuOpen((open) => !open)}
+              className="grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-white/5 text-white transition hover:border-cyan-200/40 lg:hidden"
+              aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+              aria-expanded={menuOpen}
+            >
+              <span className="relative block h-3.5 w-4">
+                <span
+                  className={`absolute left-0 block h-0.5 w-4 rounded-full bg-current transition duration-300 ${
+                    menuOpen ? "top-1.5 rotate-45" : "top-0"
+                  }`}
+                />
+                <span
+                  className={`absolute left-0 top-1.5 block h-0.5 w-4 rounded-full bg-current transition duration-300 ${
+                    menuOpen ? "opacity-0" : "opacity-100"
+                  }`}
+                />
+                <span
+                  className={`absolute left-0 block h-0.5 w-4 rounded-full bg-current transition duration-300 ${
+                    menuOpen ? "top-1.5 -rotate-45" : "top-3"
+                  }`}
+                />
+              </span>
+            </button>
+          </div>
         </nav>
 
         <div
@@ -162,7 +184,10 @@ function App() {
               <a
                 key={item}
                 href={`#${item.toLowerCase()}`}
-                onClick={closeMenu}
+                onClick={(event) => {
+                  event.preventDefault();
+                  goToSection(item.toLowerCase());
+                }}
                 className="rounded-2xl px-4 py-3 text-sm font-medium text-slate-200 transition hover:bg-white/5 hover:text-cyan-200"
               >
                 {item}
@@ -183,7 +208,7 @@ function App() {
 
       <section
         id="inicio"
-        className="relative mx-auto flex min-h-[88vh] max-w-7xl flex-col items-center justify-center px-5 pb-20 pt-28 text-center sm:px-8 sm:pb-24 sm:pt-32"
+        className="relative mx-auto flex min-h-[88vh] max-w-7xl scroll-mt-24 flex-col items-center justify-center px-5 pb-20 pt-28 text-center sm:px-8 sm:pb-24 sm:pt-32 lg:scroll-mt-28"
       >
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="absolute top-[18%] left-1/2 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-cyan-400/10 blur-[100px]" />
@@ -239,11 +264,9 @@ function App() {
         </div>
       </section>
 
-      <section
-        id="servicios"
-        className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24"
-      >
+      <section className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24">
         <SectionIntro
+          id="servicios"
           eyebrow="Servicios"
           title="Herramientas claras para ordenar, controlar y hacer crecer tu operación."
           description="No vendemos software genérico. Construimos soluciones a medida que bajan a tierra tu operación y la vuelven más simple de gestionar."
@@ -252,11 +275,9 @@ function App() {
         <ServicesList services={services} />
       </section>
 
-      <section
-        id="proyectos"
-        className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24"
-      >
+      <section className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24">
         <SectionIntro
+          id="proyectos"
           eyebrow="Proyectos"
           title="Sistemas reales, pensados para operar y crecer."
           description="Cada solución nace de un problema concreto: centralizar información, ganar control y darle al equipo una herramienta clara para el día a día."
@@ -313,11 +334,9 @@ function App() {
         onClose={() => setSelectedProject(null)}
       />
 
-      <section
-        id="nosotros"
-        className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24"
-      >
+      <section className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24">
         <SectionIntro
+          id="nosotros"
           eyebrow="Sobre nosotros"
           title="Entendemos tu operación antes de construir el sistema."
           description="Nos metemos en cómo vendés, entregás y organizás el día a día. A partir de eso diseñamos herramientas claras, útiles y listas para crecer con tu negocio."
@@ -356,11 +375,9 @@ function App() {
         </div>
       </section>
 
-      <section
-        id="proceso"
-        className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24"
-      >
+      <section className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24">
         <SectionIntro
+          id="proceso"
           eyebrow="Proceso"
           title="De una necesidad concreta a un sistema listo para operar."
           description="Trabajamos por etapas claras para que veas avance real, valides rápido y tomes decisiones sin perder tiempo."
@@ -369,17 +386,17 @@ function App() {
         <ProcessTimeline steps={process} />
       </section>
 
-      <section
-        id="contacto"
-        className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24"
-      >
+      <section className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24">
         <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-slate-950/70 px-5 py-8 shadow-[0_24px_80px_rgba(2,6,23,0.45)] sm:px-8 sm:py-10 lg:px-12 lg:py-14">
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.18),transparent_22rem)]" />
           <div className="pointer-events-none absolute -right-20 -bottom-24 h-64 w-64 rounded-full bg-cyan-400/10 blur-3xl" />
 
           <div className="relative grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
             <div>
-              <p className="text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90">
+              <p
+                id="contacto"
+                className="scroll-mt-28 text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90 sm:scroll-mt-32"
+              >
                 Empecemos
               </p>
               <h2 className="mt-3 max-w-2xl text-3xl font-semibold leading-[1.15] tracking-[-0.03em] text-white sm:text-4xl md:text-[2.75rem]">
@@ -439,6 +456,10 @@ function App() {
                     <a
                       key={item}
                       href={`#${item.toLowerCase()}`}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        goToSection(item.toLowerCase());
+                      }}
                       className="text-sm text-slate-400 transition hover:text-white"
                     >
                       {item}
@@ -488,9 +509,9 @@ function App() {
   );
 }
 
-function SectionIntro({ eyebrow, title, description }) {
+function SectionIntro({ id, eyebrow, title, description }) {
   return (
-    <div className="max-w-2xl">
+    <div id={id} className="max-w-2xl scroll-mt-28 sm:scroll-mt-32">
       <p className="animate-rise text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90">
         {eyebrow}
       </p>
