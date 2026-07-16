@@ -1,55 +1,285 @@
-import { useItemReveal, useSectionReveal } from "../hooks/useReveal";
 import {
-  RevealItem,
-  SectionRevealIntro,
-} from "./sectionReveal";
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+  useReducedMotion,
+  useSpring,
+} from "motion/react";
+import { useRef } from "react";
+import { useSectionReveal } from "../hooks/useReveal";
+import { SectionRevealIntro } from "./sectionReveal";
+
+const gridVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.06,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: {
+    opacity: 0,
+    y: 70,
+    scale: 0.84,
+    rotateX: 28,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    rotateX: 0,
+    transition: {
+      type: "spring",
+      stiffness: 105,
+      damping: 15,
+      mass: 0.9,
+      staggerChildren: 0.08,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { type: "spring", stiffness: 180, damping: 18 },
+  },
+};
+
+const chipContainerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.06,
+      delayChildren: 0.08,
+    },
+  },
+};
+
+const chipVariants = {
+  hidden: { opacity: 0, y: 14, scale: 0.8 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { type: "spring", stiffness: 340, damping: 18 },
+  },
+};
+
+function ServiceCard({ service, index, reduceMotion }) {
+  const cardRef = useRef(null);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springX = useSpring(mouseX, { stiffness: 200, damping: 24 });
+  const springY = useSpring(mouseY, { stiffness: 200, damping: 24 });
+  const spotlight = useMotionTemplate`radial-gradient(480px circle at ${springX}px ${springY}px, rgba(34,211,238,0.2), transparent 55%)`;
+
+  const handleMouseMove = (event) => {
+    if (reduceMotion || !cardRef.current) {
+      return;
+    }
+
+    const rect = cardRef.current.getBoundingClientRect();
+    mouseX.set(event.clientX - rect.left);
+    mouseY.set(event.clientY - rect.top);
+  };
+
+  return (
+    <motion.article
+      ref={cardRef}
+      variants={cardVariants}
+      onMouseMove={handleMouseMove}
+      whileHover={
+        reduceMotion
+          ? undefined
+          : {
+              y: -12,
+              scale: 1.02,
+              transition: { type: "spring", stiffness: 260, damping: 18 },
+            }
+      }
+      className="group relative flex h-full min-h-[16rem] flex-col overflow-hidden rounded-[1.35rem] border border-white/10 bg-slate-950/65 p-5 shadow-[0_22px_70px_rgba(2,6,23,0.4)] sm:min-h-[17.25rem] sm:rounded-3xl sm:p-6"
+      style={{ transformStyle: "preserve-3d" }}
+    >
+      {!reduceMotion && (
+        <motion.div
+          className="pointer-events-none absolute inset-0 z-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+          style={{ background: spotlight }}
+          aria-hidden="true"
+        />
+      )}
+
+      <motion.div
+        aria-hidden="true"
+        variants={{
+          hidden: { scaleX: 0, opacity: 0 },
+          visible: {
+            scaleX: 1,
+            opacity: 1,
+            transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+          },
+        }}
+        className="pointer-events-none absolute inset-x-0 top-0 z-10 h-px origin-left bg-linear-to-r from-transparent via-cyan-300/85 to-transparent"
+      />
+
+      <div
+        className="pointer-events-none absolute -right-12 -top-14 h-44 w-44 rounded-full bg-cyan-400/15 blur-3xl transition duration-700 group-hover:bg-cyan-300/25"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute -bottom-20 -left-14 h-40 w-40 rounded-full bg-blue-500/12 blur-3xl"
+        aria-hidden="true"
+      />
+
+      <motion.span
+        aria-hidden="true"
+        variants={{
+          hidden: { opacity: 0, x: 36, scale: 0.85 },
+          visible: {
+            opacity: 1,
+            x: 0,
+            scale: 1,
+            transition: { type: "spring", stiffness: 90, damping: 14 },
+          },
+        }}
+        className="pointer-events-none absolute -right-1 top-0 text-[5.75rem] font-semibold leading-none tracking-[-0.08em] text-white/[0.045] sm:text-[7rem]"
+      >
+        {service.number}
+      </motion.span>
+
+      <motion.div variants={itemVariants} className="relative z-10 flex items-center gap-3">
+        <motion.span
+          className="grid h-10 w-10 place-items-center rounded-full border border-cyan-200/35 bg-cyan-300/12 text-[11px] font-semibold tracking-[0.14em] text-cyan-100 shadow-[0_0_24px_rgba(34,211,238,0.12)]"
+          whileHover={reduceMotion ? undefined : { scale: 1.12, rotate: -4 }}
+          transition={{ type: "spring", stiffness: 320, damping: 14 }}
+        >
+          {service.number}
+        </motion.span>
+        <motion.div
+          variants={{
+            hidden: { scaleX: 0, opacity: 0 },
+            visible: {
+              scaleX: 1,
+              opacity: 1,
+              transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] },
+            },
+          }}
+          className="h-px flex-1 origin-left bg-linear-to-r from-cyan-300/40 via-white/10 to-transparent"
+        />
+        <span className="text-[10px] font-medium tracking-[0.22em] text-slate-600 uppercase">
+          0{index + 1}
+        </span>
+      </motion.div>
+
+      <motion.div variants={itemVariants} className="relative z-10 mt-5 flex flex-1 flex-col">
+        <h3 className="text-xl font-semibold tracking-[-0.03em] text-white sm:text-[1.4rem]">
+          {service.title}
+        </h3>
+
+        <p className="mt-2.5 max-w-md text-sm leading-6 text-slate-400">
+          {service.description}
+        </p>
+
+        <motion.ul
+          className="mt-auto flex flex-wrap gap-2 pt-6"
+          variants={chipContainerVariants}
+        >
+          {service.points.map((point) => (
+            <motion.li
+              key={point}
+              variants={chipVariants}
+              whileHover={
+                reduceMotion
+                  ? undefined
+                  : {
+                      y: -4,
+                      scale: 1.08,
+                      backgroundColor: "rgba(34,211,238,0.14)",
+                      borderColor: "rgba(165,243,252,0.35)",
+                      color: "rgb(226 232 240)",
+                    }
+              }
+              className="cursor-default rounded-full border border-white/10 bg-white/[0.045] px-2.5 py-1 text-[11px] font-medium tracking-[0.02em] text-slate-400"
+            >
+              {point}
+            </motion.li>
+          ))}
+        </motion.ul>
+      </motion.div>
+    </motion.article>
+  );
+}
 
 function ServicesSection({ services, intro }) {
-  const { sectionRef, visible } = useSectionReveal();
-  const { visibleItems, setItemRef } = useItemReveal(services.length);
+  const { sectionRef, visible } = useSectionReveal({
+    threshold: 0.08,
+    rootMargin: "0px 0px -4% 0px",
+  });
+  const reduceMotion = useReducedMotion();
+
+  if (reduceMotion) {
+    return (
+      <section
+        ref={sectionRef}
+        id={intro?.id}
+        className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24"
+      >
+        <SectionRevealIntro {...intro} visible={visible} id={undefined} />
+        <div className="mt-8 grid gap-3 sm:mt-12 sm:grid-cols-2 sm:gap-4">
+          {services.map((service) => (
+            <article
+              key={service.title}
+              className="relative flex min-h-[16rem] flex-col overflow-hidden rounded-3xl border border-white/10 bg-slate-950/60 p-6"
+            >
+              <span className="text-xs font-semibold tracking-[0.2em] text-cyan-200">
+                {service.number}
+              </span>
+              <h3 className="mt-4 text-xl font-semibold text-white">
+                {service.title}
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                {service.description}
+              </p>
+              <p className="mt-auto pt-6 text-[12px] text-slate-500">
+                {service.points.join(" · ")}
+              </p>
+            </article>
+          ))}
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section
       ref={sectionRef}
+      id={intro?.id}
       className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24"
     >
-      <SectionRevealIntro {...intro} visible={visible} />
+      <SectionRevealIntro {...intro} visible={visible} id={undefined} />
 
-      <div className="mt-8 grid gap-3 sm:mt-10 sm:grid-cols-2 sm:gap-4">
+      <motion.div
+        className="mt-8 grid gap-3 sm:mt-12 sm:grid-cols-2 sm:gap-4"
+        style={{ perspective: 1600 }}
+        variants={gridVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2, margin: "0px 0px -6% 0px" }}
+      >
         {services.map((service, index) => (
-          <RevealItem
+          <ServiceCard
             key={service.title}
+            service={service}
             index={index}
-            visible={visibleItems[index]}
-            setRef={setItemRef(index)}
-            baseDelay={0}
-            step={0}
-          >
-            <article className="group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/50 p-5 transition duration-300 hover:border-cyan-200/35 hover:bg-slate-950/80 sm:p-6">
-              <div className="pointer-events-none absolute -right-8 -top-10 h-32 w-32 rounded-full bg-cyan-400/10 blur-3xl transition duration-500 group-hover:bg-cyan-400/20" />
-
-              <div className="relative flex items-center justify-between gap-3">
-                <span className="text-[11px] font-medium tracking-[0.24em] text-cyan-200/70 transition-colors duration-300 group-hover:text-cyan-200">
-                  {service.number}
-                </span>
-                <div className="h-px flex-1 bg-linear-to-r from-white/10 to-transparent transition duration-300 group-hover:from-cyan-300/40" />
-              </div>
-
-              <h3 className="relative mt-4 text-xl font-semibold tracking-[-0.02em] text-white">
-                {service.title}
-              </h3>
-
-              <p className="relative mt-2 text-sm leading-6 text-slate-400">
-                {service.description}
-              </p>
-
-              <p className="relative mt-5 text-[12px] leading-5 tracking-[0.02em] text-slate-500 transition-colors duration-300 group-hover:text-slate-400">
-                {service.points.join(" · ")}
-              </p>
-            </article>
-          </RevealItem>
+            reduceMotion={false}
+          />
         ))}
-      </div>
+      </motion.div>
     </section>
   );
 }

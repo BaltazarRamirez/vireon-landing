@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import logo from "../assets/vireon_logo_blanco_transparente_4096.png";
+import logo from "../assets/vireon-logo.svg";
 import { navItems } from "../data/nav";
+import { useActiveNav } from "../hooks/useActiveSection";
 import PromoTopBar from "./PromoTopBar";
 import { WHATSAPP_URL } from "./WhatsAppFloat";
 
@@ -18,18 +19,20 @@ const whatsappIcon = (
 function SiteHeader({ menuOpen, setMenuOpen, onSectionNav }) {
   const location = useLocation();
   const navigate = useNavigate();
+  const { isItemActive, markSection } = useActiveNav();
   const closeMenu = () => setMenuOpen(false);
 
   const handleSectionClick = (event, id) => {
     event.preventDefault();
     closeMenu();
+    markSection(id);
 
-    if (location.pathname !== "/") {
-      navigate({ pathname: "/", hash: id });
+    if (location.pathname === "/" && location.hash === `#${id}`) {
+      onSectionNav?.(id);
       return;
     }
 
-    onSectionNav?.(id);
+    navigate({ pathname: "/", hash: id });
   };
 
   const linkClass =
@@ -60,7 +63,7 @@ function SiteHeader({ menuOpen, setMenuOpen, onSectionNav }) {
               <Link
                 key={item.label}
                 to={item.to}
-                data-active={location.pathname === item.to}
+                data-active={isItemActive(item)}
                 className={linkClass}
                 onClick={closeMenu}
               >
@@ -70,9 +73,7 @@ function SiteHeader({ menuOpen, setMenuOpen, onSectionNav }) {
               <a
                 key={item.label}
                 href={`/#${item.id}`}
-                data-active={
-                  location.pathname === "/" && location.hash === `#${item.id}`
-                }
+                data-active={isItemActive(item)}
                 onClick={(event) => handleSectionClick(event, item.id)}
                 className={linkClass}
               >
@@ -134,7 +135,7 @@ function SiteHeader({ menuOpen, setMenuOpen, onSectionNav }) {
               <Link
                 key={item.label}
                 to={item.to}
-                data-active={location.pathname === item.to}
+                data-active={isItemActive(item)}
                 onClick={closeMenu}
                 className={mobileLinkClass}
               >
@@ -144,6 +145,7 @@ function SiteHeader({ menuOpen, setMenuOpen, onSectionNav }) {
               <a
                 key={item.label}
                 href={`/#${item.id}`}
+                data-active={isItemActive(item)}
                 onClick={(event) => handleSectionClick(event, item.id)}
                 className={mobileLinkClass}
               >

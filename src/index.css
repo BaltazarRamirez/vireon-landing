@@ -97,6 +97,46 @@ a {
   transform: translate3d(0, 0, 0);
 }
 
+.reveal-service {
+  opacity: 0;
+  filter: blur(12px);
+  transform: translate3d(0, 3.25rem, 0) scale(0.9);
+  transition:
+    opacity 1.05s var(--reveal-ease, cubic-bezier(0.16, 1, 0.3, 1)),
+    transform 1.2s var(--reveal-ease, cubic-bezier(0.16, 1, 0.3, 1)),
+    filter 1s var(--reveal-ease, cubic-bezier(0.16, 1, 0.3, 1));
+  will-change: opacity, transform, filter;
+}
+
+.reveal-service.is-revealed {
+  opacity: 1;
+  filter: blur(0);
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.reveal-service-chip {
+  opacity: 0;
+  transform: translate3d(0, 0.55rem, 0) scale(0.92);
+  transition:
+    opacity 0.55s var(--reveal-ease, cubic-bezier(0.16, 1, 0.3, 1)),
+    transform 0.65s var(--reveal-ease, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.reveal-service.is-revealed .reveal-service-chip {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+.reveal-service-accent {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.9s var(--reveal-ease, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+.reveal-service.is-revealed .reveal-service-accent {
+  transform: scaleX(1);
+}
+
 .animate-float {
   animation: float 7s ease-in-out infinite;
 }
@@ -414,9 +454,15 @@ a {
   .reveal-title,
   .reveal-card,
   .reveal-card-soft,
+  .reveal-service,
+  .reveal-service-chip,
   .reveal-rule {
     opacity: 1 !important;
     filter: none !important;
+    transform: none !important;
+  }
+
+  .reveal-service-accent {
     transform: none !important;
   }
 

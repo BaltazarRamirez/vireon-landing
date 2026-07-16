@@ -3,145 +3,250 @@ import {
   useMotionValueEvent,
   useReducedMotion,
   useScroll,
-  useSpring,
   useTransform,
 } from "motion/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSectionReveal } from "../hooks/useReveal";
 import { SectionRevealIntro } from "./sectionReveal";
+
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(() =>
+    typeof window !== "undefined"
+      ? window.matchMedia("(min-width: 1024px)").matches
+      : false,
+  );
+
+  useEffect(() => {
+    const media = window.matchMedia("(min-width: 1024px)");
+    const onChange = () => setIsDesktop(media.matches);
+
+    onChange();
+    media.addEventListener("change", onChange);
+    return () => media.removeEventListener("change", onChange);
+  }, []);
+
+  return isDesktop;
+}
+
+const listVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.14,
+      delayChildren: 0.08,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: {
+    opacity: 0,
+    y: 48,
+    scale: 0.94,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 120,
+      damping: 16,
+      mass: 0.85,
+      staggerChildren: 0.07,
+      delayChildren: 0.06,
+    },
+  },
+};
+
+const cardItemVariants = {
+  hidden: { opacity: 0, y: 14 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { type: "spring", stiffness: 220, damping: 20 },
+  },
+};
+
+const lineVariants = {
+  hidden: { scaleX: 0 },
+  visible: {
+    scaleX: 1,
+    transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+function MobileAboutCard({ item, index }) {
+  return (
+    <motion.article
+      variants={cardVariants}
+      whileTap={{ scale: 0.985 }}
+      className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/55 p-5 sm:p-6"
+    >
+      <div
+        className="pointer-events-none absolute -right-8 -top-10 h-28 w-28 rounded-full bg-cyan-400/12 blur-3xl"
+        aria-hidden="true"
+      />
+
+      <motion.div
+        variants={cardItemVariants}
+        className="relative flex items-center justify-between gap-3"
+      >
+        <span className="grid h-8 w-8 place-items-center rounded-full border border-cyan-300/30 bg-cyan-300/10 text-[11px] font-semibold tracking-[0.12em] text-cyan-100">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+        <motion.div
+          variants={lineVariants}
+          className="h-px flex-1 origin-left bg-linear-to-r from-cyan-300/45 to-transparent"
+        />
+      </motion.div>
+
+      <motion.h3
+        variants={cardItemVariants}
+        className="relative mt-4 text-lg font-semibold tracking-[-0.02em] text-white sm:text-xl"
+      >
+        {item.title}
+      </motion.h3>
+
+      <motion.p
+        variants={cardItemVariants}
+        className="relative mt-2 text-sm leading-6 text-slate-400"
+      >
+        {item.description}
+      </motion.p>
+    </motion.article>
+  );
+}
+
+function MobileAboutSection({ items, intro, reduceMotion }) {
+  const { sectionRef, visible } = useSectionReveal();
+
+  return (
+    <section
+      ref={sectionRef}
+      id={intro?.id}
+      className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20"
+    >
+      <SectionRevealIntro {...intro} visible={visible} id={undefined} />
+
+      {reduceMotion ? (
+        <div className="mt-8 flex flex-col gap-3 sm:mt-10">
+          {items.map((item, index) => (
+            <article
+              key={item.title}
+              className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/55 p-5 sm:p-6"
+            >
+              <span className="text-[11px] font-medium tracking-[0.24em] text-cyan-200/70">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <h3 className="mt-4 text-lg font-semibold text-white sm:text-xl">
+                {item.title}
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                {item.description}
+              </p>
+            </article>
+          ))}
+        </div>
+      ) : (
+        <motion.div
+          className="mt-8 flex flex-col gap-3 sm:mt-10"
+          variants={listVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.22, margin: "0px 0px -8% 0px" }}
+        >
+          {items.map((item, index) => (
+            <MobileAboutCard key={item.title} item={item} index={index} />
+          ))}
+        </motion.div>
+      )}
+    </section>
+  );
+}
 
 function StoryCard({ item, index, total, progress, active }) {
   const segment = 1 / total;
   const start = index * segment;
   const end = (index + 1) * segment;
-  const blend = Math.min(0.065, segment * 0.22);
+  const blend = Math.min(segment * 0.35, 0.12);
 
   let input;
   let opacityOutput;
   let yOutput;
-  let scaleOutput;
 
   if (index === 0) {
     input = [0, end - blend, end, 1];
     opacityOutput = [1, 1, 0, 0];
-    yOutput = [0, 0, -28, -28];
-    scaleOutput = [1, 1, 0.985, 0.985];
+    yOutput = [0, 0, -18, -18];
   } else if (index === total - 1) {
     input = [0, start - blend, start, 1];
     opacityOutput = [0, 0, 1, 1];
-    yOutput = [28, 28, 0, 0];
-    scaleOutput = [0.985, 0.985, 1, 1];
+    yOutput = [18, 18, 0, 0];
   } else {
     input = [0, start - blend, start, end - blend, end, 1];
     opacityOutput = [0, 0, 1, 1, 0, 0];
-    yOutput = [28, 28, 0, 0, -28, -28];
-    scaleOutput = [0.985, 0.985, 1, 1, 0.985, 0.985];
+    yOutput = [18, 18, 0, 0, -18, -18];
   }
 
   const opacity = useTransform(progress, input, opacityOutput);
   const y = useTransform(progress, input, yOutput);
-  const scale = useTransform(progress, input, scaleOutput);
 
   return (
     <motion.article
-      style={{ opacity, y, scale }}
+      style={{ opacity, y }}
       aria-hidden={!active}
-      className={`absolute inset-0 flex flex-col justify-between px-5 py-5 sm:px-8 sm:py-7 lg:px-10 lg:py-9 ${
+      className={`absolute inset-0 flex flex-col justify-between p-7 sm:p-8 lg:p-10 ${
         active ? "z-10" : "pointer-events-none z-0"
       }`}
     >
       <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <span className="grid h-9 w-9 place-items-center rounded-full border border-cyan-200/25 bg-cyan-300/10 text-[11px] font-semibold tracking-[0.12em] text-cyan-100 sm:h-10 sm:w-10">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-          <span className="text-[10px] font-medium tracking-[0.2em] text-slate-500 uppercase">
-            Principio {index + 1}
-          </span>
-        </div>
+        <span className="text-[11px] font-medium tracking-[0.24em] text-cyan-200/75">
+          {String(index + 1).padStart(2, "0")}
+        </span>
         <span className="text-xs tabular-nums text-slate-600">
-          {String(index + 1).padStart(2, "0")} /{" "}
-          {String(total).padStart(2, "0")}
+          {String(index + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
         </span>
       </div>
 
       <div className="relative">
         <span
-          className="pointer-events-none absolute -top-14 right-0 text-[5rem] font-semibold leading-none tracking-[-0.08em] text-white/[0.035] sm:-top-20 sm:text-[7.5rem]"
+          className="pointer-events-none absolute -top-16 right-0 text-[6.5rem] font-semibold leading-none tracking-[-0.08em] text-white/[0.04] sm:-top-20 sm:text-[8rem]"
           aria-hidden="true"
         >
           {String(index + 1).padStart(2, "0")}
         </span>
-        <h3 className="relative max-w-xl text-2xl font-semibold tracking-[-0.035em] text-white sm:text-3xl lg:text-[2rem]">
+        <h3 className="relative max-w-lg text-2xl font-semibold tracking-[-0.035em] text-white sm:text-3xl">
           {item.title}
         </h3>
-        <p className="relative mt-3 max-w-xl text-sm leading-6 text-slate-400 sm:text-base sm:leading-7">
+        <p className="relative mt-3 max-w-lg text-sm leading-7 text-slate-400 sm:text-base sm:leading-7">
           {item.description}
         </p>
       </div>
 
-      <div className="flex items-center gap-3">
-        <div className="h-px flex-1 bg-linear-to-r from-cyan-300/40 via-cyan-300/10 to-transparent" />
-        <span className="text-[10px] font-medium tracking-[0.18em] text-slate-600 uppercase">
-          Vireon
-        </span>
-      </div>
+      <div className="h-px w-full bg-linear-to-r from-cyan-300/35 via-white/10 to-transparent" />
     </motion.article>
   );
 }
 
-function StaticAboutSection({ items, intro, visible }) {
-  return (
-    <section className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20">
-      <SectionRevealIntro {...intro} visible={visible} />
-      <div className="mt-10 grid gap-4 lg:grid-cols-3">
-        {items.map((item, index) => (
-          <article
-            key={item.title}
-            className="rounded-3xl border border-white/10 bg-slate-950/70 p-6"
-          >
-            <span className="text-xs font-semibold tracking-[0.2em] text-cyan-200">
-              {String(index + 1).padStart(2, "0")}
-            </span>
-            <h3 className="mt-5 text-xl font-semibold text-white">{item.title}</h3>
-            <p className="mt-3 text-sm leading-7 text-slate-400">
-              {item.description}
-            </p>
-          </article>
-        ))}
-      </div>
-    </section>
-  );
-}
-
-function AboutSection({ items, intro }) {
+function StickyAboutSection({ items, intro }) {
   const { sectionRef: revealRef, visible } = useSectionReveal();
   const sequenceRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const reducedMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({
     target: sequenceRef,
-    offset: ["start start", "end end"],
-  });
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 170,
-    damping: 32,
-    mass: 0.25,
+    // Align with sticky offset under the fixed header/promo bar.
+    offset: ["start 144px", "end end"],
   });
 
-  useMotionValueEvent(smoothProgress, "change", (latest) => {
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    const clamped = Math.min(0.999, Math.max(0, latest));
     const nextIndex = Math.min(
       items.length - 1,
-      Math.floor(Math.min(0.999, Math.max(0, latest)) * items.length),
+      Math.floor(clamped * items.length),
     );
     setActiveIndex((current) => (current === nextIndex ? current : nextIndex));
   });
-
-  if (reducedMotion) {
-    return (
-      <StaticAboutSection items={items} intro={intro} visible={visible} />
-    );
-  }
 
   return (
     <section
@@ -149,19 +254,20 @@ function AboutSection({ items, intro }) {
         revealRef.current = node;
         sequenceRef.current = node;
       }}
+      id={intro?.id}
       className="relative mx-auto max-w-7xl px-5 sm:px-8"
-      style={{ height: `calc(100svh + ${items.length * 62}svh)` }}
+      style={{ height: `calc(${items.length * 100}svh)` }}
     >
-      <div className="sticky top-[7.5rem] flex h-[calc(100svh-7.5rem)] items-center overflow-hidden py-4 sm:top-36 sm:h-[calc(100svh-9rem)] sm:py-8">
-        <div className="grid w-full gap-5 sm:gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-center lg:gap-16">
-          <div>
-            <SectionRevealIntro {...intro} visible={visible} />
+      <div className="sticky top-36 flex h-[calc(100svh-10rem)] items-center py-8">
+        <div className="grid w-full items-center gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-14 xl:gap-16">
+          <div className="min-w-0">
+            <SectionRevealIntro {...intro} visible={visible} id={undefined} />
 
-            <div className="mt-5 flex items-center gap-4 sm:mt-8">
-              <div className="relative h-1 w-28 overflow-hidden rounded-full bg-white/10 sm:w-36">
+            <div className="mt-8 flex items-center gap-4">
+              <div className="relative h-1 w-32 overflow-hidden rounded-full bg-white/10">
                 <motion.div
-                  className="absolute inset-0 origin-left rounded-full bg-cyan-300 shadow-[0_0_16px_rgba(103,232,249,0.45)]"
-                  style={{ scaleX: smoothProgress }}
+                  className="absolute inset-y-0 left-0 w-full origin-left rounded-full bg-cyan-300"
+                  style={{ scaleX: scrollYProgress }}
                 />
               </div>
               <p
@@ -172,35 +278,71 @@ function AboutSection({ items, intro }) {
                 {String(items.length).padStart(2, "0")}
               </p>
             </div>
+
+            <ul className="mt-6 space-y-2.5" aria-hidden="true">
+              {items.map((item, index) => {
+                const active = index === activeIndex;
+                return (
+                  <li
+                    key={item.title}
+                    className={`flex items-center gap-3 text-sm transition duration-300 ${
+                      active ? "text-white" : "text-slate-600"
+                    }`}
+                  >
+                    <span
+                      className={`h-1.5 w-1.5 rounded-full transition duration-300 ${
+                        active ? "bg-cyan-300" : "bg-slate-700"
+                      }`}
+                    />
+                    {item.title}
+                  </li>
+                );
+              })}
+            </ul>
           </div>
 
-          <div className="relative h-[clamp(14rem,38svh,22rem)] overflow-hidden rounded-[1.75rem] border border-white/10 bg-slate-950/70 shadow-[0_28px_90px_rgba(2,6,23,0.5)] sm:rounded-[2rem]">
+          <div className="relative h-[min(22rem,52svh)] min-h-[18rem] overflow-hidden rounded-[1.75rem] border border-white/10 bg-slate-950/75 shadow-[0_24px_80px_rgba(2,6,23,0.45)]">
             <div
-              className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.14),transparent_22rem)]"
+              className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.12),transparent_20rem)]"
               aria-hidden="true"
             />
             <div
-              className="pointer-events-none absolute inset-x-8 top-0 h-px bg-linear-to-r from-transparent via-cyan-200/50 to-transparent"
+              className="pointer-events-none absolute inset-x-8 top-0 h-px bg-linear-to-r from-transparent via-cyan-200/40 to-transparent"
               aria-hidden="true"
             />
 
-            {items.map((item, index) => {
-              return (
-                <StoryCard
-                  key={item.title}
-                  item={item}
-                  index={index}
-                  total={items.length}
-                  progress={smoothProgress}
-                  active={index === activeIndex}
-                />
-              );
-            })}
+            {items.map((item, index) => (
+              <StoryCard
+                key={item.title}
+                item={item}
+                index={index}
+                total={items.length}
+                progress={scrollYProgress}
+                active={index === activeIndex}
+              />
+            ))}
           </div>
         </div>
       </div>
     </section>
   );
+}
+
+function AboutSection({ items, intro }) {
+  const isDesktop = useIsDesktop();
+  const reducedMotion = useReducedMotion();
+
+  if (!isDesktop || reducedMotion) {
+    return (
+      <MobileAboutSection
+        items={items}
+        intro={intro}
+        reduceMotion={Boolean(reducedMotion)}
+      />
+    );
+  }
+
+  return <StickyAboutSection items={items} intro={intro} />;
 }
 
 export default AboutSection;

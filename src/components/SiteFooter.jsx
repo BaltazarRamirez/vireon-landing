@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import logo from "../assets/vireon_logo_blanco_transparente_4096.png";
+import logo from "../assets/vireon-logo.svg";
 import { navItems } from "../data/nav";
 import { WHATSAPP_URL } from "./WhatsAppFloat";
 
@@ -11,12 +11,12 @@ function SiteFooter({ onSectionNav }) {
   const handleSectionClick = (event, id) => {
     event.preventDefault();
 
-    if (location.pathname !== "/") {
-      navigate({ pathname: "/", hash: id });
+    if (location.pathname === "/" && location.hash === `#${id}`) {
+      onSectionNav?.(id);
       return;
     }
 
-    onSectionNav?.(id);
+    navigate({ pathname: "/", hash: id });
   };
 
   return (

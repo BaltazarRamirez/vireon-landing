@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import logo from "../assets/vireon_logo_blanco_transparente_4096.png";
+import logo from "../assets/vireon-logo.svg";
 
 function PageIntro({ onFinish }) {
   const [phase, setPhase] = useState("enter");

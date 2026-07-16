@@ -68,15 +68,20 @@ function AppShell() {
     }
   }, [isHome]);
 
-  // Keep Lenis in sync when changing pages (e.g. / → /proyectos).
+  // Reset scroll on route changes, except when home opens with a section hash.
   useEffect(() => {
+    if (location.pathname === "/" && location.hash) {
+      return undefined;
+    }
+
     const frame = window.requestAnimationFrame(() => {
       resetScroll(lenisRef.current);
     });
 
     return () => window.cancelAnimationFrame(frame);
-  }, [location.pathname]);
+  }, [location.pathname, location.hash]);
 
+  // Scroll to the section whenever the hash changes on home.
   useEffect(() => {
     if (!isHome || !location.hash) {
       return undefined;
@@ -85,10 +90,10 @@ function AppShell() {
     const id = location.hash.replace("#", "");
     const timer = window.setTimeout(() => {
       scrollToSection(id, lenisRef.current);
-    }, 220);
+    }, 120);
 
     return () => window.clearTimeout(timer);
-  }, [isHome, location.hash, location.pathname]);
+  }, [isHome, location.hash, location.key]);
 
   return (
     <SmoothScroll paused={!introDone} lenisRef={lenisRef}>

@@ -11,9 +11,10 @@ function ClientsSection({ clients, intro }) {
   return (
     <section
       ref={sectionRef}
+      id={intro?.id}
       className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24"
     >
-      <SectionRevealIntro {...intro} visible={visible} />
+      <SectionRevealIntro {...intro} visible={visible} id={undefined} />
 
       <div className="mt-8 grid grid-cols-1 gap-3 sm:mt-10 lg:grid-cols-4 lg:gap-4">
         {clients.map((client, index) => (

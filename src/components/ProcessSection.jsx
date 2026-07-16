@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useLenis } from "lenis/react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useItemReveal, useSectionReveal } from "../hooks/useReveal";
 import { SectionRevealIntro } from "./sectionReveal";
 
@@ -11,46 +12,50 @@ function ProcessSection({ steps, intro }) {
   const listRef = useRef(null);
   const [progress, setProgress] = useState(0);
 
-  useEffect(() => {
+  const updateProgress = useCallback(() => {
     const list = listRef.current;
     if (!list) {
-      return undefined;
+      return;
     }
 
-    let frame = 0;
+    const rect = list.getBoundingClientRect();
+    const viewport = window.innerHeight;
+    const start = viewport * 0.78;
+    const end = viewport * 0.28;
+    const total = Math.max(1, rect.height + (start - end));
+    const raw = (start - rect.top) / total;
+    const next = Math.min(1, Math.max(0, raw));
 
-    const updateProgress = () => {
-      const rect = list.getBoundingClientRect();
-      const viewport = window.innerHeight;
-      const start = viewport * 0.75;
-      const end = viewport * 0.25;
-      const total = rect.height + (start - end);
-      const raw = (start - rect.top) / total;
-      setProgress(Math.min(1, Math.max(0, raw)));
-    };
+    setProgress((current) =>
+      Math.abs(current - next) < 0.001 ? current : next,
+    );
+  }, []);
 
-    const onScroll = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(updateProgress);
-    };
-
+  // Lenis fires this every animation frame while scrolling, so the bar
+  // tracks the smooth scroll instead of catching up when it stops.
+  useLenis(() => {
     updateProgress();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onScroll);
+  });
+
+  // Fallback for reduced-motion / no Lenis, plus first paint + resize.
+  useEffect(() => {
+    updateProgress();
+    window.addEventListener("scroll", updateProgress, { passive: true });
+    window.addEventListener("resize", updateProgress);
 
     return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onScroll);
+      window.removeEventListener("scroll", updateProgress);
+      window.removeEventListener("resize", updateProgress);
     };
-  }, []);
+  }, [updateProgress]);
 
   return (
     <section
       ref={sectionRef}
+      id={intro?.id}
       className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24"
     >
-      <SectionRevealIntro {...intro} visible={visible} />
+      <SectionRevealIntro {...intro} visible={visible} id={undefined} />
 
       <ol ref={listRef} className="relative mt-10 max-w-3xl sm:mt-14">
         <div
@@ -58,7 +63,7 @@ function ProcessSection({ steps, intro }) {
           aria-hidden="true"
         >
           <div
-            className="w-full origin-top bg-linear-to-b from-cyan-300 via-cyan-300/70 to-cyan-300/20 transition-[height] duration-500 ease-out"
+            className="w-full origin-top bg-linear-to-b from-cyan-300 via-cyan-300/70 to-cyan-300/20 will-change-[height]"
             style={{ height: `${progress * 100}%` }}
           />
         </div>
