@@ -17,23 +17,18 @@ const listVariants = {
 const stepVariants = {
   hidden: {
     opacity: 0,
-    y: 40,
-    scale: 0.95,
-    x: -18,
-    clipPath: "inset(0 12% 0 0)",
+    y: 36,
+    x: -12,
   },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
     x: 0,
-    clipPath: "inset(0 0% 0 0)",
     transition: {
       type: "spring",
       stiffness: 130,
       damping: 16,
       mass: 0.9,
-      clipPath: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
       staggerChildren: 0.06,
       delayChildren: 0.04,
     },
@@ -55,6 +50,25 @@ const badgeVariants = {
     opacity: 1,
     scale: 1,
     transition: { type: "spring", stiffness: 260, damping: 16 },
+  },
+};
+
+const cardVariants = {
+  hidden: {
+    opacity: 0,
+    scale: 0.97,
+    clipPath: "inset(0 10% 0 0)",
+  },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    clipPath: "inset(0 0% 0 0)",
+    transition: {
+      type: "spring",
+      stiffness: 130,
+      damping: 16,
+      clipPath: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
+    },
   },
 };
 
@@ -157,10 +171,9 @@ function ProcessSection({ steps, intro }) {
               <motion.li
                 key={step.title}
                 variants={stepVariants}
-                whileTap={{ scale: 0.985 }}
-                className="relative flex gap-5 pb-10 last:pb-0 sm:gap-7"
+                className="relative flex gap-5 overflow-visible pb-10 last:pb-0 sm:gap-7"
               >
-                <div className="relative z-10 flex shrink-0 flex-col items-center">
+                <div className="relative z-10 flex shrink-0 flex-col items-center overflow-visible">
                   <motion.span
                     variants={badgeVariants}
                     className="animate-timeline-pulse grid h-8 w-8 place-items-center rounded-full border border-cyan-300/50 bg-slate-950 text-[11px] font-semibold tracking-[0.08em] text-cyan-100 shadow-[0_0_20px_rgba(34,211,238,0.2)] sm:h-10 sm:w-10 sm:text-xs"
@@ -169,7 +182,11 @@ function ProcessSection({ steps, intro }) {
                   </motion.span>
                 </div>
 
-                <div className="group relative min-w-0 flex-1 overflow-hidden rounded-3xl border border-white/10 bg-slate-950/40 px-5 py-5 transition duration-300 sm:px-6 sm:py-6 lg:hover:-translate-y-1 lg:hover:border-cyan-200/35 lg:hover:bg-slate-950/70">
+                <motion.div
+                  variants={cardVariants}
+                  whileTap={{ scale: 0.985 }}
+                  className="group relative min-w-0 flex-1 overflow-hidden rounded-3xl border border-white/10 bg-slate-950/40 px-5 py-5 transition duration-300 sm:px-6 sm:py-6 lg:hover:-translate-y-1 lg:hover:border-cyan-200/35 lg:hover:bg-slate-950/70"
+                >
                   <div className="absolute inset-0 rounded-3xl bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_14rem)] opacity-0 transition duration-300 lg:group-hover:opacity-100" />
                   <div className="relative">
                     <motion.h3
@@ -185,7 +202,7 @@ function ProcessSection({ steps, intro }) {
                       {step.description}
                     </motion.p>
                   </div>
-                </div>
+                </motion.div>
               </motion.li>
             ))}
           </motion.ol>

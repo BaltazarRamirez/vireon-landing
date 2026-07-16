@@ -115,9 +115,20 @@ const tools = [
   "Reportes",
 ];
 
-function LandingPage({ onSectionNav }) {
+const heroWords = [
+  { text: "Software", accent: false },
+  { text: "que", accent: false },
+  { text: "ordena", accent: false },
+  { text: "y", accent: false },
+  { text: "potencia", accent: false },
+  { text: "tu", accent: true },
+  { text: "operación.", accent: true },
+];
+
+function LandingPage({ onSectionNav, ready = true }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const reduceMotion = useReducedMotion();
+  const play = ready && !reduceMotion;
 
   return (
     <>
@@ -129,121 +140,182 @@ function LandingPage({ onSectionNav }) {
 
       <section
         id="inicio"
-        className="relative mx-auto flex min-h-[88vh] max-w-7xl scroll-mt-32 flex-col items-center justify-center px-5 pb-20 pt-36 text-center sm:px-8 sm:pb-24 sm:pt-40 lg:scroll-mt-36"
+        className="relative flex min-h-[92svh] scroll-mt-32 flex-col items-center justify-center overflow-hidden px-5 pb-24 pt-36 text-center sm:px-8 sm:pb-28 sm:pt-40 lg:scroll-mt-36"
       >
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="absolute top-[18%] left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-cyan-400/12 blur-[60px] sm:h-[28rem] sm:w-[28rem] sm:blur-[100px]" />
-          <div className="absolute top-[30%] left-[20%] hidden h-64 w-64 rounded-full bg-blue-600/15 blur-[90px] lg:block" />
-          <div className="absolute top-[35%] right-[18%] hidden h-56 w-56 rounded-full bg-sky-400/10 blur-[80px] lg:block" />
+        <div className="pointer-events-none absolute inset-0">
+          <div className="absolute top-[12%] left-1/2 h-[24rem] w-[24rem] -translate-x-1/2 rounded-full bg-cyan-400/14 blur-[90px] sm:h-[32rem] sm:w-[32rem] sm:blur-[110px]" />
+          <div className="absolute top-[28%] left-[8%] h-52 w-52 rounded-full bg-blue-600/16 blur-[75px] sm:left-[16%] sm:h-72 sm:w-72 sm:blur-[100px]" />
+          <div className="absolute top-[32%] right-[6%] h-44 w-44 rounded-full bg-sky-400/12 blur-[65px] sm:right-[14%] sm:h-64 sm:w-64 sm:blur-[90px]" />
+          <div className="absolute inset-x-0 bottom-0 h-40 bg-linear-to-t from-slate-950 via-slate-950/40 to-transparent" />
+          <div
+            className="absolute inset-x-0 bottom-16 h-px bg-linear-to-r from-transparent via-cyan-300/25 to-transparent sm:bottom-20"
+            aria-hidden="true"
+          />
         </div>
 
-        <div className="relative z-10 flex w-full max-w-3xl flex-col items-center">
-          <HeroVisual />
-
-          <motion.p
-            className="text-xs font-medium uppercase tracking-[0.34em] text-cyan-200/80 sm:text-sm"
-            initial={reduceMotion ? false : { opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15, type: "spring", stiffness: 160, damping: 18 }}
-          >
-            Sistemas a medida
-          </motion.p>
+        <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center">
+          <HeroVisual ready={ready} />
 
           {reduceMotion ? (
-            <h1 className="mt-5 text-4xl font-semibold leading-[1.08] tracking-[-0.04em] text-white sm:text-5xl lg:text-6xl">
-              Software que ordena y potencia tu operación.
+            <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-[1.06] tracking-[-0.045em] text-white sm:mt-5 sm:text-5xl lg:text-[3.65rem]">
+              Software que ordena y potencia{" "}
+              <span className="text-cyan-200">tu operación.</span>
             </h1>
           ) : (
             <motion.h1
-              className="mt-5 text-4xl font-semibold leading-[1.08] tracking-[-0.04em] text-white sm:text-5xl lg:text-6xl"
-              style={{ perspective: 800 }}
+              className="mt-4 max-w-3xl text-4xl font-semibold leading-[1.06] tracking-[-0.045em] text-white sm:mt-5 sm:text-5xl lg:text-[3.65rem]"
+              style={{ perspective: 900 }}
               initial="hidden"
-              animate="visible"
+              animate={ready ? "visible" : "hidden"}
               variants={{
                 hidden: {},
                 visible: {
                   transition: {
-                    staggerChildren: 0.045,
-                    delayChildren: 0.22,
+                    staggerChildren: 0.05,
+                    delayChildren: 0.32,
                   },
                 },
               }}
             >
-              {"Software que ordena y potencia tu operación."
-                .split(" ")
-                .map((word, index) => (
-                  <motion.span
-                    key={`${word}-${index}`}
-                    className="mr-[0.28em] inline-block"
-                    style={{ transformOrigin: "50% 100%" }}
-                    variants={{
-                      hidden: {
-                        opacity: 0,
-                        y: 28,
-                        rotateX: 40,
+              {heroWords.map((word, index) => (
+                <motion.span
+                  key={`${word.text}-${index}`}
+                  className={`mr-[0.28em] inline-block ${
+                    word.accent ? "text-cyan-200" : ""
+                  }`}
+                  style={{ transformOrigin: "50% 100%" }}
+                  variants={{
+                    hidden: {
+                      opacity: 0,
+                      y: 32,
+                      rotateX: 48,
+                    },
+                    visible: {
+                      opacity: 1,
+                      y: 0,
+                      rotateX: 0,
+                      transition: {
+                        type: "spring",
+                        stiffness: 165,
+                        damping: 16,
                       },
-                      visible: {
-                        opacity: 1,
-                        y: 0,
-                        rotateX: 0,
-                        transition: {
-                          type: "spring",
-                          stiffness: 170,
-                          damping: 16,
-                        },
-                      },
-                    }}
-                  >
-                    {word}
-                  </motion.span>
-                ))}
+                    },
+                  }}
+                >
+                  {word.text}
+                </motion.span>
+              ))}
             </motion.h1>
           )}
 
           <motion.p
-            className="mt-6 max-w-xl text-base leading-7 text-slate-400 sm:text-lg sm:leading-8"
-            initial={reduceMotion ? false : { opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.55, duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-6 max-w-xl text-base leading-7 text-slate-400 sm:mt-7 sm:text-lg sm:leading-8"
+            initial={false}
+            animate={
+              play
+                ? { opacity: 1, y: 0 }
+                : { opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : 18 }
+            }
+            transition={{ delay: 0.58, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
             Diseñamos plataformas claras para ventas, stock y automatización,
             pensadas para que tu equipo trabaje mejor desde el primer día.
           </motion.p>
 
           <motion.div
-            className="animate-rise delay-300 mt-9 flex w-full max-w-sm flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center"
-            initial={reduceMotion ? false : { opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
+            className="mt-9 flex w-full max-w-sm flex-col gap-3 sm:mt-10 sm:max-w-none sm:flex-row sm:justify-center"
+            initial={false}
+            animate={
+              play
+                ? { opacity: 1, y: 0 }
+                : { opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : 20 }
+            }
             transition={{
-              delay: 0.45,
+              delay: 0.72,
               type: "spring",
-              stiffness: 160,
+              stiffness: 150,
               damping: 18,
             }}
           >
-            <motion.div whileTap={reduceMotion ? undefined : { scale: 0.97 }}>
+            <motion.div
+              whileHover={reduceMotion ? undefined : { y: -3 }}
+              whileTap={reduceMotion ? undefined : { scale: 0.97 }}
+            >
               <Link
                 to="/proyectos"
-                className="group inline-flex w-full items-center justify-center rounded-full bg-white px-6 py-3 text-center text-sm font-semibold text-slate-950 transition duration-300 hover:-translate-y-0.5 hover:bg-cyan-200"
+                className="group relative inline-flex w-full items-center justify-center overflow-hidden rounded-full bg-white px-7 py-3.5 text-center text-sm font-semibold text-slate-950 shadow-[0_0_0_1px_rgba(255,255,255,0.08),0_12px_40px_rgba(34,211,238,0.12)] transition duration-300 hover:bg-cyan-200"
               >
+                <span className="pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/50 to-transparent transition duration-700 group-hover:translate-x-full" />
                 Ver proyectos
                 <span className="ml-2 inline-block transition duration-300 group-hover:translate-x-1">
                   &rarr;
                 </span>
               </Link>
             </motion.div>
-            <motion.div whileTap={reduceMotion ? undefined : { scale: 0.97 }}>
+            <motion.div
+              whileHover={reduceMotion ? undefined : { y: -3 }}
+              whileTap={reduceMotion ? undefined : { scale: 0.97 }}
+            >
               <a
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex w-full items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 py-3 text-center text-sm font-semibold text-slate-200 transition duration-300 hover:-translate-y-0.5 hover:border-cyan-200/40 hover:text-white"
+                className="inline-flex w-full items-center justify-center rounded-full border border-white/15 bg-white/[0.04] px-7 py-3.5 text-center text-sm font-semibold text-slate-200 backdrop-blur-sm transition duration-300 hover:border-cyan-200/45 hover:bg-white/[0.07] hover:text-white"
               >
                 Hablar por WhatsApp
               </a>
             </motion.div>
           </motion.div>
         </div>
+
+        <motion.button
+          type="button"
+          onClick={() => onSectionNav?.("servicios")}
+          className="absolute bottom-2 left-1/2 hidden h-12 w-12 -translate-x-1/2 items-center justify-center sm:bottom-3 sm:flex"
+          initial={false}
+          animate={play ? { opacity: 1, y: 0 } : { opacity: 0, y: 16 }}
+          transition={{ delay: 1.1, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          aria-label="Ir a servicios"
+        >
+          <span className="relative flex h-10 w-10 items-center justify-center">
+            <motion.span
+              aria-hidden="true"
+              className="absolute inset-0 rounded-full border border-cyan-300/25"
+              animate={
+                play
+                  ? { scale: [1, 1.35, 1.35], opacity: [0.55, 0, 0] }
+                  : { opacity: 0 }
+              }
+              transition={{
+                duration: 2.2,
+                repeat: Infinity,
+                ease: "easeOut",
+              }}
+            />
+            <motion.span
+              aria-hidden="true"
+              className="absolute inset-[3px] rounded-full border border-white/10 bg-slate-950/40 backdrop-blur-sm"
+              whileHover={{ borderColor: "rgba(165,243,252,0.35)" }}
+            />
+            <motion.svg
+              viewBox="0 0 24 24"
+              className="relative z-10 h-4 w-4 text-cyan-200/90"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              animate={play ? { y: [0, 4, 0] } : {}}
+              transition={{
+                duration: 1.8,
+                repeat: Infinity,
+                ease: [0.45, 0, 0.55, 1],
+              }}
+            >
+              <path d="M6 10l6 6 6-6" />
+            </motion.svg>
+          </span>
+        </motion.button>
       </section>
 
       <section className="relative overflow-hidden border-y border-white/10 bg-white/3 py-4">

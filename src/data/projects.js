@@ -2,7 +2,7 @@ import llorensLogo from "../assets/client-llorens.webp";
 import camposDeTrigoLogo from "../assets/campos-de-trigo.webp";
 import molinosLogo from "../assets/client-molinos.webp";
 import totemLogo from "../assets/client-totem.webp";
-import hotelusLogo from "../assets/hotelus-logo.png";
+import hotelusLogo from "../assets/hotelus-logo.webp";
 
 export const flagshipProject = {
   id: "hotelus",

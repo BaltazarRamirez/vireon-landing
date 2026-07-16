@@ -387,6 +387,77 @@ a {
   animation: hero-aurora 7s ease-in-out infinite;
 }
 
+.intro-ring {
+  animation: intro-ring-spin 10s linear infinite;
+}
+
+.intro-ring-reverse {
+  animation: intro-ring-spin 14s linear infinite reverse;
+}
+
+.intro-breathe {
+  animation: intro-breathe 2.4s ease-in-out infinite;
+}
+
+.intro-scan {
+  animation: intro-scan 2.8s ease-in-out infinite;
+}
+
+.intro-progress {
+  animation: intro-progress 3.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes intro-ring-spin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes intro-breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.06);
+  }
+}
+
+@keyframes intro-scan {
+  0%,
+  100% {
+    transform: translateX(-40%);
+    opacity: 0;
+  }
+
+  20%,
+  70% {
+    opacity: 0.7;
+  }
+
+  50% {
+    transform: translateX(40%);
+    opacity: 0.9;
+  }
+}
+
+@keyframes intro-progress {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
 @keyframes orbit-spin {
   from {
     transform: rotate(0deg);

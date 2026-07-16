@@ -110,7 +110,9 @@ function AppShell() {
           <Routes>
             <Route
               path="/"
-              element={<LandingPage onSectionNav={goToSection} />}
+              element={
+                <LandingPage onSectionNav={goToSection} ready={introDone} />
+              }
             />
             <Route
               path="/proyectos"
