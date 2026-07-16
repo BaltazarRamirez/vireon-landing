@@ -51,7 +51,12 @@ function AppShell() {
   const introDone = !isHome || sawIntro || skipHomeIntro;
 
   const finishIntro = useCallback(() => {
-    setSawIntro(true);
+    // Let PageIntro unmount/paint settle before lighting up the page.
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        setSawIntro(true);
+      });
+    });
   }, []);
 
   const goToSection = useCallback((sectionId) => {
@@ -100,29 +105,27 @@ function AppShell() {
       <main className="relative z-10 min-h-screen overflow-x-clip text-slate-100">
         {isHome && !introDone && <PageIntro onFinish={finishIntro} />}
 
-        <AmbientBackground />
+        <AmbientBackground active={introDone} />
 
-        <div
-          className={`relative z-10 transition-opacity duration-700 ease-out ${
-            introDone ? "page-ready opacity-100" : "opacity-0"
-          }`}
-        >
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <LandingPage onSectionNav={goToSection} ready={introDone} />
-              }
-            />
-            <Route
-              path="/proyectos"
-              element={<ProjectsPage onSectionNav={goToSection} />}
-            />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </div>
+        {introDone ? (
+          <div className="page-ready relative z-10 animate-[fadeIn_0.45s_ease-out]">
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <LandingPage onSectionNav={goToSection} ready />
+                }
+              />
+              <Route
+                path="/proyectos"
+                element={<ProjectsPage onSectionNav={goToSection} />}
+              />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </div>
+        ) : null}
 
-        <WhatsAppFloat />
+        {introDone ? <WhatsAppFloat /> : null}
       </main>
     </SmoothScroll>
   );

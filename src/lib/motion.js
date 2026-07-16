@@ -21,12 +21,27 @@ export const springSoft = {
   mass: 0.95,
 };
 
+export const tweenSoft = {
+  duration: 0.38,
+  ease: easeOutSoft,
+};
+
 export const introContainer = {
   hidden: {},
   visible: {
     transition: {
       staggerChildren: 0.09,
       delayChildren: 0.04,
+    },
+  },
+};
+
+export const introContainerLight = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.05,
+      delayChildren: 0.02,
     },
   },
 };
@@ -48,11 +63,38 @@ export const introItem = {
   },
 };
 
+export const introItemLight = {
+  hidden: { opacity: 0, y: 12 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: tweenSoft,
+  },
+};
+
 export const introRule = {
   hidden: { opacity: 0, scaleX: 0 },
   visible: {
     opacity: 1,
     scaleX: 1,
     transition: { duration: 0.65, ease: easeOutExpo },
+  },
+};
+
+export const introRuleLight = {
+  hidden: { opacity: 0, scaleX: 0 },
+  visible: {
+    opacity: 1,
+    scaleX: 1,
+    transition: { duration: 0.35, ease: easeOutSoft },
+  },
+};
+
+export const fadeUpLight = {
+  hidden: { opacity: 0, y: 16 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: tweenSoft,
   },
 };

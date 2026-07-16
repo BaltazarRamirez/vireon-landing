@@ -1,27 +1,25 @@
 import { motion, useReducedMotion } from "motion/react";
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 36, scale: 0.96 },
+  hidden: { opacity: 0, y: 20 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
     transition: {
-      type: "spring",
-      stiffness: 130,
-      damping: 16,
-      staggerChildren: 0.08,
-      delayChildren: 0.08,
+      duration: 0.4,
+      ease: [0.22, 1, 0.36, 1],
+      staggerChildren: 0.05,
+      delayChildren: 0.04,
     },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 14 },
+  hidden: { opacity: 0, y: 10 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { type: "spring", stiffness: 200, damping: 18 },
+    transition: { duration: 0.32, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
@@ -55,13 +53,15 @@ function FounderCard({ founder }) {
         <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/55">
           <div className="relative flex flex-col items-center gap-4 px-4 py-5 sm:grid sm:grid-cols-[140px_1fr] sm:gap-0 sm:p-0 lg:grid-cols-[168px_1fr]">
             <div className="relative h-44 w-44 overflow-hidden rounded-2xl border border-white/10 sm:h-auto sm:min-h-[11.5rem] sm:w-full sm:rounded-none sm:border-0 sm:border-r">
-              {founder.image ? (
-                <img
-                  src={founder.image}
-                  alt={founder.name}
-                  className="h-full w-full object-cover object-[center_18%] sm:object-top"
-                />
-              ) : null}
+            {founder.image ? (
+              <img
+                src={founder.image}
+                alt={founder.name}
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-cover object-[center_18%] sm:object-top"
+              />
+            ) : null}
             </div>
             <div className="px-4 text-center sm:px-5 sm:py-5 sm:text-left">
               <p className="text-[10px] tracking-[0.22em] text-cyan-200/75">
@@ -99,6 +99,8 @@ function FounderCard({ founder }) {
               <img
                 src={founder.image}
                 alt={founder.name}
+                loading="lazy"
+                decoding="async"
                 className="h-full w-full object-cover object-[center_18%] transition duration-700 ease-out group-hover:scale-[1.03] sm:object-top"
               />
             ) : (

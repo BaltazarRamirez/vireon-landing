@@ -1,4 +1,6 @@
 import { motion, useReducedMotion } from "motion/react";
+import { useRichMotion } from "../hooks/useRichMotion";
+import { fadeUpLight } from "../lib/motion";
 import { WHATSAPP_URL } from "./WhatsAppFloat";
 
 const contactChannels = [
@@ -27,7 +29,7 @@ const contactChannels = [
   },
 ];
 
-const panelVariants = {
+const panelVariantsRich = {
   hidden: {
     opacity: 0,
     y: 48,
@@ -46,6 +48,20 @@ const panelVariants = {
       clipPath: { duration: 0.85, ease: [0.16, 1, 0.3, 1] },
       staggerChildren: 0.08,
       delayChildren: 0.12,
+    },
+  },
+};
+
+const panelVariantsLight = {
+  hidden: { opacity: 0, y: 18 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.4,
+      ease: [0.22, 1, 0.36, 1],
+      staggerChildren: 0.05,
+      delayChildren: 0.06,
     },
   },
 };
@@ -81,6 +97,7 @@ const channelVariants = {
 
 function ContactSection() {
   const reduceMotion = useReducedMotion();
+  const rich = useRichMotion();
 
   if (reduceMotion) {
     return (
@@ -119,10 +136,10 @@ function ContactSection() {
     <section className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24">
       <motion.div
         className="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-slate-950/70 shadow-[0_28px_90px_rgba(2,6,23,0.5)] sm:rounded-[2rem]"
-        variants={panelVariants}
+        variants={rich ? panelVariantsRich : panelVariantsLight}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.15, margin: "0px 0px 12% 0px" }}
+        viewport={{ once: true, amount: 0.15, margin: "0px 0px 10% 0px" }}
       >
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.16),transparent_28rem)]" />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_bottom_right,rgba(37,99,235,0.18),transparent_24rem)]" />
@@ -132,27 +149,27 @@ function ContactSection() {
           <div className="flex flex-col justify-center border-b border-white/10 px-5 py-9 sm:px-8 sm:py-11 lg:border-r lg:border-b-0 lg:px-12 lg:py-14">
             <motion.p
               id="contacto"
-              variants={copyVariants}
+              variants={rich ? copyVariants : fadeUpLight}
               className="scroll-mt-36 text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90 sm:scroll-mt-40"
             >
               Empecemos
             </motion.p>
 
             <motion.h2
-              variants={copyVariants}
+              variants={rich ? copyVariants : fadeUpLight}
               className="mt-4 max-w-xl text-3xl font-semibold leading-[1.12] tracking-[-0.03em] text-white sm:mt-5 sm:text-4xl md:text-[2.65rem]"
             >
               Contanos qué querés ordenar y armamos el sistema.
             </motion.h2>
 
             <motion.div
-              variants={copyVariants}
+              variants={rich ? copyVariants : fadeUpLight}
               className="mt-6 h-px w-28 origin-left bg-linear-to-r from-cyan-300/80 via-cyan-300/40 to-transparent"
               aria-hidden="true"
             />
 
             <motion.p
-              variants={copyVariants}
+              variants={rich ? copyVariants : fadeUpLight}
               className="mt-5 max-w-lg text-base leading-7 text-slate-400 sm:text-[17px] sm:leading-8"
             >
               Contanos qué vendés, qué proceso necesitás controlar y qué te
@@ -160,7 +177,7 @@ function ContactSection() {
             </motion.p>
 
             <motion.ul
-              variants={copyVariants}
+              variants={rich ? copyVariants : fadeUpLight}
               className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-[12px] font-medium tracking-[0.04em] text-slate-500"
             >
               {["Diagnóstico claro", "Propuesta a medida", "Arranque ágil"].map(
@@ -184,8 +201,8 @@ function ContactSection() {
                 href={channel.href}
                 target={channel.external ? "_blank" : undefined}
                 rel={channel.external ? "noreferrer" : undefined}
-                variants={channelVariants}
-                whileHover={{ y: -3, scale: 1.015 }}
+                variants={rich ? channelVariants : fadeUpLight}
+                whileHover={rich ? { y: -3, scale: 1.015 } : undefined}
                 whileTap={{ scale: 0.98 }}
                 className={`group relative overflow-hidden rounded-2xl border px-4 py-4 sm:px-5 sm:py-5 ${
                   channel.accent

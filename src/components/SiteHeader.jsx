@@ -41,7 +41,7 @@ function SiteHeader({ menuOpen, setMenuOpen, onSectionNav }) {
     "rounded-2xl px-4 py-3 text-sm font-medium text-slate-200 transition hover:bg-white/5 hover:text-cyan-200 data-[active=true]:bg-white/5 data-[active=true]:text-cyan-200";
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-slate-950/90 backdrop-blur-md lg:bg-slate-950/55 lg:backdrop-blur-2xl">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-slate-950/95 lg:bg-slate-950/55 lg:backdrop-blur-2xl">
       <PromoTopBar />
       <nav className="mx-auto grid max-w-7xl grid-cols-[1fr_auto] items-center gap-4 px-5 py-4 sm:px-8 lg:grid-cols-[1fr_auto_1fr]">
         <Link

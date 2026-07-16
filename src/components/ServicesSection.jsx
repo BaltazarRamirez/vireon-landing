@@ -48,27 +48,15 @@ const cardVariantsDesktop = {
 };
 
 const cardVariantsMobile = {
-  hidden: {
-    opacity: 0,
-    y: 48,
-    scale: 0.93,
-    rotateX: 10,
-    clipPath: "inset(14% 0 0 0)",
-  },
+  hidden: { opacity: 0, y: 18 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
-    rotateX: 0,
-    clipPath: "inset(0% 0 0 0)",
     transition: {
-      type: "spring",
-      stiffness: 135,
-      damping: 15,
-      mass: 0.9,
-      clipPath: { duration: 0.65, ease: [0.16, 1, 0.3, 1] },
-      staggerChildren: 0.07,
-      delayChildren: 0.06,
+      duration: 0.38,
+      ease: [0.22, 1, 0.36, 1],
+      staggerChildren: 0.04,
+      delayChildren: 0.04,
     },
   },
 };
@@ -79,6 +67,15 @@ const itemVariants = {
     opacity: 1,
     y: 0,
     transition: { type: "spring", stiffness: 200, damping: 18 },
+  },
+};
+
+const itemVariantsMobile = {
+  hidden: { opacity: 0, y: 8 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
@@ -102,6 +99,14 @@ const chipVariants = {
   },
 };
 
+const chipVariantsMobile = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
 function useFinePointer() {
   const [fine, setFine] = useState(() =>
     typeof window !== "undefined"
@@ -120,21 +125,31 @@ function useFinePointer() {
   return fine;
 }
 
-function ServiceCardBody({ service, index, chipHover }) {
+function ServiceCardBody({ service, index, chipHover, light = false }) {
+  const item = light ? itemVariantsMobile : itemVariants;
+  const chips = light ? chipVariantsMobile : chipVariants;
+
   return (
     <>
-      <motion.div
-        aria-hidden="true"
-        variants={{
-          hidden: { scaleX: 0, opacity: 0 },
-          visible: {
-            scaleX: 1,
-            opacity: 1,
-            transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
-          },
-        }}
-        className="pointer-events-none absolute inset-x-0 top-0 z-10 h-px origin-left bg-linear-to-r from-transparent via-cyan-300/85 to-transparent"
-      />
+      {!light ? (
+        <motion.div
+          aria-hidden="true"
+          variants={{
+            hidden: { scaleX: 0, opacity: 0 },
+            visible: {
+              scaleX: 1,
+              opacity: 1,
+              transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
+            },
+          }}
+          className="pointer-events-none absolute inset-x-0 top-0 z-10 h-px origin-left bg-linear-to-r from-transparent via-cyan-300/85 to-transparent"
+        />
+      ) : (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 top-0 z-10 h-px bg-linear-to-r from-transparent via-cyan-300/85 to-transparent"
+        />
+      )}
 
       <div
         className="pointer-events-none absolute -right-12 -top-14 hidden h-44 w-44 rounded-full bg-cyan-400/15 blur-3xl transition duration-700 group-hover:bg-cyan-300/25 lg:block"
@@ -145,46 +160,45 @@ function ServiceCardBody({ service, index, chipHover }) {
         aria-hidden="true"
       />
 
-      <motion.span
-        aria-hidden="true"
-        variants={{
-          hidden: { opacity: 0, x: 16 },
-          visible: {
-            opacity: 1,
-            x: 0,
-            transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
-          },
-        }}
-        className="pointer-events-none absolute -right-1 top-0 text-[5.75rem] font-semibold leading-none tracking-[-0.08em] text-white/[0.045] sm:text-[7rem]"
-      >
-        {service.number}
-      </motion.span>
+      {!light ? (
+        <motion.span
+          aria-hidden="true"
+          variants={{
+            hidden: { opacity: 0, x: 16 },
+            visible: {
+              opacity: 1,
+              x: 0,
+              transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+            },
+          }}
+          className="pointer-events-none absolute -right-1 top-0 text-[5.75rem] font-semibold leading-none tracking-[-0.08em] text-white/[0.045] sm:text-[7rem]"
+        >
+          {service.number}
+        </motion.span>
+      ) : (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute -right-1 top-0 text-[5.75rem] font-semibold leading-none tracking-[-0.08em] text-white/[0.045] sm:text-[7rem]"
+        >
+          {service.number}
+        </span>
+      )}
 
       <motion.div
-        variants={itemVariants}
+        variants={item}
         className="relative z-10 flex items-center gap-3"
       >
         <span className="grid h-10 w-10 place-items-center rounded-full border border-cyan-200/35 bg-cyan-300/12 text-[11px] font-semibold tracking-[0.14em] text-cyan-100">
           {service.number}
         </span>
-        <motion.div
-          variants={{
-            hidden: { scaleX: 0, opacity: 0 },
-            visible: {
-              scaleX: 1,
-              opacity: 1,
-              transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] },
-            },
-          }}
-          className="h-px flex-1 origin-left bg-linear-to-r from-cyan-300/40 via-white/10 to-transparent"
-        />
+        <div className="h-px flex-1 origin-left bg-linear-to-r from-cyan-300/40 via-white/10 to-transparent" />
         <span className="text-[10px] font-medium tracking-[0.22em] text-slate-600 uppercase">
           0{index + 1}
         </span>
       </motion.div>
 
       <motion.div
-        variants={itemVariants}
+        variants={item}
         className="relative z-10 mt-5 flex flex-1 flex-col"
       >
         <h3 className="text-xl font-semibold tracking-[-0.03em] text-white sm:text-[1.4rem]">
@@ -202,7 +216,7 @@ function ServiceCardBody({ service, index, chipHover }) {
           {service.points.map((point) => (
             <motion.li
               key={point}
-              variants={chipVariants}
+              variants={chips}
               whileHover={
                 chipHover
                   ? {
@@ -271,9 +285,13 @@ function MobileServiceCard({ service, index }) {
       variants={cardVariantsMobile}
       whileTap={{ scale: 0.985 }}
       className="group relative flex h-full min-h-[16rem] flex-col overflow-hidden rounded-[1.35rem] border border-white/10 bg-slate-950/65 p-5 shadow-[0_16px_48px_rgba(2,6,23,0.35)] sm:min-h-[17.25rem] sm:rounded-3xl sm:p-6"
-      style={{ transformStyle: "preserve-3d" }}
     >
-      <ServiceCardBody service={service} index={index} chipHover={false} />
+      <ServiceCardBody
+        service={service}
+        index={index}
+        chipHover={false}
+        light
+      />
     </motion.article>
   );
 }
@@ -326,11 +344,11 @@ function ServicesSection({ services, intro }) {
 
       <motion.div
         className="mt-8 grid gap-3 sm:mt-12 sm:grid-cols-2 sm:gap-4"
-        style={{ perspective: enhance ? 1400 : 900 }}
+        style={enhance ? { perspective: 1400 } : undefined}
         variants={gridVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.08, margin: "0px 0px 20% 0px" }}
+        viewport={{ once: true, amount: 0.12, margin: "0px 0px 10% 0px" }}
       >
         {services.map((service, index) =>
           enhance ? (

@@ -39,47 +39,14 @@ const aboutListVariants = {
 };
 
 const aboutCardVariants = {
-  hidden: {
-    opacity: 0,
-    y: 48,
-    scale: 0.93,
-    x: -16,
-    rotateX: 12,
-    clipPath: "inset(0 0 20% 0)",
-  },
+  hidden: { opacity: 0, y: 16 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
-    x: 0,
-    rotateX: 0,
-    clipPath: "inset(0 0 0% 0)",
     transition: {
-      type: "spring",
-      stiffness: 130,
-      damping: 15,
-      mass: 0.9,
-      clipPath: { duration: 0.65, ease: [0.16, 1, 0.3, 1] },
-      staggerChildren: 0.07,
-      delayChildren: 0.05,
+      duration: 0.36,
+      ease: [0.22, 1, 0.36, 1],
     },
-  },
-};
-
-const aboutItemVariants = {
-  hidden: { opacity: 0, y: 12 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: "spring", stiffness: 220, damping: 20 },
-  },
-};
-
-const aboutLineVariants = {
-  hidden: { scaleX: 0 },
-  visible: {
-    scaleX: 1,
-    transition: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
@@ -89,34 +56,21 @@ function MobileAboutCard({ item, index }) {
       variants={aboutCardVariants}
       whileTap={{ scale: 0.985 }}
       className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/55 p-5 sm:p-6"
-      style={{ transformStyle: "preserve-3d" }}
     >
-      <motion.div
-        variants={aboutItemVariants}
-        className="relative flex items-center justify-between gap-3"
-      >
+      <div className="relative flex items-center justify-between gap-3">
         <span className="grid h-8 w-8 place-items-center rounded-full border border-cyan-300/30 bg-cyan-300/10 text-[11px] font-semibold tracking-[0.12em] text-cyan-100">
           {String(index + 1).padStart(2, "0")}
         </span>
-        <motion.div
-          variants={aboutLineVariants}
-          className="h-px flex-1 origin-left bg-linear-to-r from-cyan-300/45 to-transparent"
-        />
-      </motion.div>
+        <div className="h-px flex-1 origin-left bg-linear-to-r from-cyan-300/45 to-transparent" />
+      </div>
 
-      <motion.h3
-        variants={aboutItemVariants}
-        className="relative mt-4 text-lg font-semibold tracking-[-0.02em] text-white sm:text-xl"
-      >
+      <h3 className="relative mt-4 text-lg font-semibold tracking-[-0.02em] text-white sm:text-xl">
         {item.title}
-      </motion.h3>
+      </h3>
 
-      <motion.p
-        variants={aboutItemVariants}
-        className="relative mt-2 text-sm leading-6 text-slate-400"
-      >
+      <p className="relative mt-2 text-sm leading-6 text-slate-400">
         {item.description}
-      </motion.p>
+      </p>
     </motion.article>
   );
 }
@@ -154,11 +108,10 @@ function MobileAboutSection({ items, intro, reduceMotion }) {
       ) : (
         <motion.div
           className="mt-8 flex flex-col gap-3 sm:mt-10"
-          style={{ perspective: 900 }}
           variants={aboutListVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.12, margin: "0px 0px 18% 0px" }}
+          viewport={{ once: true, amount: 0.12, margin: "0px 0px 10% 0px" }}
         >
           {items.map((item, index) => (
             <MobileAboutCard key={item.title} item={item} index={index} />

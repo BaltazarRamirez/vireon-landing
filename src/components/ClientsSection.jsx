@@ -1,4 +1,6 @@
 import { motion, useReducedMotion } from "motion/react";
+import { useRichMotion } from "../hooks/useRichMotion";
+import { fadeUpLight } from "../lib/motion";
 import { SectionRevealIntro } from "./sectionReveal";
 
 const listVariants = {
@@ -11,7 +13,17 @@ const listVariants = {
   },
 };
 
-function cardVariants(index) {
+const listVariantsLight = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.06,
+      delayChildren: 0.02,
+    },
+  },
+};
+
+function cardVariantsRich(index) {
   const fromLeft = index % 2 === 0;
   return {
     hidden: {
@@ -59,6 +71,7 @@ const shineVariants = {
 
 function ClientsSection({ clients, intro }) {
   const reduceMotion = useReducedMotion();
+  const rich = useRichMotion();
 
   return (
     <section
@@ -87,39 +100,59 @@ function ClientsSection({ clients, intro }) {
       ) : (
         <motion.div
           className="mt-8 grid grid-cols-1 gap-3 sm:mt-10 lg:grid-cols-4 lg:gap-4"
-          style={{ perspective: 1100 }}
-          variants={listVariants}
+          style={rich ? { perspective: 1100 } : undefined}
+          variants={rich ? listVariants : listVariantsLight}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.1, margin: "0px 0px 18% 0px" }}
+          viewport={{ once: true, amount: 0.12, margin: "0px 0px 10% 0px" }}
         >
           {clients.map((client, index) => (
             <motion.article
               key={client.id}
-              variants={cardVariants(index)}
+              variants={rich ? cardVariantsRich(index) : fadeUpLight}
               whileTap={{ scale: 0.98 }}
-              whileHover={{
-                y: -6,
-                rotateY: index % 2 === 0 ? 3 : -3,
-                transition: { type: "spring", stiffness: 260, damping: 18 },
-              }}
+              whileHover={
+                rich
+                  ? {
+                      y: -6,
+                      rotateY: index % 2 === 0 ? 3 : -3,
+                      transition: {
+                        type: "spring",
+                        stiffness: 260,
+                        damping: 18,
+                      },
+                    }
+                  : undefined
+              }
               className="group relative flex h-44 items-center justify-center overflow-hidden rounded-2xl border border-white/10 bg-slate-950/45 px-5 sm:h-52 lg:h-64 lg:px-6"
-              style={{ transformStyle: "preserve-3d" }}
+              style={rich ? { transformStyle: "preserve-3d" } : undefined}
             >
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(34,211,238,0.08),transparent_70%)] opacity-0 transition duration-500 group-hover:opacity-100" />
-              <motion.div
-                aria-hidden="true"
-                variants={shineVariants}
-                className="pointer-events-none absolute inset-y-0 w-1/3 skew-x-[-20deg] bg-linear-to-r from-transparent via-white/15 to-transparent"
-              />
-              <motion.img
-                src={client.logo}
-                alt={client.name}
-                loading="lazy"
-                decoding="async"
-                variants={logoVariants}
-                className="relative max-h-20 w-auto max-w-[min(16rem,90%)] object-contain transition duration-500 group-hover:scale-105 group-hover:opacity-100 sm:max-h-24 lg:max-h-28 lg:max-w-[17rem]"
-              />
+              {rich ? (
+                <motion.div
+                  aria-hidden="true"
+                  variants={shineVariants}
+                  className="pointer-events-none absolute inset-y-0 w-1/3 skew-x-[-20deg] bg-linear-to-r from-transparent via-white/15 to-transparent"
+                />
+              ) : null}
+              {rich ? (
+                <motion.img
+                  src={client.logo}
+                  alt={client.name}
+                  loading="lazy"
+                  decoding="async"
+                  variants={logoVariants}
+                  className="relative max-h-20 w-auto max-w-[min(16rem,90%)] object-contain transition duration-500 group-hover:scale-105 group-hover:opacity-100 sm:max-h-24 lg:max-h-28 lg:max-w-[17rem]"
+                />
+              ) : (
+                <img
+                  src={client.logo}
+                  alt={client.name}
+                  loading="lazy"
+                  decoding="async"
+                  className="relative max-h-20 w-auto max-w-[min(16rem,90%)] object-contain opacity-85 sm:max-h-24 lg:max-h-28 lg:max-w-[17rem]"
+                />
+              )}
             </motion.article>
           ))}
         </motion.div>

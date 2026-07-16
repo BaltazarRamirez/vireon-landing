@@ -47,7 +47,7 @@ function WhatsAppFloat() {
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}
-        className="animate-whatsapp-float group relative z-20 grid h-14 w-14 place-items-center rounded-full bg-[#25D366] text-white shadow-[0_12px_40px_rgba(37,211,102,0.45)] transition duration-300 hover:bg-[#2fe074]"
+        className="group relative z-20 grid h-14 w-14 place-items-center rounded-full bg-[#25D366] text-white shadow-[0_12px_40px_rgba(37,211,102,0.45)] transition duration-300 hover:bg-[#2fe074] lg:animate-whatsapp-float"
         aria-label={open ? "Cerrar WhatsApp" : "Abrir WhatsApp"}
       >
         {open ? (
