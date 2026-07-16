@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import founderPhoto from "../assets/founder.jpg";
 import AboutSection from "../components/AboutSection";
@@ -125,10 +125,30 @@ const heroWords = [
   { text: "operación.", accent: true },
 ];
 
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(() =>
+    typeof window !== "undefined"
+      ? window.matchMedia("(min-width: 1024px)").matches
+      : false,
+  );
+
+  useEffect(() => {
+    const media = window.matchMedia("(min-width: 1024px)");
+    const onChange = () => setIsDesktop(media.matches);
+    onChange();
+    media.addEventListener("change", onChange);
+    return () => media.removeEventListener("change", onChange);
+  }, []);
+
+  return isDesktop;
+}
+
 function LandingPage({ onSectionNav, ready = true }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const reduceMotion = useReducedMotion();
+  const isDesktop = useIsDesktop();
   const play = ready && !reduceMotion;
+  const rich = play && isDesktop;
 
   return (
     <>
@@ -154,14 +174,9 @@ function LandingPage({ onSectionNav, ready = true }) {
         </div>
 
         <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center">
-          <HeroVisual ready={ready} />
+          <HeroVisual ready={ready} rich={rich} />
 
-          {reduceMotion ? (
-            <h1 className="mt-4 max-w-3xl text-4xl font-semibold leading-[1.06] tracking-[-0.045em] text-white sm:mt-5 sm:text-5xl lg:text-[3.65rem]">
-              Software que ordena y potencia{" "}
-              <span className="text-cyan-200">tu operación.</span>
-            </h1>
-          ) : (
+          {rich ? (
             <motion.h1
               className="mt-4 max-w-3xl text-4xl font-semibold leading-[1.06] tracking-[-0.045em] text-white sm:mt-5 sm:text-5xl lg:text-[3.65rem]"
               style={{ perspective: 900 }}
@@ -206,17 +221,35 @@ function LandingPage({ onSectionNav, ready = true }) {
                 </motion.span>
               ))}
             </motion.h1>
+          ) : (
+            <motion.h1
+              className="mt-4 max-w-3xl text-4xl font-semibold leading-[1.06] tracking-[-0.045em] text-white sm:mt-5 sm:text-5xl lg:text-[3.65rem]"
+              initial={false}
+              animate={
+                play || reduceMotion
+                  ? { opacity: 1, y: 0 }
+                  : { opacity: 0, y: 14 }
+              }
+              transition={{ duration: 0.4, delay: play ? 0.08 : 0, ease: [0.22, 1, 0.36, 1] }}
+            >
+              Software que ordena y potencia{" "}
+              <span className="text-cyan-200">tu operación.</span>
+            </motion.h1>
           )}
 
           <motion.p
             className="mt-6 max-w-xl text-base leading-7 text-slate-400 sm:mt-7 sm:text-lg sm:leading-8"
             initial={false}
             animate={
-              play
+              play || reduceMotion
                 ? { opacity: 1, y: 0 }
-                : { opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : 18 }
+                : { opacity: 0, y: 12 }
             }
-            transition={{ delay: 0.58, duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            transition={{
+              duration: rich ? 0.65 : 0.35,
+              delay: play ? (rich ? 0.58 : 0.16) : 0,
+              ease: [0.22, 1, 0.36, 1],
+            }}
           >
             Diseñamos plataformas claras para ventas, stock y automatización,
             pensadas para que tu equipo trabaje mejor desde el primer día.
@@ -226,26 +259,27 @@ function LandingPage({ onSectionNav, ready = true }) {
             className="mt-9 flex w-full max-w-sm flex-col gap-3 sm:mt-10 sm:max-w-none sm:flex-row sm:justify-center"
             initial={false}
             animate={
-              play
+              play || reduceMotion
                 ? { opacity: 1, y: 0 }
-                : { opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : 20 }
+                : { opacity: 0, y: 12 }
             }
             transition={{
-              delay: 0.72,
-              type: "spring",
-              stiffness: 150,
-              damping: 18,
+              duration: rich ? 0.5 : 0.35,
+              delay: play ? (rich ? 0.72 : 0.24) : 0,
+              ease: [0.22, 1, 0.36, 1],
             }}
           >
             <motion.div
-              whileHover={reduceMotion ? undefined : { y: -3 }}
-              whileTap={reduceMotion ? undefined : { scale: 0.97 }}
+              whileHover={rich ? { y: -3 } : undefined}
+              whileTap={play ? { scale: 0.98 } : undefined}
             >
               <Link
                 to="/proyectos"
                 className="group relative inline-flex w-full items-center justify-center overflow-hidden rounded-full bg-white px-7 py-3.5 text-center text-sm font-semibold text-slate-950 shadow-[0_0_0_1px_rgba(255,255,255,0.08),0_12px_40px_rgba(34,211,238,0.12)] transition duration-300 hover:bg-cyan-200"
               >
-                <span className="pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/50 to-transparent transition duration-700 group-hover:translate-x-full" />
+                {rich ? (
+                  <span className="pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/50 to-transparent transition duration-700 group-hover:translate-x-full" />
+                ) : null}
                 Ver proyectos
                 <span className="ml-2 inline-block transition duration-300 group-hover:translate-x-1">
                   &rarr;
@@ -253,14 +287,14 @@ function LandingPage({ onSectionNav, ready = true }) {
               </Link>
             </motion.div>
             <motion.div
-              whileHover={reduceMotion ? undefined : { y: -3 }}
-              whileTap={reduceMotion ? undefined : { scale: 0.97 }}
+              whileHover={rich ? { y: -3 } : undefined}
+              whileTap={play ? { scale: 0.98 } : undefined}
             >
               <a
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex w-full items-center justify-center rounded-full border border-white/15 bg-white/[0.04] px-7 py-3.5 text-center text-sm font-semibold text-slate-200 backdrop-blur-sm transition duration-300 hover:border-cyan-200/45 hover:bg-white/[0.07] hover:text-white"
+                className="inline-flex w-full items-center justify-center rounded-full border border-white/15 bg-white/[0.04] px-7 py-3.5 text-center text-sm font-semibold text-slate-200 transition duration-300 hover:border-cyan-200/45 hover:bg-white/[0.07] hover:text-white"
               >
                 Hablar por WhatsApp
               </a>

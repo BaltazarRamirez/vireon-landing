@@ -1,7 +1,7 @@
 import { motion, useReducedMotion } from "motion/react";
 import logo from "../assets/vireon-logo.svg";
 
-function HeroVisual({ ready = true }) {
+function HeroVisual({ ready = true, rich = false }) {
   const reduceMotion = useReducedMotion();
 
   if (reduceMotion) {
@@ -17,6 +17,29 @@ function HeroVisual({ ready = true }) {
           Desarrollo de software
         </p>
       </div>
+    );
+  }
+
+  // Mobile: short opacity/y only — no springs, no continuous filter glow.
+  if (!rich) {
+    return (
+      <motion.div
+        className="relative mx-auto mb-5 flex flex-col items-center sm:mb-6"
+        initial={{ opacity: 0, y: 12 }}
+        animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <div className="pointer-events-none absolute top-1/2 left-1/2 h-24 w-24 -translate-x-1/2 -translate-y-1/2 rounded-full bg-cyan-400/20 blur-2xl" />
+        <img
+          src={logo}
+          alt="Vireon"
+          className="relative z-10 h-14 w-auto sm:h-16"
+        />
+        <div className="mt-4 h-px w-16 bg-linear-to-r from-transparent via-cyan-300/70 to-transparent" />
+        <p className="mt-3 text-[11px] font-medium tracking-[0.3em] text-cyan-200/85 uppercase sm:text-xs">
+          Desarrollo de software
+        </p>
+      </motion.div>
     );
   }
 
@@ -67,7 +90,7 @@ function HeroVisual({ ready = true }) {
         className="mt-3 text-[11px] font-medium tracking-[0.3em] text-cyan-200/85 uppercase sm:text-xs"
         initial={{ opacity: 0, y: 10 }}
         animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }}
-        transition={{ delay: 0.28, type: "spring", stiffness: 170, damping: 18 }}
+        transition={{ delay: 0.28, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       >
         Desarrollo de software
       </motion.p>
