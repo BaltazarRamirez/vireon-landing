@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import brandIcon from "../assets/vireon-icon.webp";
 import logo from "../assets/vireon-logo.svg";
 import { navItems } from "../data/nav";
 import { useActiveNav } from "../hooks/useActiveSection";
@@ -71,21 +72,23 @@ function SiteHeader({ menuOpen, setMenuOpen, onSectionNav }) {
       <nav className="mx-auto grid max-w-7xl grid-cols-[1fr_auto] items-center gap-4 px-5 py-4 sm:px-8 lg:grid-cols-[1fr_auto_1fr]">
         <Link
           to="/"
-          className="group flex items-center justify-self-start"
+          className="group flex items-center gap-2.5 justify-self-start sm:gap-3"
           aria-label="Ir al inicio"
           onClick={closeMenu}
         >
           <img
+            src={brandIcon}
+            alt=""
+            width={36}
+            height={36}
+            decoding="async"
+            className="h-9 w-9 shrink-0 rounded-[0.65rem] transition duration-300 group-hover:scale-105"
+          />
+          <img
             src={logo}
             alt="Vireon"
-            className="hidden h-9 w-auto transition duration-300 group-hover:scale-105 lg:block"
+            className="hidden h-8 w-auto transition duration-300 group-hover:scale-105 lg:block"
           />
-          <span
-            aria-hidden="true"
-            className="text-[1.65rem] font-semibold leading-none tracking-[-0.06em] text-white transition duration-300 group-hover:text-cyan-100 lg:hidden"
-          >
-            V
-          </span>
         </Link>
 
         <div className="hidden items-center gap-8 justify-self-center rounded-full border border-white/10 bg-white/3 px-6 py-3 text-sm text-slate-300 lg:flex">
