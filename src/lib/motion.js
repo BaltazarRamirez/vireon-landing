@@ -4,7 +4,7 @@ export const easeOutSoft = [0.22, 1, 0.36, 1];
 export const viewportOnce = {
   once: true,
   amount: 0.12,
-  margin: "0px 0px 16% 0px",
+  margin: "0px 0px 14% 0px",
 };
 
 export const springSnappy = {
@@ -22,8 +22,96 @@ export const springSoft = {
 };
 
 export const tweenSoft = {
-  duration: 0.38,
-  ease: easeOutSoft,
+  duration: 0.85,
+  ease: easeOutExpo,
+};
+
+/** Staggered list/grid for mobile — slower = more cinematic. */
+export const staggerContainer = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.16,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+export const staggerContainerFast = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.08,
+    },
+  },
+};
+
+/** Card / block entrance: opacity + y + soft scale (no 3D / clipPath). */
+export const revealUp = {
+  hidden: { opacity: 0, y: 36, scale: 0.96 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.9,
+      ease: easeOutExpo,
+    },
+  },
+};
+
+export const revealUpSoft = {
+  hidden: { opacity: 0, y: 26 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: tweenSoft,
+  },
+};
+
+export const revealSlide = {
+  hidden: { opacity: 0, x: -20, y: 16 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    y: 0,
+    transition: {
+      duration: 0.85,
+      ease: easeOutExpo,
+    },
+  },
+};
+
+export const revealPop = {
+  hidden: { opacity: 0, scale: 0.9 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 0.75,
+      ease: easeOutExpo,
+    },
+  },
+};
+
+export const revealRulePro = {
+  hidden: { opacity: 0, scaleX: 0 },
+  visible: {
+    opacity: 1,
+    scaleX: 1,
+    transition: { duration: 0.85, ease: easeOutExpo },
+  },
+};
+
+export const revealChip = {
+  hidden: { opacity: 0, y: 12, scale: 0.9 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.65, ease: easeOutExpo },
+  },
 };
 
 export const introContainer = {
@@ -40,8 +128,8 @@ export const introContainerLight = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.05,
-      delayChildren: 0.02,
+      staggerChildren: 0.16,
+      delayChildren: 0.1,
     },
   },
 };
@@ -64,11 +152,14 @@ export const introItem = {
 };
 
 export const introItemLight = {
-  hidden: { opacity: 0, y: 12 },
+  hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: tweenSoft,
+    transition: {
+      duration: 0.9,
+      ease: easeOutExpo,
+    },
   },
 };
 
@@ -86,15 +177,8 @@ export const introRuleLight = {
   visible: {
     opacity: 1,
     scaleX: 1,
-    transition: { duration: 0.35, ease: easeOutSoft },
+    transition: { duration: 0.85, ease: easeOutExpo },
   },
 };
 
-export const fadeUpLight = {
-  hidden: { opacity: 0, y: 16 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: tweenSoft,
-  },
-};
+export const fadeUpLight = revealUpSoft;

@@ -20,8 +20,8 @@ const listVariantsLight = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.06,
-      delayChildren: 0.02,
+      staggerChildren: 0.18,
+      delayChildren: 0.1,
     },
   },
 };
@@ -48,11 +48,35 @@ const stepVariants = {
 };
 
 const stepVariantsLight = {
+  hidden: { opacity: 0, y: 32, x: -16 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    x: 0,
+    transition: {
+      duration: 0.9,
+      ease: [0.16, 1, 0.3, 1],
+      staggerChildren: 0.12,
+      delayChildren: 0.08,
+    },
+  },
+};
+
+const stepItemVariantsLight = {
   hidden: { opacity: 0, y: 14 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.36, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
+  },
+};
+
+const badgeVariantsLight = {
+  hidden: { opacity: 0, scale: 0.75 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.75, ease: [0.16, 1, 0.3, 1] },
   },
 };
 
@@ -94,11 +118,12 @@ const cardVariantsRich = {
 };
 
 const cardVariantsLight = {
-  hidden: { opacity: 0, y: 14 },
+  hidden: { opacity: 0, y: 24, scale: 0.97 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.36, ease: [0.22, 1, 0.36, 1] },
+    scale: 1,
+    transition: { duration: 0.85, ease: [0.16, 1, 0.3, 1] },
   },
 };
 
@@ -197,7 +222,7 @@ function ProcessSection({ steps, intro }) {
             variants={rich ? listVariants : listVariantsLight}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.12, margin: "0px 0px 10% 0px" }}
+            viewport={{ once: true, amount: 0.14, margin: "0px 0px 12% 0px" }}
           >
             {steps.map((step) => (
               <motion.li
@@ -206,18 +231,14 @@ function ProcessSection({ steps, intro }) {
                 className="relative flex gap-5 overflow-visible pb-10 last:pb-0 sm:gap-7"
               >
                 <div className="relative z-10 flex shrink-0 flex-col items-center overflow-visible">
-                  {rich ? (
-                    <motion.span
-                      variants={badgeVariants}
-                      className="animate-timeline-pulse grid h-8 w-8 place-items-center rounded-full border border-cyan-300/50 bg-slate-950 text-[11px] font-semibold tracking-[0.08em] text-cyan-100 shadow-[0_0_20px_rgba(34,211,238,0.2)] sm:h-10 sm:w-10 sm:text-xs"
-                    >
-                      {step.number}
-                    </motion.span>
-                  ) : (
-                    <span className="grid h-8 w-8 place-items-center rounded-full border border-cyan-300/50 bg-slate-950 text-[11px] font-semibold tracking-[0.08em] text-cyan-100 sm:h-10 sm:w-10 sm:text-xs">
-                      {step.number}
-                    </span>
-                  )}
+                  <motion.span
+                    variants={rich ? badgeVariants : badgeVariantsLight}
+                    className={`${
+                      rich ? "animate-timeline-pulse shadow-[0_0_20px_rgba(34,211,238,0.2)]" : ""
+                    } grid h-8 w-8 place-items-center rounded-full border border-cyan-300/50 bg-slate-950 text-[11px] font-semibold tracking-[0.08em] text-cyan-100 sm:h-10 sm:w-10 sm:text-xs`}
+                  >
+                    {step.number}
+                  </motion.span>
                 </div>
 
                 <motion.div
@@ -227,30 +248,18 @@ function ProcessSection({ steps, intro }) {
                 >
                   <div className="absolute inset-0 rounded-3xl bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_14rem)] opacity-0 transition duration-300 lg:group-hover:opacity-100" />
                   <div className="relative">
-                    {rich ? (
-                      <motion.h3
-                        variants={stepItemVariants}
-                        className="text-xl font-semibold tracking-[-0.02em] text-white sm:text-2xl"
-                      >
-                        {step.title}
-                      </motion.h3>
-                    ) : (
-                      <h3 className="text-xl font-semibold tracking-[-0.02em] text-white sm:text-2xl">
-                        {step.title}
-                      </h3>
-                    )}
-                    {rich ? (
-                      <motion.p
-                        variants={stepItemVariants}
-                        className="mt-2 text-sm leading-7 text-slate-400 sm:text-[15px]"
-                      >
-                        {step.description}
-                      </motion.p>
-                    ) : (
-                      <p className="mt-2 text-sm leading-7 text-slate-400 sm:text-[15px]">
-                        {step.description}
-                      </p>
-                    )}
+                    <motion.h3
+                      variants={rich ? stepItemVariants : stepItemVariantsLight}
+                      className="text-xl font-semibold tracking-[-0.02em] text-white sm:text-2xl"
+                    >
+                      {step.title}
+                    </motion.h3>
+                    <motion.p
+                      variants={rich ? stepItemVariants : stepItemVariantsLight}
+                      className="mt-2 text-sm leading-7 text-slate-400 sm:text-[15px]"
+                    >
+                      {step.description}
+                    </motion.p>
                   </div>
                 </motion.div>
               </motion.li>

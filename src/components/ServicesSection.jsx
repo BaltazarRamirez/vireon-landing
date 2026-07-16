@@ -7,6 +7,13 @@ import {
 } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { useSectionReveal } from "../hooks/useReveal";
+import {
+  revealChip,
+  revealRulePro,
+  revealUp,
+  staggerContainer,
+  viewportOnce,
+} from "../lib/motion";
 import SectionAnchor from "./SectionAnchor";
 import { SectionRevealIntro } from "./sectionReveal";
 
@@ -19,6 +26,8 @@ const gridVariants = {
     },
   },
 };
+
+const gridVariantsMobile = staggerContainer;
 
 const cardVariantsDesktop = {
   hidden: {
@@ -49,15 +58,13 @@ const cardVariantsDesktop = {
 };
 
 const cardVariantsMobile = {
-  hidden: { opacity: 0, y: 18 },
+  ...revealUp,
   visible: {
-    opacity: 1,
-    y: 0,
+    ...revealUp.visible,
     transition: {
-      duration: 0.38,
-      ease: [0.22, 1, 0.36, 1],
-      staggerChildren: 0.04,
-      delayChildren: 0.04,
+      ...revealUp.visible.transition,
+      staggerChildren: 0.1,
+      delayChildren: 0.12,
     },
   },
 };
@@ -72,11 +79,11 @@ const itemVariants = {
 };
 
 const itemVariantsMobile = {
-  hidden: { opacity: 0, y: 8 },
+  hidden: { opacity: 0, y: 16 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.75, ease: [0.16, 1, 0.3, 1] },
   },
 };
 
@@ -84,8 +91,8 @@ const chipContainerVariants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.05,
-      delayChildren: 0.05,
+      staggerChildren: 0.08,
+      delayChildren: 0.08,
     },
   },
 };
@@ -100,13 +107,7 @@ const chipVariants = {
   },
 };
 
-const chipVariantsMobile = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] },
-  },
-};
+const chipVariantsMobile = revealChip;
 
 function useFinePointer() {
   const [fine, setFine] = useState(() =>
@@ -132,25 +133,22 @@ function ServiceCardBody({ service, index, chipHover, light = false }) {
 
   return (
     <>
-      {!light ? (
-        <motion.div
-          aria-hidden="true"
-          variants={{
-            hidden: { scaleX: 0, opacity: 0 },
-            visible: {
-              scaleX: 1,
-              opacity: 1,
-              transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
-            },
-          }}
-          className="pointer-events-none absolute inset-x-0 top-0 z-10 h-px origin-left bg-linear-to-r from-transparent via-cyan-300/85 to-transparent"
-        />
-      ) : (
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 z-10 h-px bg-linear-to-r from-transparent via-cyan-300/85 to-transparent"
-        />
-      )}
+      <motion.div
+        aria-hidden="true"
+        variants={
+          light
+            ? revealRulePro
+            : {
+                hidden: { scaleX: 0, opacity: 0 },
+                visible: {
+                  scaleX: 1,
+                  opacity: 1,
+                  transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
+                },
+              }
+        }
+        className="pointer-events-none absolute inset-x-0 top-0 z-10 h-px origin-left bg-linear-to-r from-transparent via-cyan-300/85 to-transparent"
+      />
 
       <div
         className="pointer-events-none absolute -right-12 -top-14 hidden h-44 w-44 rounded-full bg-cyan-400/15 blur-3xl transition duration-700 group-hover:bg-cyan-300/25 lg:block"
@@ -161,29 +159,31 @@ function ServiceCardBody({ service, index, chipHover, light = false }) {
         aria-hidden="true"
       />
 
-      {!light ? (
-        <motion.span
-          aria-hidden="true"
-          variants={{
-            hidden: { opacity: 0, x: 16 },
-            visible: {
-              opacity: 1,
-              x: 0,
-              transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
-            },
-          }}
-          className="pointer-events-none absolute -right-1 top-0 text-[5.75rem] font-semibold leading-none tracking-[-0.08em] text-white/[0.045] sm:text-[7rem]"
-        >
-          {service.number}
-        </motion.span>
-      ) : (
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute -right-1 top-0 text-[5.75rem] font-semibold leading-none tracking-[-0.08em] text-white/[0.045] sm:text-[7rem]"
-        >
-          {service.number}
-        </span>
-      )}
+      <motion.span
+        aria-hidden="true"
+        variants={
+          light
+            ? {
+                hidden: { opacity: 0, y: 14 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+                },
+              }
+            : {
+                hidden: { opacity: 0, x: 16 },
+                visible: {
+                  opacity: 1,
+                  x: 0,
+                  transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+                },
+              }
+        }
+        className="pointer-events-none absolute -right-1 top-0 text-[5.75rem] font-semibold leading-none tracking-[-0.08em] text-white/[0.045] sm:text-[7rem]"
+      >
+        {service.number}
+      </motion.span>
 
       <motion.div
         variants={item}
@@ -348,10 +348,10 @@ function ServicesSection({ services, intro }) {
       <motion.div
         className="mt-8 grid gap-3 sm:mt-12 sm:grid-cols-2 sm:gap-4"
         style={enhance ? { perspective: 1400 } : undefined}
-        variants={gridVariants}
+        variants={enhance ? gridVariants : gridVariantsMobile}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.12, margin: "0px 0px 10% 0px" }}
+        viewport={viewportOnce}
       >
         {services.map((service, index) =>
           enhance ? (

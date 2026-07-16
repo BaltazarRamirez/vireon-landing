@@ -33,21 +33,43 @@ const aboutListVariants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.16,
-      delayChildren: 0.08,
+      staggerChildren: 0.18,
+      delayChildren: 0.1,
     },
   },
 };
 
 const aboutCardVariants = {
-  hidden: { opacity: 0, y: 16 },
+  hidden: { opacity: 0, y: 34, scale: 0.96, x: -12 },
   visible: {
     opacity: 1,
     y: 0,
+    scale: 1,
+    x: 0,
     transition: {
-      duration: 0.36,
-      ease: [0.22, 1, 0.36, 1],
+      duration: 0.9,
+      ease: [0.16, 1, 0.3, 1],
+      staggerChildren: 0.12,
+      delayChildren: 0.1,
     },
+  },
+};
+
+const aboutItemVariants = {
+  hidden: { opacity: 0, y: 14 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
+  },
+};
+
+const aboutLineVariants = {
+  hidden: { opacity: 0, scaleX: 0 },
+  visible: {
+    opacity: 1,
+    scaleX: 1,
+    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
   },
 };
 
@@ -58,20 +80,32 @@ function MobileAboutCard({ item, index }) {
       whileTap={{ scale: 0.985 }}
       className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/55 p-5 sm:p-6"
     >
-      <div className="relative flex items-center justify-between gap-3">
+      <motion.div
+        variants={aboutItemVariants}
+        className="relative flex items-center justify-between gap-3"
+      >
         <span className="grid h-8 w-8 place-items-center rounded-full border border-cyan-300/30 bg-cyan-300/10 text-[11px] font-semibold tracking-[0.12em] text-cyan-100">
           {String(index + 1).padStart(2, "0")}
         </span>
-        <div className="h-px flex-1 origin-left bg-linear-to-r from-cyan-300/45 to-transparent" />
-      </div>
+        <motion.div
+          variants={aboutLineVariants}
+          className="h-px flex-1 origin-left bg-linear-to-r from-cyan-300/45 to-transparent"
+        />
+      </motion.div>
 
-      <h3 className="relative mt-4 text-lg font-semibold tracking-[-0.02em] text-white sm:text-xl">
+      <motion.h3
+        variants={aboutItemVariants}
+        className="relative mt-4 text-lg font-semibold tracking-[-0.02em] text-white sm:text-xl"
+      >
         {item.title}
-      </h3>
+      </motion.h3>
 
-      <p className="relative mt-2 text-sm leading-6 text-slate-400">
+      <motion.p
+        variants={aboutItemVariants}
+        className="relative mt-2 text-sm leading-6 text-slate-400"
+      >
         {item.description}
-      </p>
+      </motion.p>
     </motion.article>
   );
 }
@@ -113,7 +147,7 @@ function MobileAboutSection({ items, intro, reduceMotion }) {
           variants={aboutListVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.12, margin: "0px 0px 10% 0px" }}
+          viewport={{ once: true, amount: 0.14, margin: "0px 0px 12% 0px" }}
         >
           {items.map((item, index) => (
             <MobileAboutCard key={item.title} item={item} index={index} />

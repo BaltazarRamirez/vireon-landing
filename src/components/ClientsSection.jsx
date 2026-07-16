@@ -1,6 +1,11 @@
 import { motion, useReducedMotion } from "motion/react";
 import { useRichMotion } from "../hooks/useRichMotion";
-import { fadeUpLight } from "../lib/motion";
+import {
+  easeOutExpo,
+  revealRulePro,
+  staggerContainer,
+  viewportOnce,
+} from "../lib/motion";
 import SectionAnchor from "./SectionAnchor";
 import { SectionRevealIntro } from "./sectionReveal";
 
@@ -10,16 +15,6 @@ const listVariants = {
     transition: {
       staggerChildren: 0.12,
       delayChildren: 0.06,
-    },
-  },
-};
-
-const listVariantsLight = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.06,
-      delayChildren: 0.02,
     },
   },
 };
@@ -45,7 +40,31 @@ function cardVariantsRich(index) {
         stiffness: 135,
         damping: 15,
         mass: 0.85,
-        clipPath: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
+        clipPath: { duration: 0.7, ease: easeOutExpo },
+      },
+    },
+  };
+}
+
+function cardVariantsMobile(index) {
+  const fromLeft = index % 2 === 0;
+  return {
+    hidden: {
+      opacity: 0,
+      y: 28,
+      x: fromLeft ? -16 : 16,
+      scale: 0.96,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      x: 0,
+      scale: 1,
+      transition: {
+        duration: 0.9,
+        ease: easeOutExpo,
+        staggerChildren: 0.12,
+        delayChildren: 0.1,
       },
     },
   };
@@ -61,12 +80,22 @@ const logoVariants = {
   },
 };
 
+const logoVariantsMobile = {
+  hidden: { opacity: 0, scale: 0.9, y: 10 },
+  visible: {
+    opacity: 0.88,
+    scale: 1,
+    y: 0,
+    transition: { duration: 0.75, ease: easeOutExpo, delay: 0.1 },
+  },
+};
+
 const shineVariants = {
   hidden: { x: "-120%", opacity: 0 },
   visible: {
     x: "120%",
     opacity: [0, 0.55, 0],
-    transition: { delay: 0.25, duration: 0.85, ease: [0.16, 1, 0.3, 1] },
+    transition: { delay: 0.25, duration: 0.85, ease: easeOutExpo },
   },
 };
 
@@ -103,15 +132,15 @@ function ClientsSection({ clients, intro }) {
         <motion.div
           className="mt-8 grid grid-cols-1 gap-3 sm:mt-10 lg:grid-cols-4 lg:gap-4"
           style={rich ? { perspective: 1100 } : undefined}
-          variants={rich ? listVariants : listVariantsLight}
+          variants={rich ? listVariants : staggerContainer}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.12, margin: "0px 0px 10% 0px" }}
+          viewport={viewportOnce}
         >
           {clients.map((client, index) => (
             <motion.article
               key={client.id}
-              variants={rich ? cardVariantsRich(index) : fadeUpLight}
+              variants={rich ? cardVariantsRich(index) : cardVariantsMobile(index)}
               whileTap={{ scale: 0.98 }}
               whileHover={
                 rich
@@ -136,25 +165,21 @@ function ClientsSection({ clients, intro }) {
                   variants={shineVariants}
                   className="pointer-events-none absolute inset-y-0 w-1/3 skew-x-[-20deg] bg-linear-to-r from-transparent via-white/15 to-transparent"
                 />
-              ) : null}
-              {rich ? (
-                <motion.img
-                  src={client.logo}
-                  alt={client.name}
-                  loading="lazy"
-                  decoding="async"
-                  variants={logoVariants}
-                  className="relative max-h-20 w-auto max-w-[min(16rem,90%)] object-contain transition duration-500 group-hover:scale-105 group-hover:opacity-100 sm:max-h-24 lg:max-h-28 lg:max-w-[17rem]"
-                />
               ) : (
-                <img
-                  src={client.logo}
-                  alt={client.name}
-                  loading="lazy"
-                  decoding="async"
-                  className="relative max-h-20 w-auto max-w-[min(16rem,90%)] object-contain opacity-85 sm:max-h-24 lg:max-h-28 lg:max-w-[17rem]"
+                <motion.div
+                  aria-hidden="true"
+                  variants={revealRulePro}
+                  className="pointer-events-none absolute inset-x-0 top-0 h-px origin-left bg-linear-to-r from-transparent via-cyan-300/50 to-transparent"
                 />
               )}
+              <motion.img
+                src={client.logo}
+                alt={client.name}
+                loading="lazy"
+                decoding="async"
+                variants={rich ? logoVariants : logoVariantsMobile}
+                className="relative max-h-20 w-auto max-w-[min(16rem,90%)] object-contain transition duration-500 group-hover:scale-105 group-hover:opacity-100 sm:max-h-24 lg:max-h-28 lg:max-w-[17rem]"
+              />
             </motion.article>
           ))}
         </motion.div>
