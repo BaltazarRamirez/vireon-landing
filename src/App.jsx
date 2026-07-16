@@ -2,6 +2,7 @@ import { useCallback, useRef, useState } from "react";
 import founderPhoto from "./assets/founder.jpg";
 import logo from "./assets/vireon_logo_blanco_transparente_4096.png";
 import AboutSection from "./components/AboutSection";
+import AmbientBackground from "./components/AmbientBackground";
 import ClientsSection from "./components/ClientsSection";
 import ContactSection from "./components/ContactSection";
 import FounderCard from "./components/FounderCard";
@@ -140,20 +141,16 @@ function App() {
 
   return (
     <SmoothScroll paused={!introDone} lenisRef={lenisRef}>
-    <main className="relative min-h-screen overflow-x-hidden text-slate-100">
+    <main className="relative z-10 min-h-screen overflow-x-hidden text-slate-100">
       {!introDone && <PageIntro onFinish={finishIntro} />}
 
+      <AmbientBackground />
+
       <div
-        className={`transition-opacity duration-700 ease-out ${
+        className={`relative z-10 transition-opacity duration-700 ease-out ${
           introDone ? "page-ready opacity-100" : "opacity-0"
         }`}
       >
-      <div className="pointer-events-none absolute inset-0">
-        <div className="animate-glow absolute -left-48 top-24 h-96 w-96 rounded-full bg-blue-600/25 blur-3xl" />
-        <div className="animate-glow delay-300 absolute -right-40 top-0 h-120 w-120 rounded-full bg-cyan-400/20 blur-3xl" />
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(96,165,250,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(96,165,250,0.06)_1px,transparent_1px)] bg-size-[72px_72px] mask-[radial-gradient(circle_at_top,black,transparent_72%)]" />
-      </div>
-
       <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-slate-950/55 backdrop-blur-2xl">
         <nav className="mx-auto grid max-w-7xl grid-cols-[1fr_auto] items-center gap-4 px-5 py-4 sm:px-8 lg:grid-cols-[1fr_auto_1fr]">
           <a
