@@ -43,35 +43,30 @@ const aboutListVariants = {
 const aboutCardVariants = {
   hidden: {
     opacity: 0,
-    y: 42,
-    scale: 0.94,
-    x: -16,
-    clipPath: "inset(0 12% 0 0)",
+    y: 28,
+    scale: 0.97,
+    x: -14,
   },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
     x: 0,
-    clipPath: "inset(0 0% 0 0)",
     transition: {
-      type: "spring",
-      stiffness: 130,
-      damping: 16,
-      mass: 0.9,
-      clipPath: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
-      staggerChildren: 0.08,
-      delayChildren: 0.06,
+      duration: 0.65,
+      ease: [0.16, 1, 0.3, 1],
+      staggerChildren: 0.06,
+      delayChildren: 0.04,
     },
   },
 };
 
 const aboutItemVariants = {
-  hidden: { opacity: 0, y: 14 },
+  hidden: { opacity: 0, y: 12 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { type: "spring", stiffness: 200, damping: 18 },
+    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
   },
 };
 

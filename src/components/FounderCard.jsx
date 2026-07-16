@@ -1,7 +1,8 @@
 import { motion, useReducedMotion } from "motion/react";
-import { viewportOnce } from "../lib/motion";
+import { useRichMotion } from "../hooks/useRichMotion";
+import { easeOutExpo, viewportOnce } from "../lib/motion";
 
-const cardVariants = {
+const cardVariantsRich = {
   hidden: {
     opacity: 0,
     y: 42,
@@ -17,9 +18,24 @@ const cardVariants = {
       type: "spring",
       stiffness: 130,
       damping: 16,
-      clipPath: { duration: 0.75, ease: [0.16, 1, 0.3, 1] },
+      clipPath: { duration: 0.75, ease: easeOutExpo },
       staggerChildren: 0.1,
       delayChildren: 0.08,
+    },
+  },
+};
+
+const cardVariantsMobile = {
+  hidden: { opacity: 0, y: 28, scale: 0.98 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.7,
+      ease: easeOutExpo,
+      staggerChildren: 0.08,
+      delayChildren: 0.05,
     },
   },
 };
@@ -33,6 +49,15 @@ const itemVariants = {
   },
 };
 
+const itemVariantsMobile = {
+  hidden: { opacity: 0, y: 12 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: easeOutExpo },
+  },
+};
+
 const chipVariants = {
   hidden: { opacity: 0, y: 10, scale: 0.92 },
   visible: {
@@ -40,6 +65,15 @@ const chipVariants = {
     y: 0,
     scale: 1,
     transition: { type: "spring", stiffness: 260, damping: 18 },
+  },
+};
+
+const chipVariantsMobile = {
+  hidden: { opacity: 0, y: 8 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.45, ease: easeOutExpo },
   },
 };
 
@@ -57,6 +91,10 @@ function LinkedInIcon() {
 
 function FounderCard({ founder }) {
   const reduceMotion = useReducedMotion();
+  const rich = useRichMotion();
+  const card = rich ? cardVariantsRich : cardVariantsMobile;
+  const item = rich ? itemVariants : itemVariantsMobile;
+  const chips = rich ? chipVariants : chipVariantsMobile;
 
   if (reduceMotion) {
     return (
@@ -93,7 +131,7 @@ function FounderCard({ founder }) {
     <section className="relative mx-auto max-w-7xl px-5 pb-4 pt-8 sm:px-8 sm:pb-6 sm:pt-10 lg:pt-12">
       <motion.div
         className="group relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/55"
-        variants={cardVariants}
+        variants={card}
         initial="hidden"
         whileInView="visible"
         viewport={viewportOnce}
@@ -103,7 +141,7 @@ function FounderCard({ founder }) {
 
         <div className="relative flex flex-col items-center gap-4 px-4 py-5 sm:grid sm:grid-cols-[140px_1fr] sm:items-stretch sm:gap-0 sm:p-0 lg:grid-cols-[168px_1fr]">
           <motion.div
-            variants={itemVariants}
+            variants={item}
             className="relative h-44 w-44 shrink-0 overflow-hidden rounded-2xl border border-white/10 sm:h-auto sm:min-h-[11.5rem] sm:w-full sm:rounded-none sm:border-0 sm:border-r"
           >
             {founder.image ? (
@@ -125,7 +163,7 @@ function FounderCard({ founder }) {
           </motion.div>
 
           <div className="relative flex flex-col justify-center gap-3 text-center sm:px-5 sm:py-5 sm:text-left lg:px-6">
-            <motion.div variants={itemVariants}>
+            <motion.div variants={item}>
               <p className="text-[10px] font-medium tracking-[0.22em] text-cyan-200/75">
                 {founder.role}
               </p>
@@ -135,14 +173,14 @@ function FounderCard({ founder }) {
             </motion.div>
 
             <motion.p
-              variants={itemVariants}
+              variants={item}
               className="max-w-xl text-sm leading-6 text-slate-400"
             >
               {founder.bio}
             </motion.p>
 
             <motion.div
-              variants={itemVariants}
+              variants={item}
               className="flex flex-col items-center gap-1.5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-4 sm:gap-y-1"
             >
               {founder.phone && (
@@ -187,7 +225,7 @@ function FounderCard({ founder }) {
                 {founder.highlights.map((item, index) => (
                   <motion.li
                     key={item}
-                    variants={chipVariants}
+                    variants={chips}
                     className="flex items-center gap-2.5 text-[11px] font-medium tracking-[0.02em] text-slate-500"
                   >
                     {index > 0 && (

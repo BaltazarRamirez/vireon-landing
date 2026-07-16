@@ -1,8 +1,9 @@
 import { motion, useReducedMotion } from "motion/react";
 import { useLenis } from "lenis/react";
 import { useCallback, useEffect, useRef } from "react";
+import { useRichMotion } from "../hooks/useRichMotion";
 import { useSectionReveal } from "../hooks/useReveal";
-import { viewportOnce } from "../lib/motion";
+import { easeOutExpo, viewportOnce } from "../lib/motion";
 import SectionAnchor from "./SectionAnchor";
 import { SectionRevealIntro } from "./sectionReveal";
 
@@ -37,12 +38,36 @@ const stepVariants = {
   },
 };
 
+const stepVariantsMobile = {
+  hidden: { opacity: 0, y: 24, x: -10 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    x: 0,
+    transition: {
+      duration: 0.65,
+      ease: easeOutExpo,
+      staggerChildren: 0.05,
+      delayChildren: 0.03,
+    },
+  },
+};
+
 const stepItemVariants = {
   hidden: { opacity: 0, y: 12 },
   visible: {
     opacity: 1,
     y: 0,
     transition: { type: "spring", stiffness: 200, damping: 18 },
+  },
+};
+
+const stepItemVariantsMobile = {
+  hidden: { opacity: 0, y: 10 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: easeOutExpo },
   },
 };
 
@@ -55,7 +80,16 @@ const badgeVariants = {
   },
 };
 
-const cardVariants = {
+const badgeVariantsMobile = {
+  hidden: { opacity: 0, scale: 0.85 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.5, ease: easeOutExpo },
+  },
+};
+
+const cardVariantsRich = {
   hidden: {
     opacity: 0,
     scale: 0.97,
@@ -69,14 +103,25 @@ const cardVariants = {
       type: "spring",
       stiffness: 130,
       damping: 16,
-      clipPath: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
+      clipPath: { duration: 0.7, ease: easeOutExpo },
     },
+  },
+};
+
+const cardVariantsMobile = {
+  hidden: { opacity: 0, y: 16, scale: 0.98 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { duration: 0.6, ease: easeOutExpo },
   },
 };
 
 function ProcessSection({ steps, intro }) {
   const { sectionRef, visible } = useSectionReveal();
   const reduceMotion = useReducedMotion();
+  const rich = useRichMotion();
   const listRef = useRef(null);
   const fillRef = useRef(null);
   const lastProgress = useRef(-1);
@@ -173,33 +218,41 @@ function ProcessSection({ steps, intro }) {
             {steps.map((step) => (
               <motion.li
                 key={step.title}
-                variants={stepVariants}
+                variants={rich ? stepVariants : stepVariantsMobile}
                 className="relative flex gap-5 overflow-visible pb-10 last:pb-0 sm:gap-7"
               >
                 <div className="relative z-10 flex shrink-0 flex-col items-center overflow-visible">
                   <motion.span
-                    variants={badgeVariants}
-                    className="animate-timeline-pulse grid h-8 w-8 place-items-center rounded-full border border-cyan-300/50 bg-slate-950 text-[11px] font-semibold tracking-[0.08em] text-cyan-100 shadow-[0_0_20px_rgba(34,211,238,0.2)] sm:h-10 sm:w-10 sm:text-xs"
+                    variants={rich ? badgeVariants : badgeVariantsMobile}
+                    className={`${
+                      rich
+                        ? "animate-timeline-pulse shadow-[0_0_20px_rgba(34,211,238,0.2)]"
+                        : ""
+                    } grid h-8 w-8 place-items-center rounded-full border border-cyan-300/50 bg-slate-950 text-[11px] font-semibold tracking-[0.08em] text-cyan-100 sm:h-10 sm:w-10 sm:text-xs`}
                   >
                     {step.number}
                   </motion.span>
                 </div>
 
                 <motion.div
-                  variants={cardVariants}
+                  variants={rich ? cardVariantsRich : cardVariantsMobile}
                   whileTap={{ scale: 0.985 }}
                   className="group relative min-w-0 flex-1 overflow-hidden rounded-3xl border border-white/10 bg-slate-950/40 px-5 py-5 transition duration-300 sm:px-6 sm:py-6 lg:hover:-translate-y-1 lg:hover:border-cyan-200/35 lg:hover:bg-slate-950/70"
                 >
                   <div className="absolute inset-0 rounded-3xl bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_14rem)] opacity-0 transition duration-300 lg:group-hover:opacity-100" />
                   <div className="relative">
                     <motion.h3
-                      variants={stepItemVariants}
+                      variants={
+                        rich ? stepItemVariants : stepItemVariantsMobile
+                      }
                       className="text-xl font-semibold tracking-[-0.02em] text-white sm:text-2xl"
                     >
                       {step.title}
                     </motion.h3>
                     <motion.p
-                      variants={stepItemVariants}
+                      variants={
+                        rich ? stepItemVariants : stepItemVariantsMobile
+                      }
                       className="mt-2 text-sm leading-7 text-slate-400 sm:text-[15px]"
                     >
                       {step.description}

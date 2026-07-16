@@ -151,12 +151,12 @@ export const introItem = {
 };
 
 export const introItemLight = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 22 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.9,
+      duration: 0.65,
       ease: easeOutExpo,
     },
   },

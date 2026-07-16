@@ -6,8 +6,9 @@ import {
   useSpring,
 } from "motion/react";
 import { useRef } from "react";
+import { useRichMotion } from "../hooks/useRichMotion";
 import { useSectionReveal } from "../hooks/useReveal";
-import { viewportOnce } from "../lib/motion";
+import { easeOutExpo, viewportOnce } from "../lib/motion";
 import SectionAnchor from "./SectionAnchor";
 import { SectionRevealIntro } from "./sectionReveal";
 
@@ -21,7 +22,7 @@ const gridVariants = {
   },
 };
 
-const cardVariants = {
+const cardVariantsRich = {
   hidden: {
     opacity: 0,
     y: 64,
@@ -42,9 +43,24 @@ const cardVariants = {
       stiffness: 130,
       damping: 16,
       mass: 0.9,
-      clipPath: { duration: 0.75, ease: [0.16, 1, 0.3, 1] },
+      clipPath: { duration: 0.75, ease: easeOutExpo },
       staggerChildren: 0.07,
       delayChildren: 0.08,
+    },
+  },
+};
+
+const cardVariantsMobile = {
+  hidden: { opacity: 0, y: 32, scale: 0.97 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.7,
+      ease: easeOutExpo,
+      staggerChildren: 0.06,
+      delayChildren: 0.05,
     },
   },
 };
@@ -58,12 +74,21 @@ const itemVariants = {
   },
 };
 
+const itemVariantsMobile = {
+  hidden: { opacity: 0, y: 12 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: easeOutExpo },
+  },
+};
+
 const chipContainerVariants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.08,
+      staggerChildren: 0.06,
+      delayChildren: 0.05,
     },
   },
 };
@@ -78,7 +103,19 @@ const chipVariants = {
   },
 };
 
-function ServiceCardBody({ service, index, chipHover }) {
+const chipVariantsMobile = {
+  hidden: { opacity: 0, y: 8 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.45, ease: easeOutExpo },
+  },
+};
+
+function ServiceCardBody({ service, index, chipHover, light = false }) {
+  const item = light ? itemVariantsMobile : itemVariants;
+  const chips = light ? chipVariantsMobile : chipVariants;
+
   return (
     <>
       <motion.div
@@ -88,7 +125,7 @@ function ServiceCardBody({ service, index, chipHover }) {
           visible: {
             scaleX: 1,
             opacity: 1,
-            transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
+            transition: { duration: 0.55, ease: easeOutExpo },
           },
         }}
         className="pointer-events-none absolute inset-x-0 top-0 z-10 h-px origin-left bg-linear-to-r from-transparent via-cyan-300/85 to-transparent"
@@ -106,11 +143,12 @@ function ServiceCardBody({ service, index, chipHover }) {
       <motion.span
         aria-hidden="true"
         variants={{
-          hidden: { opacity: 0, x: 16 },
+          hidden: { opacity: 0, x: light ? 0 : 16, y: light ? 10 : 0 },
           visible: {
             opacity: 1,
             x: 0,
-            transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] },
+            y: 0,
+            transition: { duration: 0.45, ease: easeOutExpo },
           },
         }}
         className="pointer-events-none absolute -right-1 top-0 text-[5.75rem] font-semibold leading-none tracking-[-0.08em] text-white/[0.045] sm:text-[7rem]"
@@ -119,7 +157,7 @@ function ServiceCardBody({ service, index, chipHover }) {
       </motion.span>
 
       <motion.div
-        variants={itemVariants}
+        variants={item}
         className="relative z-10 flex items-center gap-3"
       >
         <span className="grid h-10 w-10 place-items-center rounded-full border border-cyan-200/35 bg-cyan-300/12 text-[11px] font-semibold tracking-[0.14em] text-cyan-100">
@@ -132,7 +170,7 @@ function ServiceCardBody({ service, index, chipHover }) {
       </motion.div>
 
       <motion.div
-        variants={itemVariants}
+        variants={item}
         className="relative z-10 mt-5 flex flex-1 flex-col"
       >
         <h3 className="text-xl font-semibold tracking-[-0.03em] text-white sm:text-[1.4rem]">
@@ -150,7 +188,7 @@ function ServiceCardBody({ service, index, chipHover }) {
           {service.points.map((point) => (
             <motion.li
               key={point}
-              variants={chipVariants}
+              variants={chips}
               whileHover={
                 chipHover
                   ? {
@@ -172,7 +210,7 @@ function ServiceCardBody({ service, index, chipHover }) {
   );
 }
 
-function ServiceCard({ service, index }) {
+function DesktopServiceCard({ service, index }) {
   const cardRef = useRef(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -193,9 +231,8 @@ function ServiceCard({ service, index }) {
   return (
     <motion.article
       ref={cardRef}
-      variants={cardVariants}
+      variants={cardVariantsRich}
       onMouseMove={handleMouseMove}
-      whileTap={{ scale: 0.985 }}
       whileHover={{
         y: -10,
         scale: 1.015,
@@ -214,9 +251,27 @@ function ServiceCard({ service, index }) {
   );
 }
 
+function MobileServiceCard({ service, index }) {
+  return (
+    <motion.article
+      variants={cardVariantsMobile}
+      whileTap={{ scale: 0.985 }}
+      className="group relative flex h-full min-h-[16rem] flex-col overflow-hidden rounded-[1.35rem] border border-white/10 bg-slate-950/65 p-5 shadow-[0_16px_48px_rgba(2,6,23,0.35)] sm:min-h-[17.25rem] sm:rounded-3xl sm:p-6"
+    >
+      <ServiceCardBody
+        service={service}
+        index={index}
+        chipHover={false}
+        light
+      />
+    </motion.article>
+  );
+}
+
 function ServicesSection({ services, intro }) {
   const { sectionRef, visible } = useSectionReveal();
   const reduceMotion = useReducedMotion();
+  const rich = useRichMotion();
 
   if (reduceMotion) {
     return (
@@ -263,19 +318,27 @@ function ServicesSection({ services, intro }) {
 
       <motion.div
         className="mt-8 grid gap-3 sm:mt-12 sm:grid-cols-2 sm:gap-4"
-        style={{ perspective: 1400 }}
+        style={rich ? { perspective: 1400 } : undefined}
         variants={gridVariants}
         initial="hidden"
         whileInView="visible"
         viewport={viewportOnce}
       >
-        {services.map((service, index) => (
-          <ServiceCard
-            key={service.title}
-            service={service}
-            index={index}
-          />
-        ))}
+        {services.map((service, index) =>
+          rich ? (
+            <DesktopServiceCard
+              key={service.title}
+              service={service}
+              index={index}
+            />
+          ) : (
+            <MobileServiceCard
+              key={service.title}
+              service={service}
+              index={index}
+            />
+          ),
+        )}
       </motion.div>
     </section>
   );

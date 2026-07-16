@@ -1,5 +1,6 @@
 import { motion, useReducedMotion } from "motion/react";
-import { viewportOnce } from "../lib/motion";
+import { useRichMotion } from "../hooks/useRichMotion";
+import { easeOutExpo, viewportOnce } from "../lib/motion";
 import SectionAnchor from "./SectionAnchor";
 import { WHATSAPP_URL } from "./WhatsAppFloat";
 
@@ -29,7 +30,7 @@ const contactChannels = [
   },
 ];
 
-const panelVariants = {
+const panelVariantsRich = {
   hidden: {
     opacity: 0,
     y: 48,
@@ -45,9 +46,24 @@ const panelVariants = {
       type: "spring",
       stiffness: 120,
       damping: 16,
-      clipPath: { duration: 0.85, ease: [0.16, 1, 0.3, 1] },
+      clipPath: { duration: 0.85, ease: easeOutExpo },
       staggerChildren: 0.08,
       delayChildren: 0.12,
+    },
+  },
+};
+
+const panelVariantsMobile = {
+  hidden: { opacity: 0, y: 28, scale: 0.98 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.7,
+      ease: easeOutExpo,
+      staggerChildren: 0.08,
+      delayChildren: 0.08,
     },
   },
 };
@@ -58,6 +74,15 @@ const copyVariants = {
     opacity: 1,
     y: 0,
     transition: { type: "spring", stiffness: 180, damping: 18 },
+  },
+};
+
+const copyVariantsMobile = {
+  hidden: { opacity: 0, y: 14 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.55, ease: easeOutExpo },
   },
 };
 
@@ -81,8 +106,19 @@ const channelVariants = {
   },
 };
 
+const channelVariantsMobile = {
+  hidden: { opacity: 0, x: 16, y: 8 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    y: 0,
+    transition: { duration: 0.55, ease: easeOutExpo },
+  },
+};
+
 function ContactSection() {
   const reduceMotion = useReducedMotion();
+  const rich = useRichMotion();
 
   if (reduceMotion) {
     return (
@@ -126,7 +162,7 @@ function ContactSection() {
       <SectionAnchor />
       <motion.div
         className="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-slate-950/70 shadow-[0_28px_90px_rgba(2,6,23,0.5)] sm:rounded-[2rem]"
-        variants={panelVariants}
+        variants={rich ? panelVariantsRich : panelVariantsMobile}
         initial="hidden"
         whileInView="visible"
         viewport={viewportOnce}
@@ -138,27 +174,27 @@ function ContactSection() {
         <div className="relative grid lg:grid-cols-[1.15fr_0.85fr]">
           <div className="flex flex-col justify-center border-b border-white/10 px-5 py-9 sm:px-8 sm:py-11 lg:border-r lg:border-b-0 lg:px-12 lg:py-14">
             <motion.p
-              variants={copyVariants}
+              variants={rich ? copyVariants : copyVariantsMobile}
               className="text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90"
             >
               Empecemos
             </motion.p>
 
             <motion.h2
-              variants={copyVariants}
+              variants={rich ? copyVariants : copyVariantsMobile}
               className="mt-4 max-w-xl text-3xl font-semibold leading-[1.12] tracking-[-0.03em] text-white sm:mt-5 sm:text-4xl md:text-[2.65rem]"
             >
               Contanos qué querés ordenar y armamos el sistema.
             </motion.h2>
 
             <motion.div
-              variants={copyVariants}
+              variants={rich ? copyVariants : copyVariantsMobile}
               className="mt-6 h-px w-28 origin-left bg-linear-to-r from-cyan-300/80 via-cyan-300/40 to-transparent"
               aria-hidden="true"
             />
 
             <motion.p
-              variants={copyVariants}
+              variants={rich ? copyVariants : copyVariantsMobile}
               className="mt-5 max-w-lg text-base leading-7 text-slate-400 sm:text-[17px] sm:leading-8"
             >
               Contanos qué vendés, qué proceso necesitás controlar y qué te
@@ -166,7 +202,7 @@ function ContactSection() {
             </motion.p>
 
             <motion.ul
-              variants={copyVariants}
+              variants={rich ? copyVariants : copyVariantsMobile}
               className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-[12px] font-medium tracking-[0.04em] text-slate-500"
             >
               {["Diagnóstico claro", "Propuesta a medida", "Arranque ágil"].map(
@@ -190,8 +226,8 @@ function ContactSection() {
                 href={channel.href}
                 target={channel.external ? "_blank" : undefined}
                 rel={channel.external ? "noreferrer" : undefined}
-                variants={channelVariants}
-                whileHover={{ y: -3, scale: 1.015 }}
+                variants={rich ? channelVariants : channelVariantsMobile}
+                whileHover={rich ? { y: -3, scale: 1.015 } : undefined}
                 whileTap={{ scale: 0.98 }}
                 className={`group relative overflow-hidden rounded-2xl border px-4 py-4 sm:px-5 sm:py-5 ${
                   channel.accent
