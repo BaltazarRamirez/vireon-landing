@@ -1,3 +1,4 @@
+import { motion, useReducedMotion } from "motion/react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import founderPhoto from "../assets/founder.jpg";
@@ -116,6 +117,7 @@ const tools = [
 
 function LandingPage({ onSectionNav }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const reduceMotion = useReducedMotion();
 
   return (
     <>
@@ -130,46 +132,117 @@ function LandingPage({ onSectionNav }) {
         className="relative mx-auto flex min-h-[88vh] max-w-7xl scroll-mt-32 flex-col items-center justify-center px-5 pb-20 pt-36 text-center sm:px-8 sm:pb-24 sm:pt-40 lg:scroll-mt-36"
       >
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="absolute top-[18%] left-1/2 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-cyan-400/10 blur-[100px]" />
-          <div className="absolute top-[30%] left-[20%] h-64 w-64 rounded-full bg-blue-600/15 blur-[90px]" />
-          <div className="absolute top-[35%] right-[18%] h-56 w-56 rounded-full bg-sky-400/10 blur-[80px]" />
+          <div className="absolute top-[18%] left-1/2 h-64 w-64 -translate-x-1/2 rounded-full bg-cyan-400/12 blur-[60px] sm:h-[28rem] sm:w-[28rem] sm:blur-[100px]" />
+          <div className="absolute top-[30%] left-[20%] hidden h-64 w-64 rounded-full bg-blue-600/15 blur-[90px] lg:block" />
+          <div className="absolute top-[35%] right-[18%] hidden h-56 w-56 rounded-full bg-sky-400/10 blur-[80px] lg:block" />
         </div>
 
         <div className="relative z-10 flex w-full max-w-3xl flex-col items-center">
           <HeroVisual />
 
-          <p className="animate-rise text-xs font-medium uppercase tracking-[0.34em] text-cyan-200/80 sm:text-sm">
+          <motion.p
+            className="text-xs font-medium uppercase tracking-[0.34em] text-cyan-200/80 sm:text-sm"
+            initial={reduceMotion ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15, type: "spring", stiffness: 160, damping: 18 }}
+          >
             Sistemas a medida
-          </p>
+          </motion.p>
 
-          <h1 className="animate-rise delay-100 mt-5 text-4xl font-semibold leading-[1.08] tracking-[-0.04em] text-white sm:text-5xl lg:text-6xl">
-            Software que ordena y potencia tu operación.
-          </h1>
+          {reduceMotion ? (
+            <h1 className="mt-5 text-4xl font-semibold leading-[1.08] tracking-[-0.04em] text-white sm:text-5xl lg:text-6xl">
+              Software que ordena y potencia tu operación.
+            </h1>
+          ) : (
+            <motion.h1
+              className="mt-5 text-4xl font-semibold leading-[1.08] tracking-[-0.04em] text-white sm:text-5xl lg:text-6xl"
+              style={{ perspective: 800 }}
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: {},
+                visible: {
+                  transition: {
+                    staggerChildren: 0.045,
+                    delayChildren: 0.22,
+                  },
+                },
+              }}
+            >
+              {"Software que ordena y potencia tu operación."
+                .split(" ")
+                .map((word, index) => (
+                  <motion.span
+                    key={`${word}-${index}`}
+                    className="mr-[0.28em] inline-block"
+                    style={{ transformOrigin: "50% 100%" }}
+                    variants={{
+                      hidden: {
+                        opacity: 0,
+                        y: 28,
+                        rotateX: 40,
+                      },
+                      visible: {
+                        opacity: 1,
+                        y: 0,
+                        rotateX: 0,
+                        transition: {
+                          type: "spring",
+                          stiffness: 170,
+                          damping: 16,
+                        },
+                      },
+                    }}
+                  >
+                    {word}
+                  </motion.span>
+                ))}
+            </motion.h1>
+          )}
 
-          <p className="animate-rise delay-200 mt-6 max-w-xl text-base leading-7 text-slate-400 sm:text-lg sm:leading-8">
+          <motion.p
+            className="mt-6 max-w-xl text-base leading-7 text-slate-400 sm:text-lg sm:leading-8"
+            initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.55, duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
+          >
             Diseñamos plataformas claras para ventas, stock y automatización,
             pensadas para que tu equipo trabaje mejor desde el primer día.
-          </p>
+          </motion.p>
 
-          <div className="animate-rise delay-300 mt-9 flex w-full max-w-sm flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center">
-            <Link
-              to="/proyectos"
-              className="group inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-center text-sm font-semibold text-slate-950 transition duration-300 hover:-translate-y-0.5 hover:bg-cyan-200"
-            >
-              Ver proyectos
-              <span className="ml-2 inline-block transition duration-300 group-hover:translate-x-1">
-                &rarr;
-              </span>
-            </Link>
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 py-3 text-center text-sm font-semibold text-slate-200 transition duration-300 hover:-translate-y-0.5 hover:border-cyan-200/40 hover:text-white"
-            >
-              Hablar por WhatsApp
-            </a>
-          </div>
+          <motion.div
+            className="animate-rise delay-300 mt-9 flex w-full max-w-sm flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center"
+            initial={reduceMotion ? false : { opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              delay: 0.45,
+              type: "spring",
+              stiffness: 160,
+              damping: 18,
+            }}
+          >
+            <motion.div whileTap={reduceMotion ? undefined : { scale: 0.97 }}>
+              <Link
+                to="/proyectos"
+                className="group inline-flex w-full items-center justify-center rounded-full bg-white px-6 py-3 text-center text-sm font-semibold text-slate-950 transition duration-300 hover:-translate-y-0.5 hover:bg-cyan-200"
+              >
+                Ver proyectos
+                <span className="ml-2 inline-block transition duration-300 group-hover:translate-x-1">
+                  &rarr;
+                </span>
+              </Link>
+            </motion.div>
+            <motion.div whileTap={reduceMotion ? undefined : { scale: 0.97 }}>
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex w-full items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 py-3 text-center text-sm font-semibold text-slate-200 transition duration-300 hover:-translate-y-0.5 hover:border-cyan-200/40 hover:text-white"
+              >
+                Hablar por WhatsApp
+              </a>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 

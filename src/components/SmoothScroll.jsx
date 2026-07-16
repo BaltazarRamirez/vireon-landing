@@ -2,11 +2,22 @@ import { ReactLenis } from "lenis/react";
 import { useEffect, useRef } from "react";
 import "lenis/dist/lenis.css";
 
+function shouldUseLenis() {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // Touch devices already scroll natively; skipping Lenis saves a permanent RAF.
+  const coarse = window.matchMedia("(pointer: coarse)").matches;
+  const narrow = window.matchMedia("(max-width: 1023px)").matches;
+
+  return !reduced && !coarse && !narrow;
+}
+
 function SmoothScroll({ children, paused = false, lenisRef }) {
   const internalRef = useRef(null);
-  const reducedMotion =
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const enabled = shouldUseLenis();
 
   useEffect(() => {
     if (!lenisRef) {
@@ -58,7 +69,7 @@ function SmoothScroll({ children, paused = false, lenisRef }) {
     };
   }, [paused]);
 
-  if (reducedMotion) {
+  if (!enabled) {
     return children;
   }
 

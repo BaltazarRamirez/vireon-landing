@@ -1,7 +1,7 @@
-import llorensLogo from "../assets/client-llorens.png";
-import camposDeTrigoLogo from "../assets/campos-de-trigo.png";
-import molinosLogo from "../assets/client-molinos.png";
-import totemLogo from "../assets/client-totem.png";
+import llorensLogo from "../assets/client-llorens.webp";
+import camposDeTrigoLogo from "../assets/campos-de-trigo.webp";
+import molinosLogo from "../assets/client-molinos.webp";
+import totemLogo from "../assets/client-totem.webp";
 
 export const clients = [
   {

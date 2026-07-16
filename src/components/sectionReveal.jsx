@@ -1,44 +1,70 @@
-export function SectionRevealIntro({
-  id,
-  eyebrow,
-  title,
-  description,
-  visible,
-}) {
+import { motion, useReducedMotion } from "motion/react";
+import {
+  introContainer,
+  introItem,
+  introRule,
+  viewportOnce,
+} from "../lib/motion";
+
+export function SectionRevealIntro({ id, eyebrow, title, description }) {
+  const reduceMotion = useReducedMotion();
+
+  if (reduceMotion) {
+    return (
+      <div
+        id={id || undefined}
+        className="max-w-2xl scroll-mt-36 sm:scroll-mt-40"
+      >
+        <p className="text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90">
+          {eyebrow}
+        </p>
+        <h2 className="mt-3 text-3xl font-semibold leading-[1.15] tracking-[-0.03em] text-white sm:mt-4 sm:text-4xl md:text-[2.75rem]">
+          {title}
+        </h2>
+        <div
+          className="mt-5 h-px w-24 origin-left bg-linear-to-r from-cyan-300/70 to-transparent sm:mt-6"
+          aria-hidden="true"
+        />
+        <p className="mt-4 max-w-xl text-base leading-7 text-slate-400 sm:mt-5 sm:text-[17px] sm:leading-8">
+          {description}
+        </p>
+      </div>
+    );
+  }
+
   return (
-    <div id={id || undefined} className="max-w-2xl scroll-mt-36 sm:scroll-mt-40">
-      <p
-        className={`reveal-copy text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90 ${
-          visible ? "is-revealed" : ""
-        }`}
-        style={{ transitionDelay: visible ? "60ms" : "0ms" }}
+    <motion.div
+      id={id || undefined}
+      className="max-w-2xl scroll-mt-36 sm:scroll-mt-40"
+      variants={introContainer}
+      initial="hidden"
+      whileInView="visible"
+      viewport={viewportOnce}
+    >
+      <motion.p
+        variants={introItem}
+        className="text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90"
       >
         {eyebrow}
-      </p>
-      <h2
-        className={`reveal-title mt-3 text-3xl font-semibold leading-[1.15] tracking-[-0.03em] text-white sm:mt-4 sm:text-4xl md:text-[2.75rem] ${
-          visible ? "is-revealed" : ""
-        }`}
-        style={{ transitionDelay: visible ? "180ms" : "0ms" }}
+      </motion.p>
+      <motion.h2
+        variants={introItem}
+        className="mt-3 text-3xl font-semibold leading-[1.15] tracking-[-0.03em] text-white sm:mt-4 sm:text-4xl md:text-[2.75rem]"
       >
         {title}
-      </h2>
-      <div
-        className={`reveal-rule mt-5 h-px w-24 origin-left bg-linear-to-r from-cyan-300/70 to-transparent sm:mt-6 ${
-          visible ? "is-revealed" : ""
-        }`}
-        style={{ transitionDelay: visible ? "320ms" : "0ms" }}
+      </motion.h2>
+      <motion.div
+        variants={introRule}
+        className="mt-5 h-px w-24 origin-left bg-linear-to-r from-cyan-300/70 to-transparent sm:mt-6"
         aria-hidden="true"
       />
-      <p
-        className={`reveal-copy mt-4 max-w-xl text-base leading-7 text-slate-400 sm:mt-5 sm:text-[17px] sm:leading-8 ${
-          visible ? "is-revealed" : ""
-        }`}
-        style={{ transitionDelay: visible ? "420ms" : "0ms" }}
+      <motion.p
+        variants={introItem}
+        className="mt-4 max-w-xl text-base leading-7 text-slate-400 sm:mt-5 sm:text-[17px] sm:leading-8"
       >
         {description}
-      </p>
-    </div>
+      </motion.p>
+    </motion.div>
   );
 }
 
@@ -46,7 +72,7 @@ export function RevealItem({
   visible,
   index = 0,
   baseDelay = 0,
-  step = 140,
+  step = 70,
   children,
   className = "",
   setRef,

@@ -9,8 +9,9 @@ function prefersReducedMotion() {
 
 export function useSectionReveal(options = {}) {
   const {
-    threshold = 0.12,
-    rootMargin = "0px 0px -8% 0px",
+    // Reveal a bit before the section fully enters the viewport.
+    threshold = 0.05,
+    rootMargin = "0px 0px 18% 0px",
   } = options;
   const sectionRef = useRef(null);
   const [visible, setVisible] = useState(() => prefersReducedMotion());
@@ -45,8 +46,8 @@ export function useSectionReveal(options = {}) {
 
 export function useItemReveal(itemCount, options = {}) {
   const {
-    threshold = 0.18,
-    rootMargin = "0px 0px -10% 0px",
+    threshold = 0.08,
+    rootMargin = "0px 0px 16% 0px",
   } = options;
   const itemRefs = useRef([]);
   const [visibleItems, setVisibleItems] = useState(() =>

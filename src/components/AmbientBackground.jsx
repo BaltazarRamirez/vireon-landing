@@ -6,11 +6,11 @@ function AmbientBackground() {
     >
       <div className="ambient-base absolute inset-0" />
       <div className="ambient-horizon absolute inset-x-0" />
-      <div className="ambient-perspective absolute inset-x-0 bottom-0">
+      <div className="ambient-perspective absolute inset-x-0 bottom-0 hidden lg:block">
         <div className="ambient-floor" />
       </div>
-      <div className="ambient-dust absolute inset-0">
-        {Array.from({ length: 18 }, (_, index) => (
+      <div className="ambient-dust absolute inset-0 hidden lg:block">
+        {Array.from({ length: 10 }, (_, index) => (
           <span
             key={index}
             className="ambient-mote absolute rounded-full bg-white/70"
