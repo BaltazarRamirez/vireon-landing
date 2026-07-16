@@ -5,29 +5,26 @@ function AmbientBackground() {
       aria-hidden="true"
     >
       <div className="ambient-base absolute inset-0" />
-
-      <div className="ambient-beam ambient-beam-1 absolute" />
-      <div className="ambient-beam ambient-beam-2 absolute" />
-      <div className="ambient-beam ambient-beam-3 absolute" />
-
-      <div className="ambient-stars absolute inset-0">
-        {Array.from({ length: 28 }, (_, index) => (
+      <div className="ambient-horizon absolute inset-x-0" />
+      <div className="ambient-perspective absolute inset-x-0 bottom-0">
+        <div className="ambient-floor" />
+      </div>
+      <div className="ambient-dust absolute inset-0">
+        {Array.from({ length: 18 }, (_, index) => (
           <span
             key={index}
-            className="ambient-star absolute rounded-full bg-cyan-100/80"
+            className="ambient-mote absolute rounded-full bg-white/70"
             style={{
-              top: `${(index * 37) % 100}%`,
-              left: `${(index * 53) % 100}%`,
-              width: `${1 + (index % 3)}px`,
-              height: `${1 + (index % 3)}px`,
-              animationDelay: `${(index % 9) * 0.45}s`,
-              animationDuration: `${4.5 + (index % 5)}s`,
+              left: `${6 + ((index * 17) % 88)}%`,
+              top: `${10 + ((index * 23) % 70)}%`,
+              width: `${1 + (index % 2)}px`,
+              height: `${1 + (index % 2)}px`,
+              animationDelay: `${index * 0.7}s`,
+              animationDuration: `${10 + (index % 6)}s`,
             }}
           />
         ))}
       </div>
-
-      <div className="ambient-scan absolute inset-x-0" />
       <div className="ambient-vignette absolute inset-0" />
     </div>
   );

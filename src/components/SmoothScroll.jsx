@@ -41,6 +41,23 @@ function SmoothScroll({ children, paused = false, lenisRef }) {
     return undefined;
   }, [paused]);
 
+  useEffect(() => {
+    const onStop = () => internalRef.current?.lenis?.stop();
+    const onStart = () => {
+      if (!paused) {
+        internalRef.current?.lenis?.start();
+      }
+    };
+
+    window.addEventListener("lenis:stop", onStop);
+    window.addEventListener("lenis:start", onStart);
+
+    return () => {
+      window.removeEventListener("lenis:stop", onStop);
+      window.removeEventListener("lenis:start", onStart);
+    };
+  }, [paused]);
+
   if (reducedMotion) {
     return children;
   }
@@ -56,7 +73,8 @@ function SmoothScroll({ children, paused = false, lenisRef }) {
         syncTouch: false,
         touchMultiplier: 1.2,
         wheelMultiplier: 0.9,
-        anchors: true,
+        anchors: false,
+        allowNestedScroll: true,
       }}
     >
       {children}

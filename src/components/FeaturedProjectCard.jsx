@@ -7,15 +7,15 @@ function FeaturedProjectCard({ project, onOpen }) {
         <button
           type="button"
           onClick={onOpen}
-          className="relative block h-40 w-full overflow-hidden border-b border-white/10 text-left lg:h-auto lg:min-h-0 lg:border-b-0 lg:border-r"
+          className="relative flex h-40 w-full items-center justify-center overflow-hidden border-b border-white/10 bg-slate-950/80 text-left lg:h-auto lg:min-h-[11rem] lg:border-b-0 lg:border-r"
           aria-label={`Explorar proyecto ${project.name}`}
         >
           <img
             src={project.image}
             alt={project.name}
-            className="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-105"
+            className="relative z-10 max-h-24 w-auto max-w-[75%] object-contain p-4 transition duration-700 ease-out group-hover:scale-105 sm:max-h-28 lg:max-h-32"
           />
-          <div className="absolute inset-0 bg-linear-to-t from-slate-950/70 via-transparent to-transparent lg:bg-linear-to-r lg:from-transparent lg:to-slate-950/25" />
+          <div className="absolute inset-0 bg-linear-to-t from-slate-950/40 via-transparent to-transparent lg:bg-linear-to-r lg:from-transparent lg:to-slate-950/20" />
         </button>
 
         <div className="relative flex flex-col justify-center gap-4 p-5 sm:px-6 sm:py-5">

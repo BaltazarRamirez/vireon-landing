@@ -139,107 +139,97 @@ a {
 
 .ambient-base {
   background:
-    linear-gradient(165deg, #020617 0%, #06101f 48%, #020617 100%);
+    linear-gradient(180deg, #020617 0%, #030b18 55%, #020617 100%);
 }
 
-.ambient-beam {
-  top: -20%;
-  width: 28vw;
-  max-width: 22rem;
-  height: 140%;
-  background: linear-gradient(
-    180deg,
-    transparent 0%,
-    rgba(34, 211, 238, 0.07) 35%,
-    rgba(59, 130, 246, 0.08) 55%,
-    transparent 100%
+.ambient-horizon {
+  top: 42%;
+  height: 28%;
+  background: radial-gradient(
+    ellipse 80% 55% at 50% 50%,
+    rgba(34, 211, 238, 0.14),
+    rgba(37, 99, 235, 0.06) 45%,
+    transparent 72%
   );
-  filter: blur(28px);
+  filter: blur(18px);
+  animation: ambient-horizon-pulse 10s ease-in-out infinite;
+}
+
+.ambient-perspective {
+  height: 58%;
+  perspective: 700px;
+  transform-style: preserve-3d;
+  mask-image: linear-gradient(180deg, transparent, black 28%, black 78%, transparent);
+}
+
+.ambient-floor {
+  height: 140%;
+  width: 160%;
+  margin-left: -30%;
+  transform: rotateX(62deg) translateY(-8%);
   transform-origin: center top;
-  will-change: transform, opacity;
+  background-image:
+    linear-gradient(rgba(34, 211, 238, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(96, 165, 250, 0.1) 1px, transparent 1px);
+  background-size: 56px 56px;
+  animation: ambient-floor-run 18s linear infinite;
+  opacity: 0.55;
 }
 
-.ambient-beam-1 {
-  left: 8%;
-  animation: ambient-beam-sweep 18s ease-in-out infinite;
-}
-
-.ambient-beam-2 {
-  left: 42%;
-  width: 18vw;
-  opacity: 0.7;
-  animation: ambient-beam-sweep 24s ease-in-out infinite reverse;
-  animation-delay: -6s;
-}
-
-.ambient-beam-3 {
-  right: 6%;
-  left: auto;
-  width: 22vw;
-  animation: ambient-beam-sweep 21s ease-in-out infinite;
-  animation-delay: -11s;
-}
-
-.ambient-star {
+.ambient-mote {
   opacity: 0;
-  animation-name: ambient-twinkle;
+  animation-name: ambient-mote-float;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
 }
 
-.ambient-scan {
-  top: -20%;
-  height: 18%;
-  background: linear-gradient(
-    180deg,
-    transparent,
-    rgba(34, 211, 238, 0.06),
-    transparent
-  );
-  animation: ambient-scan 14s linear infinite;
-}
-
 .ambient-vignette {
-  background: radial-gradient(
-    ellipse at center,
-    transparent 30%,
-    rgba(2, 6, 23, 0.78) 100%
-  );
+  background:
+    radial-gradient(ellipse at center, transparent 42%, rgba(2, 6, 23, 0.8) 100%),
+    linear-gradient(180deg, rgba(2, 6, 23, 0.35), transparent 22%, transparent 70%, rgba(2, 6, 23, 0.55));
 }
 
-@keyframes ambient-beam-sweep {
+@keyframes ambient-horizon-pulse {
   0%,
   100% {
-    transform: translate3d(0, 0, 0) rotate(8deg);
-    opacity: 0.35;
+    opacity: 0.55;
+    transform: scaleX(1);
   }
 
   50% {
-    transform: translate3d(8%, 4%, 0) rotate(14deg);
-    opacity: 0.7;
+    opacity: 0.95;
+    transform: scaleX(1.08);
   }
 }
 
-@keyframes ambient-twinkle {
-  0%,
-  100% {
-    opacity: 0.15;
-    transform: scale(0.8);
-  }
-
-  50% {
-    opacity: 0.85;
-    transform: scale(1.25);
-  }
-}
-
-@keyframes ambient-scan {
+@keyframes ambient-floor-run {
   from {
-    transform: translateY(0);
+    background-position: 0 0;
   }
 
   to {
-    transform: translateY(620%);
+    background-position: 0 56px;
+  }
+}
+
+@keyframes ambient-mote-float {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+
+  20% {
+    opacity: 0.55;
+  }
+
+  80% {
+    opacity: 0.2;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate3d(0, -28px, 0);
   }
 }
 
@@ -426,13 +416,13 @@ a {
     transform: none !important;
   }
 
-  .ambient-beam,
-  .ambient-star,
-  .ambient-scan {
+  .ambient-horizon,
+  .ambient-floor,
+  .ambient-mote {
     animation: none !important;
   }
 
-  .ambient-star {
-    opacity: 0.35 !important;
+  .ambient-mote {
+    opacity: 0.25 !important;
   }
 }

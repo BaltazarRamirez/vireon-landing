@@ -1,4 +1,4 @@
-import llorensLogo from "../assets/logotipo_llorens_group_retocado_pro.png";
+import llorensLogo from "../assets/client-llorens.png";
 import llorensTurnos from "../assets/llorens-captura-01.png";
 import llorensDetalleTurno from "../assets/llorens-captura-02.png";
 import llorensStock from "../assets/llorens-captura-03.png";
@@ -7,8 +7,55 @@ import camposDeTrigoLogo from "../assets/campos-de-trigo.png";
 import camposPedidos from "../assets/campos-captura-01.png";
 import camposProductos from "../assets/campos-captura-02.png";
 import camposPreciosEspeciales from "../assets/campos-captura-03.png";
-import molinosLogo from "../assets/molinos-combustibles.png";
-import totemLogo from "../assets/totem-logo.png";
+import molinosLogo from "../assets/client-molinos.png";
+import totemLogo from "../assets/client-totem.png";
+import hotelusLogo from "../assets/hotelus-logo.png";
+
+export const flagshipProject = {
+  id: "hotelus",
+  name: "Hotelus",
+  partnership: "de Vireon",
+  badge: "Producto propio",
+  category: "Plataforma hotelera",
+  tags: [
+    "Multihotel",
+    "Cadenas",
+    "Reservas",
+    "Operación",
+    "Ocupación",
+    "Multi alojamientos",
+  ],
+  highlights: [
+    "Un hotel o toda una cadena",
+    "Multi alojamientos",
+    "Operación centralizada",
+    "Control en tiempo real",
+  ],
+  tagline:
+    "Plataforma para gestionar hoteles y cadenas de alojamientos desde un solo lugar.",
+  description:
+    "Pensada para hoteles, grupos y cadenas que necesitan operar uno o muchos alojamientos. Centraliza reservas, habitaciones, huéspedes, disponibilidad, limpieza, ocupación y la operatoria diaria de cada propiedad.",
+  fullDescription:
+    "Hotelus es la plataforma propia de Vireon para gestión hotelera multipropiedad. Está diseñada para hoteles independientes, grupos y cadenas que administran uno o varios alojamientos y necesitan una herramienta única para controlar la operación. Desde un mismo sistema se gestionan reservas, habitaciones, huéspedes, disponibilidad, ingresos, salidas, limpieza, ocupación y tareas del personal en cada establecimiento, con reportes y visión consolidada a nivel cadena. El objetivo es que cualquier operación hotelera —de un boutique a una red completa— ordene su día a día, reduzca errores y gane control real sobre el negocio.",
+  image: hotelusLogo,
+  gallery: [],
+  features: [
+    "Gestión multi hotel y multi alojamiento",
+    "Apto para hoteles independientes y cadenas",
+    "Reservas por propiedad y a nivel grupo",
+    "Control de habitaciones y disponibilidad",
+    "Registro y seguimiento de huéspedes",
+    "Ingresos, salidas y estados de limpieza",
+    "Ocupación por hotel y consolidada",
+    "Organización de tareas del personal",
+    "Visión global de toda la operación",
+    "Base lista para sumar nuevas propiedades",
+  ],
+  challenge:
+    "Cuando hay varios alojamientos o una operación en crecimiento, las herramientas sueltas por hotel dificultan el control, generan errores y no permiten ver el negocio completo.",
+  solution:
+    "Hotelus unifica la operación: cada propiedad trabaja con claridad y el grupo obtiene control total sobre reservas, ocupación, limpieza y el día a día de todos sus alojamientos.",
+};
 
 export const featuredProjects = [
   {

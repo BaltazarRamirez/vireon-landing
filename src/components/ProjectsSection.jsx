@@ -21,7 +21,7 @@ function ProjectsSection({
   return (
     <section
       ref={sectionRef}
-      className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24"
+      className="relative mx-auto max-w-7xl px-5 pt-8 pb-10 sm:px-8 sm:pt-10 sm:pb-12 lg:pb-14"
     >
       <SectionRevealIntro {...intro} visible={visible} />
 

@@ -17,10 +17,12 @@ function ProjectModal({ project, onClose }) {
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     window.addEventListener("keydown", handleKeyDown);
+    window.dispatchEvent(new CustomEvent("lenis:stop"));
 
     return () => {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", handleKeyDown);
+      window.dispatchEvent(new CustomEvent("lenis:start"));
     };
   }, [project, onClose]);
 
@@ -28,8 +30,9 @@ function ProjectModal({ project, onClose }) {
     return null;
   }
 
-  const hasMultipleImages = project.gallery.length > 1;
-  const currentImage = project.gallery[activeImage];
+  const hasGallery = project.gallery?.length > 0;
+  const hasMultipleImages = hasGallery && project.gallery.length > 1;
+  const currentImage = hasGallery ? project.gallery[activeImage] : null;
 
   const showPreviousImage = () => {
     setActiveImage((index) =>
@@ -48,6 +51,7 @@ function ProjectModal({ project, onClose }) {
       className="animate-modal-backdrop fixed inset-0 z-100 flex items-end justify-center bg-slate-950/80 p-0 backdrop-blur-md sm:items-center sm:p-5"
       onClick={onClose}
       role="presentation"
+      data-lenis-prevent
     >
       <button
         type="button"
@@ -59,21 +63,41 @@ function ProjectModal({ project, onClose }) {
       </button>
 
       <div
-        className="animate-modal-panel relative mt-16 max-h-[calc(94vh-4rem)] w-full max-w-6xl overflow-hidden rounded-t-4xl border border-white/10 bg-slate-950 shadow-[0_40px_120px_rgba(2,6,23,0.75)] sm:mt-0 sm:max-h-[94vh] sm:rounded-4xl"
+        className="animate-modal-panel relative mt-16 flex max-h-[calc(94vh-4rem)] w-full max-w-6xl flex-col overflow-hidden rounded-t-4xl border border-white/10 bg-slate-950 shadow-[0_40px_120px_rgba(2,6,23,0.75)] sm:mt-0 sm:max-h-[94vh] sm:rounded-4xl"
         onClick={(event) => event.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-labelledby="project-modal-title"
+        data-lenis-prevent
       >
-        <div className="max-h-[calc(94vh-4rem)] overflow-y-auto sm:max-h-[94vh]">
-          <div className="relative h-56 overflow-hidden bg-slate-900 sm:h-72">
-            <img
-              src={currentImage.src}
-              alt={currentImage.alt}
-              className="h-full w-full object-contain"
-            />
+        <div
+          className="min-h-0 flex-1 overflow-y-auto overscroll-contain [-webkit-overflow-scrolling:touch]"
+          data-lenis-prevent
+        >
+          <div className="relative flex h-56 shrink-0 items-center justify-center overflow-hidden bg-slate-900 sm:h-72">
+            {currentImage ? (
+              <img
+                src={currentImage.src}
+                alt={currentImage.alt}
+                className="h-full w-full object-contain"
+              />
+            ) : project.image ? (
+              <img
+                src={project.image}
+                alt={project.name}
+                className="max-h-64 w-auto max-w-[92%] object-contain sm:max-h-72"
+              />
+            ) : (
+              <div className="flex flex-col items-center gap-3 text-center">
+                <div className="grid h-20 w-20 place-items-center rounded-3xl border border-cyan-200/30 bg-cyan-300/10 text-2xl font-semibold tracking-[0.12em] text-cyan-100">
+                  {project.name?.[0] || "V"}
+                </div>
+                <p className="text-sm font-medium text-slate-400">
+                  {project.partnership || project.name}
+                </p>
+              </div>
+            )}
             <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-slate-950 via-transparent to-transparent" />
-
             {hasMultipleImages && (
               <>
                 <button
@@ -113,7 +137,7 @@ function ProjectModal({ project, onClose }) {
                   <img
                     src={image.src}
                     alt={image.alt}
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-contain p-1"
                   />
                 </button>
               ))}
@@ -123,6 +147,16 @@ function ProjectModal({ project, onClose }) {
           <div className="space-y-10 p-5 sm:p-8 lg:p-10">
             <div>
               <div className="flex flex-wrap items-center gap-2">
+                {project.badge && (
+                  <span className="rounded-full border border-cyan-200/35 bg-cyan-300/15 px-3 py-1 text-xs font-semibold text-cyan-100">
+                    {project.badge}
+                  </span>
+                )}
+                {project.partnership && (
+                  <span className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-medium text-slate-300">
+                    {project.partnership}
+                  </span>
+                )}
                 <span className="rounded-full border border-cyan-200/25 bg-cyan-300/10 px-3 py-1 text-xs font-semibold text-cyan-100">
                   {project.category}
                 </span>

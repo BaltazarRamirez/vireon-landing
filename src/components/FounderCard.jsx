@@ -67,6 +67,27 @@ function FounderCard({ founder }) {
                   {founder.email}
                 </a>
               )}
+              {founder.linkedin && (
+                <a
+                  href={founder.linkedin}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="LinkedIn de Baltazar Ramirez"
+                  className="inline-flex items-center justify-center transition duration-300 hover:scale-105"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-5 w-5"
+                    aria-hidden="true"
+                  >
+                    <rect width="24" height="24" rx="4" fill="#0A66C2" />
+                    <path
+                      fill="#FFFFFF"
+                      d="M7.05 9.25H4.7v9.05h2.35V9.25zm-.05-3.1a1.4 1.4 0 11-2.8 0 1.4 1.4 0 012.8 0zM19.3 13.55c0-2.55-1.35-3.75-3.15-3.75-1.45 0-2.1.8-2.45 1.35V9.25h-2.35c.05.8 0 9.05 0 9.05h2.35v-5.05c0-.27.02-.54.1-.73.22-.54.72-1.1 1.56-1.1 1.1 0 1.54.84 1.54 2.07v4.81h2.4v-5.65z"
+                    />
+                  </svg>
+                </a>
+              )}
             </div>
 
             {founder.highlights?.length > 0 && (
