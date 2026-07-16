@@ -7,6 +7,7 @@ import {
 } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { useSectionReveal } from "../hooks/useReveal";
+import { viewportOnce } from "../lib/motion";
 import SectionAnchor from "./SectionAnchor";
 import { SectionRevealIntro } from "./sectionReveal";
 
@@ -33,24 +34,34 @@ const aboutListVariants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.18,
-      delayChildren: 0.1,
+      staggerChildren: 0.14,
+      delayChildren: 0.08,
     },
   },
 };
 
 const aboutCardVariants = {
-  hidden: { opacity: 0, y: 34, scale: 0.96, x: -12 },
+  hidden: {
+    opacity: 0,
+    y: 42,
+    scale: 0.94,
+    x: -16,
+    clipPath: "inset(0 12% 0 0)",
+  },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
     x: 0,
+    clipPath: "inset(0 0% 0 0)",
     transition: {
-      duration: 0.9,
-      ease: [0.16, 1, 0.3, 1],
-      staggerChildren: 0.12,
-      delayChildren: 0.1,
+      type: "spring",
+      stiffness: 130,
+      damping: 16,
+      mass: 0.9,
+      clipPath: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
+      staggerChildren: 0.08,
+      delayChildren: 0.06,
     },
   },
 };
@@ -60,7 +71,7 @@ const aboutItemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
+    transition: { type: "spring", stiffness: 200, damping: 18 },
   },
 };
 
@@ -69,7 +80,7 @@ const aboutLineVariants = {
   visible: {
     opacity: 1,
     scaleX: 1,
-    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
   },
 };
 
@@ -147,7 +158,7 @@ function MobileAboutSection({ items, intro, reduceMotion }) {
           variants={aboutListVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.14, margin: "0px 0px 12% 0px" }}
+          viewport={viewportOnce}
         >
           {items.map((item, index) => (
             <MobileAboutCard key={item.title} item={item} index={index} />

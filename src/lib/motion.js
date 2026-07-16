@@ -3,8 +3,8 @@ export const easeOutSoft = [0.22, 1, 0.36, 1];
 
 export const viewportOnce = {
   once: true,
-  amount: 0.12,
-  margin: "0px 0px 14% 0px",
+  amount: 0.18,
+  margin: "0px 0px -8% 0px",
 };
 
 export const springSnappy = {
@@ -26,13 +26,12 @@ export const tweenSoft = {
   ease: easeOutExpo,
 };
 
-/** Staggered list/grid for mobile — slower = more cinematic. */
 export const staggerContainer = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.16,
-      delayChildren: 0.1,
+      staggerChildren: 0.12,
+      delayChildren: 0.08,
     },
   },
 };
@@ -41,8 +40,8 @@ export const staggerContainerFast = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.08,
+      staggerChildren: 0.1,
+      delayChildren: 0.06,
     },
   },
 };
@@ -128,8 +127,8 @@ export const introContainerLight = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.16,
-      delayChildren: 0.1,
+      staggerChildren: 0.14,
+      delayChildren: 0.04,
     },
   },
 };

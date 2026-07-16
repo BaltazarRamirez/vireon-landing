@@ -1,18 +1,13 @@
 import { motion, useReducedMotion } from "motion/react";
-import { useRichMotion } from "../hooks/useRichMotion";
 import {
   introContainer,
-  introContainerLight,
   introItem,
-  introItemLight,
   introRule,
-  introRuleLight,
   viewportOnce,
 } from "../lib/motion";
 
 export function SectionRevealIntro({ id, eyebrow, title, description }) {
   const reduceMotion = useReducedMotion();
-  const rich = useRichMotion();
 
   if (reduceMotion) {
     return (
@@ -38,30 +33,30 @@ export function SectionRevealIntro({ id, eyebrow, title, description }) {
     <motion.div
       id={id || undefined}
       className="max-w-2xl"
-      variants={rich ? introContainer : introContainerLight}
+      variants={introContainer}
       initial="hidden"
       whileInView="visible"
       viewport={viewportOnce}
     >
       <motion.p
-        variants={rich ? introItem : introItemLight}
+        variants={introItem}
         className="text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90"
       >
         {eyebrow}
       </motion.p>
       <motion.h2
-        variants={rich ? introItem : introItemLight}
+        variants={introItem}
         className="mt-3 text-3xl font-semibold leading-[1.15] tracking-[-0.03em] text-white sm:mt-4 sm:text-4xl md:text-[2.75rem]"
       >
         {title}
       </motion.h2>
       <motion.div
-        variants={rich ? introRule : introRuleLight}
+        variants={introRule}
         className="mt-5 h-px w-24 origin-left bg-linear-to-r from-cyan-300/70 to-transparent sm:mt-6"
         aria-hidden="true"
       />
       <motion.p
-        variants={rich ? introItem : introItemLight}
+        variants={introItem}
         className="mt-4 max-w-xl text-base leading-7 text-slate-400 sm:mt-5 sm:text-[17px] sm:leading-8"
       >
         {description}

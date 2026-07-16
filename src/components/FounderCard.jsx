@@ -1,36 +1,45 @@
 import { motion, useReducedMotion } from "motion/react";
+import { viewportOnce } from "../lib/motion";
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 36, scale: 0.97 },
+  hidden: {
+    opacity: 0,
+    y: 42,
+    scale: 0.96,
+    clipPath: "inset(6% 4% 6% 4% round 1rem)",
+  },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
+    clipPath: "inset(0% 0% 0% 0% round 1rem)",
     transition: {
-      duration: 0.95,
-      ease: [0.16, 1, 0.3, 1],
-      staggerChildren: 0.14,
-      delayChildren: 0.12,
+      type: "spring",
+      stiffness: 130,
+      damping: 16,
+      clipPath: { duration: 0.75, ease: [0.16, 1, 0.3, 1] },
+      staggerChildren: 0.1,
+      delayChildren: 0.08,
     },
   },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 18 },
+  hidden: { opacity: 0, y: 16 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+    transition: { type: "spring", stiffness: 180, damping: 18 },
   },
 };
 
 const chipVariants = {
-  hidden: { opacity: 0, y: 12, scale: 0.92 },
+  hidden: { opacity: 0, y: 10, scale: 0.92 },
   visible: {
     opacity: 1,
     y: 0,
     scale: 1,
-    transition: { duration: 0.65, ease: [0.16, 1, 0.3, 1] },
+    transition: { type: "spring", stiffness: 260, damping: 18 },
   },
 };
 
@@ -87,7 +96,7 @@ function FounderCard({ founder }) {
         variants={cardVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, amount: 0.16, margin: "0px 0px 12% 0px" }}
+        viewport={viewportOnce}
         whileTap={{ scale: 0.99 }}
       >
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.1),transparent_16rem)] opacity-70" />

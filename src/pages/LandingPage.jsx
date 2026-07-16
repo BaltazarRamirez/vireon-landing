@@ -272,7 +272,7 @@ function LandingPage({ onSectionNav, ready = true }) {
           className="relative overflow-hidden border-y border-white/10 bg-white/3 py-4"
           initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.4 }}
+          viewport={{ once: true, amount: 0.1, margin: "0px 0px 30% 0px" }}
           transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
         >
           <div className="animate-marquee flex w-max gap-4 whitespace-nowrap text-sm font-bold uppercase tracking-[0.35em] text-cyan-100/80">
