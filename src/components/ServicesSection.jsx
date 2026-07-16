@@ -7,6 +7,7 @@ import {
 } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { useSectionReveal } from "../hooks/useReveal";
+import SectionAnchor from "./SectionAnchor";
 import { SectionRevealIntro } from "./sectionReveal";
 
 const gridVariants = {
@@ -308,6 +309,7 @@ function ServicesSection({ services, intro }) {
         id={intro?.id}
         className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24"
       >
+        <SectionAnchor />
         <SectionRevealIntro {...intro} visible={visible} id={undefined} />
         <div className="mt-8 grid gap-3 sm:mt-12 sm:grid-cols-2 sm:gap-4">
           {services.map((service) => (
@@ -340,6 +342,7 @@ function ServicesSection({ services, intro }) {
       id={intro?.id}
       className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24"
     >
+      <SectionAnchor />
       <SectionRevealIntro {...intro} visible={visible} id={undefined} />
 
       <motion.div

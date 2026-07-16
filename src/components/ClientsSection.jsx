@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from "motion/react";
 import { useRichMotion } from "../hooks/useRichMotion";
 import { fadeUpLight } from "../lib/motion";
+import SectionAnchor from "./SectionAnchor";
 import { SectionRevealIntro } from "./sectionReveal";
 
 const listVariants = {
@@ -78,6 +79,7 @@ function ClientsSection({ clients, intro }) {
       id={intro?.id}
       className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24"
     >
+      <SectionAnchor />
       <SectionRevealIntro {...intro} id={undefined} />
 
       {reduceMotion ? (

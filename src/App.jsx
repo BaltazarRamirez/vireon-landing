@@ -1,51 +1,19 @@
 import { useCallback, useEffect, useRef, useState, startTransition } from "react";
-import { BrowserRouter, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import AmbientBackground from "./components/AmbientBackground";
 import PageIntro from "./components/PageIntro";
 import SmoothScroll from "./components/SmoothScroll";
 import WhatsAppFloat from "./components/WhatsAppFloat";
+import { scrollToSectionWhenReady } from "./lib/scrollToSection";
 import LandingPage from "./pages/LandingPage";
 import ProjectsPage from "./pages/ProjectsPage";
-
-function getNavScrollOffset() {
-  const header = document.querySelector("header");
-  const headerHeight = header?.getBoundingClientRect().height ?? 120;
-  // Extra gap so the first text sits clear of the sticky header.
-  return Math.round(headerHeight + 28);
-}
-
-function getSectionScrollTarget(sectionId) {
-  const section = document.getElementById(sectionId);
-  if (!section) {
-    return null;
-  }
-
-  return (
-    section.querySelector("[data-section-anchor]") ||
-    section
-  );
-}
-
-function scrollToSection(sectionId, lenis) {
-  const target = getSectionScrollTarget(sectionId);
-  if (!target) {
-    return;
-  }
-
-  const offset = getNavScrollOffset();
-
-  if (lenis) {
-    lenis.scrollTo(target, {
-      offset: -offset,
-      duration: 1.15,
-    });
-    return;
-  }
-
-  const top =
-    target.getBoundingClientRect().top + window.scrollY - offset;
-  window.scrollTo({ top, behavior: "smooth" });
-}
 
 function resetScroll(lenis) {
   if (lenis) {
@@ -59,30 +27,53 @@ function resetScroll(lenis) {
 
 function AppShell() {
   const location = useLocation();
+  const navigate = useNavigate();
   const isHome = location.pathname === "/";
-  const [sawIntro, setSawIntro] = useState(
-    () => typeof window !== "undefined" && Boolean(window.location.hash),
-  );
+  const [sawIntro, setSawIntro] = useState(false);
   const [skipHomeIntro, setSkipHomeIntro] = useState(
     () => typeof window !== "undefined" && window.location.pathname !== "/",
   );
   const lenisRef = useRef(null);
+  const scrollingToSection = useRef(false);
   const introDone = !isHome || sawIntro || skipHomeIntro;
 
   const finishIntro = useCallback(() => {
-    // Let PageIntro unmount/paint settle before lighting up the page.
     window.requestAnimationFrame(() => {
       window.requestAnimationFrame(() => {
         setSawIntro(true);
+        resetScroll(lenisRef.current);
       });
     });
   }, []);
 
   const goToSection = useCallback((sectionId) => {
+    scrollingToSection.current = true;
     window.setTimeout(() => {
-      scrollToSection(sectionId, lenisRef.current);
-    }, 80);
+      scrollToSectionWhenReady(sectionId, lenisRef.current);
+      window.setTimeout(() => {
+        scrollingToSection.current = false;
+      }, 900);
+    }, 40);
   }, []);
+
+  useEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+  }, []);
+
+  // Reload / first paint on home: always start at the top with the intro.
+  useEffect(() => {
+    if (!isHome || sawIntro) {
+      return;
+    }
+
+    if (location.hash) {
+      navigate("/", { replace: true });
+    }
+
+    resetScroll(lenisRef.current);
+  }, [isHome, sawIntro, location.hash, navigate]);
 
   useEffect(() => {
     if (!isHome) {
@@ -92,32 +83,43 @@ function AppShell() {
     }
   }, [isHome]);
 
-  // Reset scroll on route changes, except when home opens with a section hash.
+  // Reset scroll on bare route changes only — never while navigating to a section.
   useEffect(() => {
+    if (scrollingToSection.current) {
+      return undefined;
+    }
+
     if (location.pathname === "/" && location.hash) {
       return undefined;
     }
 
     const frame = window.requestAnimationFrame(() => {
-      resetScroll(lenisRef.current);
+      if (!scrollingToSection.current) {
+        resetScroll(lenisRef.current);
+      }
     });
 
     return () => window.cancelAnimationFrame(frame);
   }, [location.pathname, location.hash]);
 
-  // Scroll to the section whenever the hash changes on home.
+  // After intro, scroll to the first text of the hashed section and center it.
   useEffect(() => {
-    if (!isHome || !location.hash) {
+    if (!isHome || !location.hash || !introDone) {
       return undefined;
     }
 
     const id = location.hash.replace("#", "");
+    scrollingToSection.current = true;
+
     const timer = window.setTimeout(() => {
-      scrollToSection(id, lenisRef.current);
-    }, 120);
+      scrollToSectionWhenReady(id, lenisRef.current);
+      window.setTimeout(() => {
+        scrollingToSection.current = false;
+      }, 900);
+    }, 80);
 
     return () => window.clearTimeout(timer);
-  }, [isHome, location.hash, location.key]);
+  }, [isHome, location.hash, location.key, introDone]);
 
   return (
     <SmoothScroll paused={!introDone} lenisRef={lenisRef}>

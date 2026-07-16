@@ -78,8 +78,14 @@ function SiteHeader({ menuOpen, setMenuOpen, onSectionNav }) {
           <img
             src={logo}
             alt="Vireon"
-            className="h-8 w-auto transition duration-300 group-hover:scale-105 sm:h-9"
+            className="hidden h-9 w-auto transition duration-300 group-hover:scale-105 lg:block"
           />
+          <span
+            aria-hidden="true"
+            className="text-[1.65rem] font-semibold leading-none tracking-[-0.06em] text-white transition duration-300 group-hover:text-cyan-100 lg:hidden"
+          >
+            V
+          </span>
         </Link>
 
         <div className="hidden items-center gap-8 justify-self-center rounded-full border border-white/10 bg-white/3 px-6 py-3 text-sm text-slate-300 lg:flex">

@@ -7,6 +7,7 @@ import {
 } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { useSectionReveal } from "../hooks/useReveal";
+import SectionAnchor from "./SectionAnchor";
 import { SectionRevealIntro } from "./sectionReveal";
 
 function useIsDesktop() {
@@ -84,6 +85,7 @@ function MobileAboutSection({ items, intro, reduceMotion }) {
       id={intro?.id}
       className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20"
     >
+      <SectionAnchor />
       <SectionRevealIntro {...intro} visible={visible} id={undefined} />
 
       {reduceMotion ? (
@@ -228,6 +230,7 @@ function StickyAboutSection({ items, intro }) {
       <div className="sticky top-[calc(var(--site-header-h,7.5rem)+1rem)] flex h-[calc(100svh-var(--site-header-h,7.5rem)-2.5rem)] items-center py-8">
         <div className="grid w-full items-center gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-14 xl:gap-16">
           <div className="min-w-0">
+            <SectionAnchor />
             <SectionRevealIntro {...intro} visible={visible} id={undefined} />
 
             <div className="mt-8 flex items-center gap-4">

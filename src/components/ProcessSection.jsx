@@ -3,6 +3,7 @@ import { useLenis } from "lenis/react";
 import { useCallback, useEffect, useRef } from "react";
 import { useRichMotion } from "../hooks/useRichMotion";
 import { useSectionReveal } from "../hooks/useReveal";
+import SectionAnchor from "./SectionAnchor";
 import { SectionRevealIntro } from "./sectionReveal";
 
 const listVariants = {
@@ -153,6 +154,7 @@ function ProcessSection({ steps, intro }) {
       id={intro?.id}
       className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24"
     >
+      <SectionAnchor />
       <SectionRevealIntro {...intro} visible={visible} id={undefined} />
 
       <div ref={listRef} className="relative mt-10 max-w-3xl sm:mt-14">

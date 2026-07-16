@@ -16,11 +16,7 @@ export function SectionRevealIntro({ id, eyebrow, title, description }) {
 
   if (reduceMotion) {
     return (
-      <div
-        id={id || undefined}
-        data-section-anchor=""
-        className="max-w-2xl scroll-mt-[calc(var(--site-header-h,7.5rem)+1.75rem)]"
-      >
+      <div id={id || undefined} className="max-w-2xl">
         <p className="text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90">
           {eyebrow}
         </p>
@@ -41,8 +37,7 @@ export function SectionRevealIntro({ id, eyebrow, title, description }) {
   return (
     <motion.div
       id={id || undefined}
-      data-section-anchor=""
-      className="max-w-2xl scroll-mt-[calc(var(--site-header-h,7.5rem)+1.75rem)]"
+      className="max-w-2xl"
       variants={rich ? introContainer : introContainerLight}
       initial="hidden"
       whileInView="visible"

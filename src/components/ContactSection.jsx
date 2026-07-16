@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from "motion/react";
 import { useRichMotion } from "../hooks/useRichMotion";
 import { fadeUpLight } from "../lib/motion";
+import SectionAnchor from "./SectionAnchor";
 import { WHATSAPP_URL } from "./WhatsAppFloat";
 
 const contactChannels = [
@@ -101,15 +102,15 @@ function ContactSection() {
 
   if (reduceMotion) {
     return (
-      <section className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24">
+      <section
+        id="contacto"
+        className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24"
+      >
+        <SectionAnchor />
         <div className="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-slate-950/70 sm:rounded-[2rem]">
           <div className="relative grid lg:grid-cols-[1.15fr_0.85fr]">
             <div className="border-b border-white/10 px-5 py-9 sm:px-8 lg:border-r lg:border-b-0 lg:px-12 lg:py-14">
-              <p
-                id="contacto"
-                data-section-anchor=""
-                className="scroll-mt-[calc(var(--site-header-h,7.5rem)+1.75rem)] text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90"
-              >
+              <p className="text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90">
                 Empecemos
               </p>
               <h2 className="mt-4 text-3xl font-semibold text-white sm:text-4xl">
@@ -134,7 +135,11 @@ function ContactSection() {
   }
 
   return (
-    <section className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24">
+    <section
+      id="contacto"
+      className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24"
+    >
+      <SectionAnchor />
       <motion.div
         className="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-slate-950/70 shadow-[0_28px_90px_rgba(2,6,23,0.5)] sm:rounded-[2rem]"
         variants={rich ? panelVariantsRich : panelVariantsLight}
@@ -149,10 +154,8 @@ function ContactSection() {
         <div className="relative grid lg:grid-cols-[1.15fr_0.85fr]">
           <div className="flex flex-col justify-center border-b border-white/10 px-5 py-9 sm:px-8 sm:py-11 lg:border-r lg:border-b-0 lg:px-12 lg:py-14">
             <motion.p
-              id="contacto"
-              data-section-anchor=""
               variants={rich ? copyVariants : fadeUpLight}
-              className="scroll-mt-[calc(var(--site-header-h,7.5rem)+1.75rem)] text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90"
+              className="text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90"
             >
               Empecemos
             </motion.p>
