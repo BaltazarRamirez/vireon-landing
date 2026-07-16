@@ -1,14 +1,19 @@
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
+import founderPhoto from "./assets/founder.jpg";
 import logo from "./assets/vireon_logo_blanco_transparente_4096.png";
-import FeaturedProjectCard from "./components/FeaturedProjectCard";
+import AboutSection from "./components/AboutSection";
+import ClientsSection from "./components/ClientsSection";
+import ContactSection from "./components/ContactSection";
+import FounderCard from "./components/FounderCard";
 import HeroVisual from "./components/HeroVisual";
-import ProcessTimeline from "./components/ProcessTimeline";
-import ProjectModal from "./components/ProjectModal";
-import ServicesList from "./components/ServicesList";
+import PageIntro from "./components/PageIntro";
+import ProcessSection from "./components/ProcessSection";
+import ServicesSection from "./components/ServicesSection";
+import SmoothScroll from "./components/SmoothScroll";
 import WhatsAppFloat, { WHATSAPP_URL } from "./components/WhatsAppFloat";
-import { featuredProjects, placeholderProjects } from "./data/projects";
+import { clients } from "./data/clients";
 
-const navItems = ["Servicios", "Proyectos", "Nosotros", "Proceso"];
+const navItems = ["Servicios", "Clientes", "Nosotros", "Proceso"];
 
 const services = [
   {
@@ -41,7 +46,35 @@ const services = [
   },
 ];
 
-const projects = placeholderProjects;
+const aboutValues = [
+  {
+    title: "Cercanía operativa",
+    description:
+      "Trabajamos desde el problema real del negocio, no desde una plantilla genérica.",
+  },
+  {
+    title: "Producto usable",
+    description:
+      "Interfaces simples para que el equipo pueda operar sin fricción desde el primer día.",
+  },
+  {
+    title: "Base para crecer",
+    description:
+      "Sistemas preparados para sumar sucursales, roles, reportes y nuevas necesidades.",
+  },
+];
+
+const founder = {
+  name: "Baltazar Ramirez",
+  initials: "BR",
+  role: "Fundador de Vireon",
+  image: founderPhoto,
+  bio: "Diseño y desarrollo sistemas a medida para negocios que necesitan ordenar su operación. Me meto en cómo vendés, entregás y gestionás el día a día, y traduzco eso en herramientas claras, útiles y listas para crecer.",
+  highlights: ["Sistemas a medida", "Operación real", "Producto usable"],
+  phone: "+543865454534",
+  phoneLabel: "+54 3865 45-4534",
+  email: "balturamirez1@gmail.com",
+};
 
 const process = [
   {
@@ -74,8 +107,13 @@ const tools = ["Stock", "Turnos", "Ventas", "Clientes", "Operaciones", "Operario
 
 function App() {
   const currentYear = new Date().getFullYear();
-  const [selectedProject, setSelectedProject] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [introDone, setIntroDone] = useState(false);
+  const lenisRef = useRef(null);
+
+  const finishIntro = useCallback(() => {
+    setIntroDone(true);
+  }, []);
 
   const closeMenu = () => setMenuOpen(false);
 
@@ -91,12 +129,25 @@ function App() {
       const top =
         target.getBoundingClientRect().top + window.scrollY - headerOffset;
 
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(top, { offset: 0, duration: 1.15 });
+        return;
+      }
+
       window.scrollTo({ top, behavior: "smooth" });
     }, 80);
   };
 
   return (
+    <SmoothScroll paused={!introDone} lenisRef={lenisRef}>
     <main className="relative min-h-screen overflow-x-hidden text-slate-100">
+      {!introDone && <PageIntro onFinish={finishIntro} />}
+
+      <div
+        className={`transition-opacity duration-700 ease-out ${
+          introDone ? "page-ready opacity-100" : "opacity-0"
+        }`}
+      >
       <div className="pointer-events-none absolute inset-0">
         <div className="animate-glow absolute -left-48 top-24 h-96 w-96 rounded-full bg-blue-600/25 blur-3xl" />
         <div className="animate-glow delay-300 absolute -right-40 top-0 h-120 w-120 rounded-full bg-cyan-400/20 blur-3xl" />
@@ -139,9 +190,17 @@ function App() {
               href={WHATSAPP_URL}
               target="_blank"
               rel="noreferrer"
-              className="hidden rounded-full bg-cyan-300 px-5 py-3 text-sm font-bold text-slate-950 shadow-[0_0_30px_rgba(103,232,249,0.45)] transition duration-300 hover:-translate-y-0.5 hover:bg-white lg:inline-flex"
+              className="hidden items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-medium text-slate-200 transition duration-300 hover:-translate-y-0.5 hover:border-cyan-200/40 hover:text-white lg:inline-flex"
             >
-              Hablemos
+              <svg
+                viewBox="0 0 24 24"
+                className="h-4 w-4 text-[#25D366]"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+              </svg>
+              Escribinos
             </a>
 
             <button
@@ -198,9 +257,17 @@ function App() {
               target="_blank"
               rel="noreferrer"
               onClick={closeMenu}
-              className="mt-2 inline-flex w-full max-w-xs items-center justify-center self-center rounded-full bg-cyan-300 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-white"
+              className="mt-2 inline-flex w-full max-w-xs items-center justify-center gap-2 self-center rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-medium text-slate-200 transition hover:border-cyan-200/40 hover:text-white"
             >
-              Hablemos por WhatsApp
+              <svg
+                viewBox="0 0 24 24"
+                className="h-4 w-4 text-[#25D366]"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+              </svg>
+              Escribinos
             </a>
           </div>
         </div>
@@ -234,10 +301,10 @@ function App() {
 
           <div className="animate-rise delay-300 mt-9 flex w-full max-w-sm flex-col gap-3 sm:max-w-none sm:flex-row sm:justify-center">
             <a
-              href="#proyectos"
+              href="#clientes"
               className="group inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-center text-sm font-semibold text-slate-950 transition duration-300 hover:-translate-y-0.5 hover:bg-cyan-200"
             >
-              Ver proyectos
+              Ver clientes
               <span className="ml-2 inline-block transition duration-300 group-hover:translate-x-1">
                 &rarr;
               </span>
@@ -264,170 +331,54 @@ function App() {
         </div>
       </section>
 
-      <section className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24">
-        <SectionIntro
-          id="servicios"
-          eyebrow="Servicios"
-          title="Herramientas claras para ordenar, controlar y hacer crecer tu operación."
-          description="No vendemos software genérico. Construimos soluciones a medida que bajan a tierra tu operación y la vuelven más simple de gestionar."
-        />
-
-        <ServicesList services={services} />
-      </section>
-
-      <section className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24">
-        <SectionIntro
-          id="proyectos"
-          eyebrow="Proyectos"
-          title="Sistemas reales, pensados para operar y crecer."
-          description="Cada solución nace de un problema concreto: centralizar información, ganar control y darle al equipo una herramienta clara para el día a día."
-        />
-
-        <div className="mt-8 flex w-full flex-col gap-5 sm:mt-12">
-          {featuredProjects.map((project) => (
-            <FeaturedProjectCard
-              key={project.id}
-              project={project}
-              onOpen={() => setSelectedProject(project)}
-            />
-          ))}
-
-          {projects.map((project, index) => (
-            <article
-              key={project.name}
-              className="group relative w-full overflow-hidden rounded-3xl border border-white/10 bg-slate-950/70 px-5 py-5 shadow-[0_18px_60px_rgba(2,6,23,0.45)] transition duration-500 hover:-translate-y-1.5 hover:border-cyan-200/50 sm:px-6"
-            >
-              <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.18),transparent_16rem)] opacity-70 transition duration-500 group-hover:opacity-100" />
-              <div className="relative flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-                <div className="max-w-2xl">
-                  <div className="flex items-center gap-3 text-sm">
-                    <span className="rounded-full border border-cyan-200/25 bg-cyan-300/10 px-2.5 py-0.5 text-[11px] font-semibold text-cyan-100">
-                      {project.category}
-                    </span>
-                    <span className="text-xs text-slate-500">0{index + 1}</span>
-                  </div>
-                  <h3 className="mt-2.5 text-xl font-semibold text-white sm:text-2xl">
-                    {project.name}
-                  </h3>
-                  <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-400">
-                    {project.description}
-                  </p>
-                </div>
-
-                <div className="w-full rounded-2xl border border-white/10 bg-white/4 p-3 sm:max-w-48">
-                  <div className="mb-2.5 h-2 w-16 rounded-full bg-cyan-200/40" />
-                  <div className="space-y-2">
-                    <div className="h-2 rounded-full bg-white/10" />
-                    <div className="h-2 w-10/12 rounded-full bg-white/10" />
-                    <div className="h-2 w-7/12 rounded-full bg-cyan-300/30" />
-                  </div>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <ProjectModal
-        key={selectedProject?.id ?? "closed"}
-        project={selectedProject}
-        onClose={() => setSelectedProject(null)}
+      <ServicesSection
+        services={services}
+        intro={{
+          id: "servicios",
+          eyebrow: "Servicios",
+          title:
+            "Herramientas claras para ordenar, controlar y hacer crecer tu operación.",
+          description:
+            "No vendemos software genérico. Construimos soluciones a medida que bajan a tierra tu operación y la vuelven más simple de gestionar.",
+        }}
       />
 
-      <section className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24">
-        <SectionIntro
-          id="nosotros"
-          eyebrow="Sobre nosotros"
-          title="Entendemos tu operación antes de construir el sistema."
-          description="Nos metemos en cómo vendés, entregás y organizás el día a día. A partir de eso diseñamos herramientas claras, útiles y listas para crecer con tu negocio."
-        />
+      <ClientsSection
+        clients={clients}
+        intro={{
+          id: "clientes",
+          eyebrow: "Nuestros clientes",
+          title: "Empresas que ya operan con sistemas hechos a su medida.",
+          description:
+            "Trabajamos con negocios reales que necesitaban ordenar ventas, stock, turnos y el día a día.",
+        }}
+      />
 
-        <div className="mt-8 grid gap-4 sm:mt-12 lg:grid-cols-3">
-          {[
-            {
-              title: "Cercanía operativa",
-              description:
-                "Trabajamos desde el problema real del negocio, no desde una plantilla genérica.",
-            },
-            {
-              title: "Producto usable",
-              description:
-                "Interfaces simples para que el equipo pueda operar sin fricción desde el primer día.",
-            },
-            {
-              title: "Base para crecer",
-              description:
-                "Sistemas preparados para sumar sucursales, roles, reportes y nuevas necesidades.",
-            },
-          ].map((item) => (
-            <article
-              key={item.title}
-              className="rounded-3xl border border-white/10 bg-slate-950/55 px-5 py-6 transition duration-500 hover:-translate-y-1 hover:border-cyan-200/40 sm:px-6"
-            >
-              <h3 className="text-lg font-semibold tracking-[-0.02em] text-white">
-                {item.title}
-              </h3>
-              <p className="mt-3 text-sm leading-7 text-slate-400">
-                {item.description}
-              </p>
-            </article>
-          ))}
-        </div>
-      </section>
+      <AboutSection
+        items={aboutValues}
+        intro={{
+          id: "nosotros",
+          eyebrow: "Sobre nosotros",
+          title: "Entendemos tu operación antes de construir el sistema.",
+          description:
+            "Nos metemos en cómo vendés, entregás y organizás el día a día. A partir de eso diseñamos herramientas claras, útiles y listas para crecer con tu negocio.",
+        }}
+      />
 
-      <section className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24">
-        <SectionIntro
-          id="proceso"
-          eyebrow="Proceso"
-          title="De una necesidad concreta a un sistema listo para operar."
-          description="Trabajamos por etapas claras para que veas avance real, valides rápido y tomes decisiones sin perder tiempo."
-        />
+      <ProcessSection
+        steps={process}
+        intro={{
+          id: "proceso",
+          eyebrow: "Proceso",
+          title: "De una necesidad concreta a un sistema listo para operar.",
+          description:
+            "Trabajamos por etapas claras para que veas avance real, valides rápido y tomes decisiones sin perder tiempo.",
+        }}
+      />
 
-        <ProcessTimeline steps={process} />
-      </section>
+      <FounderCard founder={founder} />
 
-      <section className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20 lg:py-24">
-        <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-slate-950/70 px-5 py-8 shadow-[0_24px_80px_rgba(2,6,23,0.45)] sm:px-8 sm:py-10 lg:px-12 lg:py-14">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.18),transparent_22rem)]" />
-          <div className="pointer-events-none absolute -right-20 -bottom-24 h-64 w-64 rounded-full bg-cyan-400/10 blur-3xl" />
-
-          <div className="relative grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-end">
-            <div>
-              <p
-                id="contacto"
-                className="scroll-mt-28 text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90 sm:scroll-mt-32"
-              >
-                Empecemos
-              </p>
-              <h2 className="mt-3 max-w-2xl text-3xl font-semibold leading-[1.15] tracking-[-0.03em] text-white sm:text-4xl md:text-[2.75rem]">
-                Contanos qué querés ordenar y armamos el sistema.
-              </h2>
-              <p className="mt-4 max-w-xl text-base leading-7 text-slate-400 sm:text-[17px] sm:leading-8">
-                Escribinos por WhatsApp y contanos qué vendés, qué proceso
-                necesitás controlar y qué te gustaría automatizar. Respondemos
-                rápido y te orientamos sin vueltas.
-              </p>
-            </div>
-
-            <div className="flex flex-col gap-3 sm:flex-row lg:flex-col lg:items-stretch">
-              <a
-                href={WHATSAPP_URL}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3.5 text-sm font-semibold text-slate-950 transition duration-300 hover:-translate-y-0.5 hover:bg-[#2fe074]"
-              >
-                Escribir por WhatsApp
-              </a>
-              <a
-                href="tel:+543865454534"
-                className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 py-3.5 text-sm font-semibold text-slate-200 transition duration-300 hover:-translate-y-0.5 hover:border-cyan-200/40 hover:text-white"
-              >
-                +54 3865 45-4534
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ContactSection />
 
       <WhatsAppFloat />
 
@@ -505,23 +456,9 @@ function App() {
           </div>
         </div>
       </footer>
+      </div>
     </main>
-  );
-}
-
-function SectionIntro({ id, eyebrow, title, description }) {
-  return (
-    <div id={id} className="max-w-2xl scroll-mt-28 sm:scroll-mt-32">
-      <p className="animate-rise text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90">
-        {eyebrow}
-      </p>
-      <h2 className="animate-rise delay-100 mt-3 text-3xl font-semibold leading-[1.15] tracking-[-0.03em] text-white sm:mt-4 sm:text-4xl md:text-[2.75rem]">
-        {title}
-      </h2>
-      <p className="animate-rise delay-200 mt-4 max-w-xl text-base leading-7 text-slate-400 sm:mt-5 sm:text-[17px] sm:leading-8">
-        {description}
-      </p>
-    </div>
+    </SmoothScroll>
   );
 }
 
