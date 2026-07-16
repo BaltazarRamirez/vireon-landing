@@ -1,12 +1,5 @@
 import llorensLogo from "../assets/client-llorens.png";
-import llorensTurnos from "../assets/llorens-captura-01.png";
-import llorensDetalleTurno from "../assets/llorens-captura-02.png";
-import llorensStock from "../assets/llorens-captura-03.png";
-import llorensProductos from "../assets/llorens-captura-04.png";
 import camposDeTrigoLogo from "../assets/campos-de-trigo.png";
-import camposPedidos from "../assets/campos-captura-01.png";
-import camposProductos from "../assets/campos-captura-02.png";
-import camposPreciosEspeciales from "../assets/campos-captura-03.png";
 import molinosLogo from "../assets/client-molinos.png";
 import totemLogo from "../assets/client-totem.png";
 import hotelusLogo from "../assets/hotelus-logo.png";
@@ -71,28 +64,7 @@ export const featuredProjects = [
       "Llorens Group es un sistema de gestión desarrollado a medida para una empresa dedicada a la comercialización de lubricantes, aceites y otros productos relacionados con el sector automotor y de combustibles. La aplicación permite centralizar la operación de diferentes sucursales en una sola plataforma, facilitando el control de ventas, productos, stock, usuarios y movimientos comerciales.",
     locations: ["Simoca", "Villa Quinteros", "Concepción"],
     image: llorensLogo,
-    gallery: [
-      {
-        src: llorensLogo,
-        alt: "Identidad visual de Llorens Group",
-      },
-      {
-        src: llorensStock,
-        alt: "Stock global y distribución a estaciones",
-      },
-      {
-        src: llorensTurnos,
-        alt: "Gestión de turnos por estación",
-      },
-      {
-        src: llorensDetalleTurno,
-        alt: "Detalle de turno con caja y ventas",
-      },
-      {
-        src: llorensProductos,
-        alt: "Catálogo de productos y stock en depósito",
-      },
-    ],
+    gallery: [],
     features: [
       "Registro y control de ventas",
       "Administración de productos y lubricantes",
@@ -133,24 +105,7 @@ export const featuredProjects = [
     fullDescription:
       "Campos de Trigo es un sistema de gestión desarrollado para una panadería que procesa aproximadamente 120 pedidos diarios. La plataforma centraliza la administración de pedidos, productos, precios, clientes, repartidores y usuarios. El objetivo del proyecto es reemplazar procesos manuales, reducir errores y mejorar la organización diaria, permitiendo que todo el equipo trabaje desde una misma plataforma.",
     image: camposDeTrigoLogo,
-    gallery: [
-      {
-        src: camposDeTrigoLogo,
-        alt: "Identidad visual de Campos de Trigo",
-      },
-      {
-        src: camposPedidos,
-        alt: "Control general de pedidos",
-      },
-      {
-        src: camposProductos,
-        alt: "Catálogo de productos y precios",
-      },
-      {
-        src: camposPreciosEspeciales,
-        alt: "Productos y precios especiales por camioneta",
-      },
-    ],
+    gallery: [],
     features: [
       "Registro y seguimiento de pedidos",
       "Actualización de estados de pedidos",
@@ -193,12 +148,7 @@ export const featuredProjects = [
     fullDescription:
       "Molinos Combustibles es un sistema de gestión desarrollado para una estación de servicio, pensado para centralizar y simplificar la operación diaria del negocio. La plataforma permite administrar turnos y cierres de caja, registrar ventas de combustibles, aceites y otros productos, controlar el stock de tanques y surtidores, actualizar precios y gestionar cuentas corrientes de clientes y productores. También cuenta con distintos roles de acceso para administradores y playeros, además de reportes que facilitan el seguimiento de ventas, movimientos de combustible y estado general de la estación.",
     image: molinosLogo,
-    gallery: [
-      {
-        src: molinosLogo,
-        alt: "Identidad visual de Molinos Combustibles",
-      },
-    ],
+    gallery: [],
     features: [
       "Administración de turnos y cierres de caja",
       "Registro de ventas de combustibles",
@@ -238,12 +188,7 @@ export const featuredProjects = [
     fullDescription:
       "Hotel Tótem Boutique es un sistema de gestión desarrollado para un hotel boutique, pensado para centralizar y simplificar la administración diaria del establecimiento. La plataforma permite gestionar habitaciones, reservas, huéspedes, disponibilidad, ingresos, salidas y estados de limpieza. También facilita el seguimiento de la ocupación y la organización de las tareas del personal. El objetivo del proyecto es reemplazar registros manuales, reducir errores y mejorar el control de la operación del hotel desde una única plataforma.",
     image: totemLogo,
-    gallery: [
-      {
-        src: totemLogo,
-        alt: "Identidad visual de Hotel Tótem Boutique",
-      },
-    ],
+    gallery: [],
     features: [
       "Gestión de habitaciones",
       "Administración de reservas",

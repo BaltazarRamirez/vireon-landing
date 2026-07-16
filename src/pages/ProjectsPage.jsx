@@ -23,7 +23,7 @@ function ProjectsPage({ onSectionNav }) {
         onSectionNav={onSectionNav}
       />
 
-      <div className="relative z-10 pt-24 sm:pt-28">
+      <div className="relative z-10 pt-32 sm:pt-36">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <Link
             to="/"

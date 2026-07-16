@@ -52,7 +52,7 @@ function ContactSection() {
           <div className="flex flex-col justify-center border-b border-white/10 px-5 py-9 sm:px-8 sm:py-11 lg:border-r lg:border-b-0 lg:px-12 lg:py-14">
             <p
               id="contacto"
-              className={`reveal-copy scroll-mt-28 text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90 sm:scroll-mt-32 ${
+              className={`reveal-copy scroll-mt-36 text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90 sm:scroll-mt-40 ${
                 visible ? "is-revealed" : ""
               }`}
               style={{ transitionDelay: visible ? "80ms" : "0ms" }}

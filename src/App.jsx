@@ -7,7 +7,7 @@ import WhatsAppFloat from "./components/WhatsAppFloat";
 import LandingPage from "./pages/LandingPage";
 import ProjectsPage from "./pages/ProjectsPage";
 
-const HEADER_OFFSET = 112;
+const HEADER_OFFSET = 148;
 
 function scrollToSection(sectionId, lenis) {
   const target = document.getElementById(sectionId);
@@ -92,7 +92,7 @@ function AppShell() {
 
   return (
     <SmoothScroll paused={!introDone} lenisRef={lenisRef}>
-      <main className="relative z-10 min-h-screen overflow-x-hidden text-slate-100">
+      <main className="relative z-10 min-h-screen overflow-x-clip text-slate-100">
         {isHome && !introDone && <PageIntro onFinish={finishIntro} />}
 
         <AmbientBackground />

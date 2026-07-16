@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/vireon_logo_blanco_transparente_4096.png";
 import { navItems } from "../data/nav";
+import PromoTopBar from "./PromoTopBar";
 import { WHATSAPP_URL } from "./WhatsAppFloat";
 
 const whatsappIcon = (
@@ -38,6 +39,7 @@ function SiteHeader({ menuOpen, setMenuOpen, onSectionNav }) {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-slate-950/55 backdrop-blur-2xl">
+      <PromoTopBar />
       <nav className="mx-auto grid max-w-7xl grid-cols-[1fr_auto] items-center gap-4 px-5 py-4 sm:px-8 lg:grid-cols-[1fr_auto_1fr]">
         <Link
           to="/"

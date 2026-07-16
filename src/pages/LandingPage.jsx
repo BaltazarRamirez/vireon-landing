@@ -65,7 +65,7 @@ const aboutValues = [
 const founder = {
   name: "Baltazar Ramirez",
   initials: "BR",
-  role: "Fundador de Vireon",
+  role: "Vireon Founder",
   image: founderPhoto,
   bio: "Diseño y desarrollo sistemas a medida para negocios que necesitan ordenar su operación. Me meto en cómo vendés, entregás y gestionás el día a día, y traduzco eso en herramientas claras, útiles y listas para crecer.",
   highlights: ["Sistemas a medida", "Operación real", "Producto usable"],
@@ -127,7 +127,7 @@ function LandingPage({ onSectionNav }) {
 
       <section
         id="inicio"
-        className="relative mx-auto flex min-h-[88vh] max-w-7xl scroll-mt-24 flex-col items-center justify-center px-5 pb-20 pt-28 text-center sm:px-8 sm:pb-24 sm:pt-32 lg:scroll-mt-28"
+        className="relative mx-auto flex min-h-[88vh] max-w-7xl scroll-mt-32 flex-col items-center justify-center px-5 pb-20 pt-36 text-center sm:px-8 sm:pb-24 sm:pt-40 lg:scroll-mt-36"
       >
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div className="absolute top-[18%] left-1/2 h-[28rem] w-[28rem] -translate-x-1/2 rounded-full bg-cyan-400/10 blur-[100px]" />

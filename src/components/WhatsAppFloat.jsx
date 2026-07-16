@@ -9,9 +9,9 @@ function WhatsAppFloat() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="fixed right-4 bottom-4 z-60 flex flex-col items-end gap-3 sm:right-6 sm:bottom-6">
+    <div className="fixed right-4 bottom-4 z-[70] isolate flex flex-col items-end gap-3 sm:right-6 sm:bottom-6">
       {open && (
-        <div className="animate-rise w-[min(18.5rem,calc(100vw-2rem))] overflow-hidden rounded-3xl border border-white/10 bg-slate-950/95 shadow-[0_20px_60px_rgba(2,6,23,0.55)] backdrop-blur-xl">
+        <div className="animate-whatsapp-panel relative z-10 w-[min(18.5rem,calc(100vw-2rem))] overflow-hidden rounded-3xl border border-white/10 bg-slate-950/95 shadow-[0_20px_60px_rgba(2,6,23,0.55)] backdrop-blur-xl">
           <div className="flex items-start justify-between gap-3 border-b border-white/10 px-4 py-3">
             <div>
               <p className="text-sm font-semibold text-white">Vireon</p>
@@ -35,7 +35,7 @@ function WhatsAppFloat() {
             <a
               href={WHATSAPP_URL}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#25D366] px-4 py-2.5 text-sm font-semibold text-slate-950 transition hover:bg-[#2fe074]"
             >
               Abrir WhatsApp
@@ -47,7 +47,7 @@ function WhatsAppFloat() {
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}
-        className="animate-whatsapp-float group grid h-14 w-14 place-items-center rounded-full bg-[#25D366] text-white shadow-[0_12px_40px_rgba(37,211,102,0.45)] transition duration-300 hover:-translate-y-0.5 hover:bg-[#2fe074]"
+        className="animate-whatsapp-float group relative z-20 grid h-14 w-14 place-items-center rounded-full bg-[#25D366] text-white shadow-[0_12px_40px_rgba(37,211,102,0.45)] transition duration-300 hover:bg-[#2fe074]"
         aria-label={open ? "Cerrar WhatsApp" : "Abrir WhatsApp"}
       >
         {open ? (

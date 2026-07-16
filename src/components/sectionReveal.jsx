@@ -6,7 +6,7 @@ export function SectionRevealIntro({
   visible,
 }) {
   return (
-    <div id={id} className="max-w-2xl scroll-mt-28 sm:scroll-mt-32">
+    <div id={id} className="max-w-2xl scroll-mt-36 sm:scroll-mt-40">
       <p
         className={`reveal-copy text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90 ${
           visible ? "is-revealed" : ""
