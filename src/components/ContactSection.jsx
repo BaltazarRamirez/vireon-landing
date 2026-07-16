@@ -107,7 +107,8 @@ function ContactSection() {
             <div className="border-b border-white/10 px-5 py-9 sm:px-8 lg:border-r lg:border-b-0 lg:px-12 lg:py-14">
               <p
                 id="contacto"
-                className="text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90"
+                data-section-anchor=""
+                className="scroll-mt-[calc(var(--site-header-h,7.5rem)+1.75rem)] text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90"
               >
                 Empecemos
               </p>
@@ -149,8 +150,9 @@ function ContactSection() {
           <div className="flex flex-col justify-center border-b border-white/10 px-5 py-9 sm:px-8 sm:py-11 lg:border-r lg:border-b-0 lg:px-12 lg:py-14">
             <motion.p
               id="contacto"
+              data-section-anchor=""
               variants={rich ? copyVariants : fadeUpLight}
-              className="scroll-mt-36 text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90 sm:scroll-mt-40"
+              className="scroll-mt-[calc(var(--site-header-h,7.5rem)+1.75rem)] text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90"
             >
               Empecemos
             </motion.p>

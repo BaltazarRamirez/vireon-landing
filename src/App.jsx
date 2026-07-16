@@ -7,24 +7,43 @@ import WhatsAppFloat from "./components/WhatsAppFloat";
 import LandingPage from "./pages/LandingPage";
 import ProjectsPage from "./pages/ProjectsPage";
 
-const HEADER_OFFSET = 148;
+function getNavScrollOffset() {
+  const header = document.querySelector("header");
+  const headerHeight = header?.getBoundingClientRect().height ?? 120;
+  // Extra gap so the first text sits clear of the sticky header.
+  return Math.round(headerHeight + 28);
+}
+
+function getSectionScrollTarget(sectionId) {
+  const section = document.getElementById(sectionId);
+  if (!section) {
+    return null;
+  }
+
+  return (
+    section.querySelector("[data-section-anchor]") ||
+    section
+  );
+}
 
 function scrollToSection(sectionId, lenis) {
-  const target = document.getElementById(sectionId);
+  const target = getSectionScrollTarget(sectionId);
   if (!target) {
     return;
   }
 
+  const offset = getNavScrollOffset();
+
   if (lenis) {
     lenis.scrollTo(target, {
-      offset: -HEADER_OFFSET,
+      offset: -offset,
       duration: 1.15,
     });
     return;
   }
 
   const top =
-    target.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
+    target.getBoundingClientRect().top + window.scrollY - offset;
   window.scrollTo({ top, behavior: "smooth" });
 }
 

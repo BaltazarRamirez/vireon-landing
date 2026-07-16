@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/vireon-logo.svg";
 import { navItems } from "../data/nav";
@@ -21,6 +22,30 @@ function SiteHeader({ menuOpen, setMenuOpen, onSectionNav }) {
   const navigate = useNavigate();
   const { isItemActive, markSection } = useActiveNav();
   const closeMenu = () => setMenuOpen(false);
+
+  useEffect(() => {
+    const header = document.querySelector("header");
+    if (!header) {
+      return undefined;
+    }
+
+    const syncHeaderHeight = () => {
+      document.documentElement.style.setProperty(
+        "--site-header-h",
+        `${Math.round(header.getBoundingClientRect().height)}px`,
+      );
+    };
+
+    syncHeaderHeight();
+    const observer = new ResizeObserver(syncHeaderHeight);
+    observer.observe(header);
+    window.addEventListener("resize", syncHeaderHeight);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("resize", syncHeaderHeight);
+    };
+  }, []);
 
   const handleSectionClick = (event, id) => {
     event.preventDefault();

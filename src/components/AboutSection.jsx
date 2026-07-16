@@ -225,7 +225,7 @@ function StickyAboutSection({ items, intro }) {
       className="relative mx-auto max-w-7xl px-5 sm:px-8"
       style={{ height: `calc(${items.length * 100}svh)` }}
     >
-      <div className="sticky top-36 flex h-[calc(100svh-10rem)] items-center py-8">
+      <div className="sticky top-[calc(var(--site-header-h,7.5rem)+1rem)] flex h-[calc(100svh-var(--site-header-h,7.5rem)-2.5rem)] items-center py-8">
         <div className="grid w-full items-center gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-14 xl:gap-16">
           <div className="min-w-0">
             <SectionRevealIntro {...intro} visible={visible} id={undefined} />

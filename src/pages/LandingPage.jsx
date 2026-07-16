@@ -167,7 +167,7 @@ function LandingPage({ onSectionNav, ready = true }) {
 
       <section
         id="inicio"
-        className="relative flex min-h-[92svh] scroll-mt-32 flex-col items-center justify-center overflow-x-clip px-5 pb-24 pt-36 text-center sm:px-8 sm:pb-28 sm:pt-40 lg:scroll-mt-36"
+        className="relative flex min-h-[92svh] scroll-mt-[calc(var(--site-header-h,7.5rem)+1rem)] flex-col items-center justify-center overflow-x-clip px-5 pb-24 pt-36 text-center sm:px-8 sm:pb-28 sm:pt-40"
       >
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute top-[12%] left-1/2 h-[18rem] w-[18rem] -translate-x-1/2 rounded-full bg-cyan-400/12 blur-[48px] sm:h-[32rem] sm:w-[32rem] sm:bg-cyan-400/14 sm:blur-[110px]" />

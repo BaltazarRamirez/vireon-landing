@@ -18,7 +18,8 @@ export function SectionRevealIntro({ id, eyebrow, title, description }) {
     return (
       <div
         id={id || undefined}
-        className="max-w-2xl scroll-mt-36 sm:scroll-mt-40"
+        data-section-anchor=""
+        className="max-w-2xl scroll-mt-[calc(var(--site-header-h,7.5rem)+1.75rem)]"
       >
         <p className="text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90">
           {eyebrow}
@@ -40,7 +41,8 @@ export function SectionRevealIntro({ id, eyebrow, title, description }) {
   return (
     <motion.div
       id={id || undefined}
-      className="max-w-2xl scroll-mt-36 sm:scroll-mt-40"
+      data-section-anchor=""
+      className="max-w-2xl scroll-mt-[calc(var(--site-header-h,7.5rem)+1.75rem)]"
       variants={rich ? introContainer : introContainerLight}
       initial="hidden"
       whileInView="visible"
