@@ -83,9 +83,7 @@ export const featuredProjects = [
       "La empresa necesitaba centralizar la información de sus diferentes puntos de venta, mejorar el control de productos y disponer de una visión general de todas sus operaciones.",
     solution:
       "Desarrollamos una plataforma personalizada que permite gestionar las ventas, el stock, los usuarios y los movimientos de cada sucursal desde un sistema centralizado, simple y accesible.",
-    products:
-      "Aceites, líquidos refrigerantes, aceites para motores de dos tiempos y otros productos comercializados por la empresa.",
-  },
+    },
   {
     id: "campos-de-trigo",
     name: "Campos de Trigo",
@@ -103,7 +101,7 @@ export const featuredProjects = [
     description:
       "Plataforma desarrollada para centralizar pedidos, productos, precios, clientes, repartidores y usuarios. Organiza el trabajo diario de la panadería y reduce los procesos manuales.",
     fullDescription:
-      "Campos de Trigo es un sistema de gestión desarrollado para una panadería que procesa aproximadamente 120 pedidos diarios. La plataforma centraliza la administración de pedidos, productos, precios, clientes, repartidores y usuarios. El objetivo del proyecto es reemplazar procesos manuales, reducir errores y mejorar la organización diaria, permitiendo que todo el equipo trabaje desde una misma plataforma.",
+      "Para Campos de Trigo desarrollamos un sistema de gestión para una panadería que procesa pedidos, stock de productos y entrega de pedidos a distintos repartidores. La plataforma centraliza la administración de pedidos, productos, precios, clientes, repartidores y usuarios. El objetivo del proyecto es reemplazar procesos manuales, reducir errores y mejorar la organización diaria, permitiendo que todo el equipo trabaje desde una misma plataforma.",
     image: camposDeTrigoLogo,
     gallery: [],
     features: [
@@ -115,7 +113,7 @@ export const featuredProjects = [
       "Administración de productos y precios",
       "Gestión de clientes",
       "Control de usuarios y roles de acceso",
-      "Roles para administradores, empleados, producción y repartidores",
+      "Roles para administradores, empleados, y repartidores",
       "Consulta de reportes de ventas",
     ],
     challenge:
@@ -146,7 +144,7 @@ export const featuredProjects = [
     description:
       "Plataforma desarrollada para administrar turnos, cierres de caja, ventas de combustibles y productos, stock de tanques y surtidores, precios y cuentas corrientes desde un único sistema.",
     fullDescription:
-      "Molinos Combustibles es un sistema de gestión desarrollado para una estación de servicio, pensado para centralizar y simplificar la operación diaria del negocio. La plataforma permite administrar turnos y cierres de caja, registrar ventas de combustibles, aceites y otros productos, controlar el stock de tanques y surtidores, actualizar precios y gestionar cuentas corrientes de clientes y productores. También cuenta con distintos roles de acceso para administradores y playeros, además de reportes que facilitan el seguimiento de ventas, movimientos de combustible y estado general de la estación.",
+      "Para Molinos Combustibles desarrollamos un sistema de gestión para una estación de servicio, pensado para centralizar y simplificar la operación diaria del negocio. La plataforma permite administrar turnos y cierres de caja, registrar ventas de combustibles, aceites y otros productos, controlar el stock de tanques y surtidores, actualizar precios y gestionar cuentas corrientes de clientes y productores. También cuenta con distintos roles de acceso para administradores y playeros, además de reportes que facilitan el seguimiento de ventas, movimientos de combustible y estado general de la estación.",
     image: molinosLogo,
     gallery: [],
     features: [
@@ -166,9 +164,7 @@ export const featuredProjects = [
     solution:
       "Desarrollamos una plataforma centralizada que organiza la operación diaria de la estación: turnos, ventas, stock, precios, cuentas corrientes y reportes, con roles claros para administradores y playeros.",
     roles: ["Administradores", "Playeros"],
-    products:
-      "Combustibles, aceites y otros productos comercializados en la estación de servicio.",
-  },
+    },
   {
     id: "hotel-totem-boutique",
     name: "Hotel Tótem Boutique",
@@ -186,7 +182,7 @@ export const featuredProjects = [
     description:
       "Plataforma desarrollada para gestionar habitaciones, reservas, huéspedes, disponibilidad, ingresos, salidas y estados de limpieza desde un único sistema.",
     fullDescription:
-      "Hotel Tótem Boutique es un sistema de gestión desarrollado para un hotel boutique, pensado para centralizar y simplificar la administración diaria del establecimiento. La plataforma permite gestionar habitaciones, reservas, huéspedes, disponibilidad, ingresos, salidas y estados de limpieza. También facilita el seguimiento de la ocupación y la organización de las tareas del personal. El objetivo del proyecto es reemplazar registros manuales, reducir errores y mejorar el control de la operación del hotel desde una única plataforma.",
+      "Para Hotel Tótem Boutique desarrollamos un sistema de gestión para un hotel, pensado para centralizar y simplificar la administración diaria del establecimiento. La plataforma permite gestionar habitaciones, reservas, huéspedes, disponibilidad, ingresos, salidas y estados de limpieza. También facilita el seguimiento de la ocupación y la organización de las tareas del personal. El objetivo del proyecto es reemplazar registros manuales, reducir errores y mejorar el control de la operación del hotel desde una única plataforma.",
     image: totemLogo,
     gallery: [],
     features: [

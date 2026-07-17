@@ -68,7 +68,7 @@ const founder = {
   initials: "BR",
   role: "Vireon Founder",
   image: founderPhoto,
-  bio: "Diseño y desarrollo sistemas a medida para negocios que necesitan ordenar su operación. Me meto en cómo vendés, entregás y gestionás el día a día, y traduzco eso en herramientas claras, útiles y listas para crecer.",
+  bio: "Cada sistema que desarrollamos nace de entender cómo funciona un negocio por dentro. Nuestro trabajo es transformar procesos complejos en herramientas simples de usar.",
   highlights: ["Sistemas a medida", "Operación real", "Producto usable"],
   phone: "+543865454534",
   phoneLabel: "+54 3865 45-4534",
@@ -307,8 +307,7 @@ function LandingPage({ onSectionNav, ready = true }) {
               id: "clientes",
               eyebrow: "Nuestros clientes",
               title: "Empresas que ya operan con sistemas hechos a su medida.",
-              description:
-                "Trabajamos con negocios reales que necesitaban ordenar ventas, stock, turnos y el día a día.",
+              
             }}
           />
 
@@ -319,7 +318,7 @@ function LandingPage({ onSectionNav, ready = true }) {
               eyebrow: "Sobre nosotros",
               title: "Entendemos tu operación antes de construir el sistema.",
               description:
-                "Nos metemos en cómo vendés, entregás y organizás el día a día. A partir de eso diseñamos herramientas claras, útiles y listas para crecer con tu negocio.",
+                "A partir de eso diseñamos herramientas claras, útiles y listas para crecer con tu negocio.",
             }}
           />
 

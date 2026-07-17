@@ -8,7 +8,7 @@ const contactChannels = [
   {
     id: "whatsapp",
     label: "WhatsApp",
-    detail: "Respuesta rápida · Sin vueltas",
+    detail: "Respuesta rápida",
     href: WHATSAPP_URL,
     external: true,
     value: "Escribir ahora",
@@ -197,8 +197,8 @@ function ContactSection() {
               variants={rich ? copyVariants : copyVariantsMobile}
               className="mt-5 max-w-lg text-base leading-7 text-slate-400 sm:text-[17px] sm:leading-8"
             >
-              Contanos qué vendés, qué proceso necesitás controlar y qué te
-              gustaría automatizar. Te orientamos rápido y sin vueltas.
+              Contanos qué proceso necesitás controlar o qué te gustaría
+              automatizar. Te orientamos e iniciamos con tu idea.
             </motion.p>
 
             <motion.ul

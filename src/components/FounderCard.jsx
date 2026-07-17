@@ -119,7 +119,9 @@ function FounderCard({ founder }) {
               <h3 className="mt-1 text-lg font-semibold text-white">
                 {founder.name}
               </h3>
-              <p className="mt-3 text-sm text-slate-400">{founder.bio}</p>
+              <p className="mt-3 text-sm text-slate-400">
+                &ldquo;{founder.bio}&rdquo;
+              </p>
             </div>
           </div>
         </div>
@@ -176,7 +178,7 @@ function FounderCard({ founder }) {
               variants={item}
               className="max-w-xl text-sm leading-6 text-slate-400"
             >
-              {founder.bio}
+              &ldquo;{founder.bio}&rdquo;
             </motion.p>
 
             <motion.div
