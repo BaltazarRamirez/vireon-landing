@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import brandIcon from "../assets/vireon-icon.webp";
 import logo from "../assets/vireon-logo.svg";
 import { navItems } from "../data/nav";
 import { useActiveNav } from "../hooks/useActiveSection";
@@ -72,22 +71,14 @@ function SiteHeader({ menuOpen, setMenuOpen, onSectionNav }) {
       <nav className="mx-auto grid max-w-7xl grid-cols-[1fr_auto] items-center gap-4 px-5 py-4 sm:px-8 lg:grid-cols-[1fr_auto_1fr]">
         <Link
           to="/"
-          className="group flex items-center gap-2.5 justify-self-start sm:gap-3"
+          className="group flex items-center justify-self-start"
           aria-label="Ir al inicio"
           onClick={closeMenu}
         >
           <img
-            src={brandIcon}
-            alt=""
-            width={36}
-            height={36}
-            decoding="async"
-            className="h-9 w-9 shrink-0 rounded-[0.65rem] transition duration-300 group-hover:scale-105"
-          />
-          <img
             src={logo}
             alt="Vireon"
-            className="hidden h-8 w-auto transition duration-300 group-hover:scale-105 lg:block"
+            className="h-5 w-auto transition duration-300 group-hover:scale-105 sm:h-6 lg:h-7"
           />
         </Link>
 
