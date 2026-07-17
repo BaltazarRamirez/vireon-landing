@@ -311,17 +311,6 @@ function LandingPage({ onSectionNav, ready = true }) {
             }}
           />
 
-          <AboutSection
-            items={aboutValues}
-            intro={{
-              id: "nosotros",
-              eyebrow: "Sobre nosotros",
-              title: "Entendemos tu operación antes de construir el sistema.",
-              description:
-                "A partir de eso diseñamos herramientas claras, útiles y listas para crecer con tu negocio.",
-            }}
-          />
-
           <ProcessSection
             steps={process}
             intro={{
@@ -330,6 +319,17 @@ function LandingPage({ onSectionNav, ready = true }) {
               title: "De una necesidad concreta a un sistema listo para operar.",
               description:
                 "Trabajamos por etapas claras para que veas avance real, valides rápido y tomes decisiones sin perder tiempo.",
+            }}
+          />
+
+          <AboutSection
+            items={aboutValues}
+            intro={{
+              id: "nosotros",
+              eyebrow: "Sobre nosotros",
+              title: "Entendemos tu operación antes de construir el sistema.",
+              description:
+                "A partir de eso diseñamos herramientas claras, útiles y listas para crecer con tu negocio.",
             }}
           />
 
