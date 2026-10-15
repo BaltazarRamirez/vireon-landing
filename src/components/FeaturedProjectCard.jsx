@@ -1,13 +1,13 @@
 function FeaturedProjectCard({ project, onOpen }) {
   return (
-    <article className="group relative w-full overflow-hidden rounded-3xl border border-white/10 bg-slate-950/70 shadow-[0_18px_60px_rgba(2,6,23,0.45)] transition duration-500 hover:-translate-y-1.5 hover:border-cyan-200/50 hover:shadow-[0_24px_80px_rgba(8,145,178,0.18)]">
+    <article className="group relative w-full overflow-hidden rounded-3xl border border-white/10 bg-black/70 shadow-[0_18px_60px_rgba(0,0,0,0.45)] transition duration-500 hover:-translate-y-1.5 hover:border-white/30 hover:shadow-[0_24px_80px_rgba(255,255,255,0.08)]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.16),transparent_18rem)] opacity-70 transition duration-500 group-hover:opacity-100" />
 
       <div className="relative grid lg:grid-cols-[240px_1fr]">
         <button
           type="button"
           onClick={onOpen}
-          className="relative flex h-40 w-full items-center justify-center overflow-hidden border-b border-white/10 bg-slate-950/80 text-left lg:h-auto lg:min-h-[11rem] lg:border-b-0 lg:border-r"
+          className="relative flex h-40 w-full items-center justify-center overflow-hidden border-b border-white/10 bg-black/80 text-left lg:h-auto lg:min-h-[11rem] lg:border-b-0 lg:border-r"
           aria-label={`Explorar proyecto ${project.name}`}
         >
           <img
@@ -15,13 +15,13 @@ function FeaturedProjectCard({ project, onOpen }) {
             alt={project.name}
             className="relative z-10 max-h-24 w-auto max-w-[75%] object-contain p-4 transition duration-700 ease-out group-hover:scale-105 sm:max-h-28 lg:max-h-32"
           />
-          <div className="absolute inset-0 bg-linear-to-t from-slate-950/40 via-transparent to-transparent lg:bg-linear-to-r lg:from-transparent lg:to-slate-950/20" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/40 via-transparent to-transparent lg:bg-linear-to-r lg:from-transparent lg:to-black/20" />
         </button>
 
         <div className="relative flex flex-col justify-center gap-4 p-5 sm:px-6 sm:py-5">
           <div>
             <div className="flex flex-wrap items-center gap-2">
-              <span className="rounded-full border border-cyan-200/25 bg-cyan-300/10 px-2.5 py-0.5 text-[11px] font-semibold text-cyan-100">
+              <span className="rounded-full border border-white/12 bg-white/8 px-2.5 py-0.5 text-[11px] font-semibold text-white">
                 {project.category}
               </span>
               {project.tags.map((tag) => (
@@ -46,7 +46,7 @@ function FeaturedProjectCard({ project, onOpen }) {
           <button
             type="button"
             onClick={onOpen}
-            className="inline-flex w-fit items-center gap-2 rounded-full bg-cyan-300 px-4 py-2 text-xs font-semibold text-slate-950 transition duration-300 hover:-translate-y-0.5 hover:bg-white"
+            className="inline-flex w-fit items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold text-slate-950 transition duration-300 hover:-translate-y-0.5 hover:bg-white"
           >
             Explorar proyecto
             <span className="transition duration-300 group-hover:translate-x-1">

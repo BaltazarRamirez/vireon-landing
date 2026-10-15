@@ -6,8 +6,6 @@ import {
   useTransform,
 } from "motion/react";
 import { useEffect, useRef, useState } from "react";
-import { useSectionReveal } from "../hooks/useReveal";
-import { viewportOnce } from "../lib/motion";
 import SectionAnchor from "./SectionAnchor";
 import { SectionRevealIntro } from "./sectionReveal";
 
@@ -21,7 +19,6 @@ function useIsDesktop() {
   useEffect(() => {
     const media = window.matchMedia("(min-width: 1024px)");
     const onChange = () => setIsDesktop(media.matches);
-
     onChange();
     media.addEventListener("change", onChange);
     return () => media.removeEventListener("change", onChange);
@@ -30,136 +27,34 @@ function useIsDesktop() {
   return isDesktop;
 }
 
-const aboutListVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.14,
-      delayChildren: 0.08,
-    },
-  },
-};
-
-const aboutCardVariants = {
-  hidden: {
-    opacity: 0,
-    y: 28,
-    scale: 0.97,
-    x: -14,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-    scale: 1,
-    x: 0,
-    transition: {
-      duration: 0.65,
-      ease: [0.16, 1, 0.3, 1],
-      staggerChildren: 0.06,
-      delayChildren: 0.04,
-    },
-  },
-};
-
-const aboutItemVariants = {
-  hidden: { opacity: 0, y: 12 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] },
-  },
-};
-
-const aboutLineVariants = {
-  hidden: { opacity: 0, scaleX: 0 },
-  visible: {
-    opacity: 1,
-    scaleX: 1,
-    transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
-  },
-};
-
-function MobileAboutCard({ item, index }) {
-  return (
-    <motion.article
-      variants={aboutCardVariants}
-      whileTap={{ scale: 0.985 }}
-      className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/55 p-5 sm:p-6"
-    >
-      <motion.div
-        variants={aboutItemVariants}
-        className="relative flex items-center justify-between gap-3"
-      >
-        <span className="grid h-8 w-8 place-items-center rounded-full border border-cyan-300/30 bg-cyan-300/10 text-[11px] font-semibold tracking-[0.12em] text-cyan-100">
-          {String(index + 1).padStart(2, "0")}
-        </span>
-        <motion.div
-          variants={aboutLineVariants}
-          className="h-px flex-1 origin-left bg-linear-to-r from-cyan-300/45 to-transparent"
-        />
-      </motion.div>
-
-      <motion.h3
-        variants={aboutItemVariants}
-        className="relative mt-4 text-lg font-semibold tracking-[-0.02em] text-white sm:text-xl"
-      >
-        {item.title}
-      </motion.h3>
-
-      <motion.p
-        variants={aboutItemVariants}
-        className="relative mt-2 text-sm leading-6 text-slate-400"
-      >
-        {item.description}
-      </motion.p>
-    </motion.article>
-  );
-}
-
-function MobileAboutSection({ items, intro, reduceMotion }) {
-  const { sectionRef, visible } = useSectionReveal();
-
+function MobileAboutSection({ items, intro }) {
   return (
     <section
-      ref={sectionRef}
       id={intro?.id}
       className="relative mx-auto max-w-7xl px-5 py-16 sm:px-8 sm:py-20"
     >
       <SectionAnchor />
-      <SectionRevealIntro {...intro} visible={visible} id={undefined} />
+      <SectionRevealIntro {...intro} id={undefined} />
 
-      {reduceMotion ? (
-        <div className="mt-8 flex flex-col gap-3 sm:mt-10">
-          {items.map((item, index) => (
-            <article
-              key={item.title}
-              className="relative overflow-hidden rounded-2xl border border-white/10 bg-slate-950/55 p-5 sm:p-6"
-            >
-              <span className="text-[11px] font-medium tracking-[0.24em] text-cyan-200/70">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <h3 className="mt-4 text-lg font-semibold text-white sm:text-xl">
-                {item.title}
-              </h3>
-              <p className="mt-2 text-sm leading-6 text-slate-400">
-                {item.description}
-              </p>
-            </article>
-          ))}
-        </div>
-      ) : (
-        <motion.div
-          className="mt-8 flex flex-col gap-3 sm:mt-10"
-          variants={aboutListVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-        >
-          {items.map((item, index) => (
-            <MobileAboutCard key={item.title} item={item} index={index} />
-          ))}
-        </motion.div>
-      )}
+      <div data-reveal-group className="mt-8 flex flex-col gap-3 sm:mt-10">
+        {items.map((item, index) => (
+          <article
+            key={item.title}
+            data-reveal
+            className="relative overflow-hidden rounded-2xl border border-white/10 bg-black/55 p-5 sm:p-6"
+          >
+            <span className="text-[11px] font-medium tracking-[0.24em] text-white/40">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <h3 className="mt-4 text-lg font-semibold text-white sm:text-xl">
+              {item.title}
+            </h3>
+            <p className="mt-2 text-sm leading-6 text-slate-400">
+              {item.description}
+            </p>
+          </article>
+        ))}
+      </div>
     </section>
   );
 }
@@ -173,44 +68,34 @@ function StoryCard({ item, index, total, progress, active }) {
   let input;
   let opacityOutput;
   let yOutput;
-  let rotateOutput;
-  let scaleOutput;
 
   if (index === 0) {
     input = [0, end - blend, end, 1];
     opacityOutput = [1, 1, 0, 0];
-    yOutput = [0, 0, -28, -28];
-    rotateOutput = [0, 0, -6, -6];
-    scaleOutput = [1, 1, 0.96, 0.96];
+    yOutput = [0, 0, -20, -20];
   } else if (index === total - 1) {
     input = [0, start - blend, start, 1];
     opacityOutput = [0, 0, 1, 1];
-    yOutput = [28, 28, 0, 0];
-    rotateOutput = [6, 6, 0, 0];
-    scaleOutput = [0.96, 0.96, 1, 1];
+    yOutput = [20, 20, 0, 0];
   } else {
     input = [0, start - blend, start, end - blend, end, 1];
     opacityOutput = [0, 0, 1, 1, 0, 0];
-    yOutput = [28, 28, 0, 0, -28, -28];
-    rotateOutput = [6, 6, 0, 0, -6, -6];
-    scaleOutput = [0.96, 0.96, 1, 1, 0.96, 0.96];
+    yOutput = [20, 20, 0, 0, -20, -20];
   }
 
   const opacity = useTransform(progress, input, opacityOutput);
   const y = useTransform(progress, input, yOutput);
-  const rotateX = useTransform(progress, input, rotateOutput);
-  const scale = useTransform(progress, input, scaleOutput);
 
   return (
     <motion.article
-      style={{ opacity, y, rotateX, scale, transformPerspective: 900 }}
+      style={{ opacity, y }}
       aria-hidden={!active}
       className={`absolute inset-0 flex flex-col justify-between p-7 sm:p-8 lg:p-10 ${
         active ? "z-10" : "pointer-events-none z-0"
       }`}
     >
       <div className="flex items-center justify-between gap-4">
-        <span className="text-[11px] font-medium tracking-[0.24em] text-cyan-200/75">
+        <span className="text-[11px] font-medium tracking-[0.24em] text-white/40">
           {String(index + 1).padStart(2, "0")}
         </span>
         <span className="text-xs tabular-nums text-slate-600">
@@ -218,33 +103,25 @@ function StoryCard({ item, index, total, progress, active }) {
         </span>
       </div>
 
-      <div className="relative">
-        <span
-          className="pointer-events-none absolute -top-16 right-0 text-[6.5rem] font-semibold leading-none tracking-[-0.08em] text-white/[0.04] sm:-top-20 sm:text-[8rem]"
-          aria-hidden="true"
-        >
-          {String(index + 1).padStart(2, "0")}
-        </span>
-        <h3 className="relative max-w-lg text-2xl font-semibold tracking-[-0.035em] text-white sm:text-3xl">
+      <div>
+        <h3 className="max-w-lg text-2xl font-semibold tracking-[-0.035em] text-white sm:text-3xl">
           {item.title}
         </h3>
-        <p className="relative mt-3 max-w-lg text-sm leading-7 text-slate-400 sm:text-base sm:leading-7">
+        <p className="mt-3 max-w-lg text-sm leading-7 text-slate-400 sm:text-base">
           {item.description}
         </p>
       </div>
 
-      <div className="h-px w-full bg-linear-to-r from-cyan-300/35 via-white/10 to-transparent" />
+      <div className="h-px w-full bg-linear-to-r from-white/20 via-white/10 to-transparent" />
     </motion.article>
   );
 }
 
 function StickyAboutSection({ items, intro }) {
-  const { sectionRef: revealRef, visible } = useSectionReveal();
   const sequenceRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const { scrollYProgress } = useScroll({
     target: sequenceRef,
-    // Align with sticky offset under the fixed header/promo bar.
     offset: ["start 144px", "end end"],
   });
 
@@ -259,10 +136,7 @@ function StickyAboutSection({ items, intro }) {
 
   return (
     <section
-      ref={(node) => {
-        revealRef.current = node;
-        sequenceRef.current = node;
-      }}
+      ref={sequenceRef}
       id={intro?.id}
       className="relative mx-auto max-w-7xl px-5 sm:px-8"
       style={{ height: `calc(${items.length * 100}svh)` }}
@@ -271,12 +145,12 @@ function StickyAboutSection({ items, intro }) {
         <div className="grid w-full items-center gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-14 xl:gap-16">
           <div className="min-w-0">
             <SectionAnchor />
-            <SectionRevealIntro {...intro} visible={visible} id={undefined} />
+            <SectionRevealIntro {...intro} id={undefined} />
 
-            <div className="mt-8 flex items-center gap-4">
+            <div data-reveal className="mt-8 flex items-center gap-4">
               <div className="relative h-1 w-32 overflow-hidden rounded-full bg-white/10">
                 <motion.div
-                  className="absolute inset-y-0 left-0 w-full origin-left rounded-full bg-cyan-300"
+                  className="absolute inset-y-0 left-0 w-full origin-left rounded-full bg-white"
                   style={{ scaleX: scrollYProgress }}
                 />
               </div>
@@ -301,7 +175,7 @@ function StickyAboutSection({ items, intro }) {
                   >
                     <span
                       className={`h-1.5 w-1.5 rounded-full transition duration-300 ${
-                        active ? "bg-cyan-300" : "bg-slate-700"
+                        active ? "bg-white" : "bg-slate-700"
                       }`}
                     />
                     {item.title}
@@ -311,13 +185,12 @@ function StickyAboutSection({ items, intro }) {
             </ul>
           </div>
 
-          <div className="relative h-[min(22rem,52svh)] min-h-[18rem] overflow-hidden rounded-[1.75rem] border border-white/10 bg-slate-950/75 shadow-[0_24px_80px_rgba(2,6,23,0.45)]">
+          <div
+            data-reveal
+            className="relative h-[min(22rem,52svh)] min-h-[18rem] overflow-hidden rounded-[1.75rem] border border-white/10 bg-black/75 shadow-[0_24px_80px_rgba(0,0,0,0.45)]"
+          >
             <div
-              className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.12),transparent_20rem)]"
-              aria-hidden="true"
-            />
-            <div
-              className="pointer-events-none absolute inset-x-8 top-0 h-px bg-linear-to-r from-transparent via-cyan-200/40 to-transparent"
+              className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.08),transparent_20rem)]"
               aria-hidden="true"
             />
 
@@ -343,13 +216,7 @@ function AboutSection({ items, intro }) {
   const reducedMotion = useReducedMotion();
 
   if (!isDesktop || reducedMotion) {
-    return (
-      <MobileAboutSection
-        items={items}
-        intro={intro}
-        reduceMotion={Boolean(reducedMotion)}
-      />
-    );
+    return <MobileAboutSection items={items} intro={intro} />;
   }
 
   return <StickyAboutSection items={items} intro={intro} />;

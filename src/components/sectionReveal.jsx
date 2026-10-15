@@ -17,14 +17,14 @@ export function SectionRevealIntro({ id, eyebrow, title, description }) {
   if (reduceMotion) {
     return (
       <div id={id || undefined} className="max-w-2xl">
-        <p className="text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90">
+        <p className="text-xs font-medium uppercase tracking-[0.32em] text-white/50">
           {eyebrow}
         </p>
         <h2 className="mt-3 text-3xl font-semibold leading-[1.15] tracking-[-0.03em] text-white sm:mt-4 sm:text-4xl md:text-[2.75rem]">
           {title}
         </h2>
         <div
-          className="mt-5 h-px w-24 origin-left bg-linear-to-r from-cyan-300/70 to-transparent sm:mt-6"
+          className="mt-5 h-px w-24 origin-left bg-linear-to-r from-white/40 to-transparent sm:mt-6"
           aria-hidden="true"
         />
         <p className="mt-4 max-w-xl text-base leading-7 text-slate-400 sm:mt-5 sm:text-[17px] sm:leading-8">
@@ -45,7 +45,7 @@ export function SectionRevealIntro({ id, eyebrow, title, description }) {
     >
       <motion.p
         variants={rich ? introItem : introItemLight}
-        className="text-xs font-medium uppercase tracking-[0.32em] text-cyan-200/90"
+        className="text-xs font-medium uppercase tracking-[0.32em] text-white/50"
       >
         {eyebrow}
       </motion.p>
@@ -57,7 +57,7 @@ export function SectionRevealIntro({ id, eyebrow, title, description }) {
       </motion.h2>
       <motion.div
         variants={rich ? introRule : introRuleLight}
-        className="mt-5 h-px w-24 origin-left bg-linear-to-r from-cyan-300/70 to-transparent sm:mt-6"
+        className="mt-5 h-px w-24 origin-left bg-linear-to-r from-white/40 to-transparent sm:mt-6"
         aria-hidden="true"
       />
       <motion.p

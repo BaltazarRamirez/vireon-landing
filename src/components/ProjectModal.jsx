@@ -48,7 +48,7 @@ function ProjectModal({ project, onClose }) {
 
   return (
     <div
-      className="animate-modal-backdrop fixed inset-0 z-100 flex items-end justify-center bg-slate-950/80 p-0 backdrop-blur-md sm:items-center sm:p-5"
+      className="animate-modal-backdrop fixed inset-0 z-100 flex items-end justify-center bg-black/80 p-0 backdrop-blur-md sm:items-center sm:p-5"
       onClick={onClose}
       role="presentation"
       data-lenis-prevent
@@ -56,14 +56,14 @@ function ProjectModal({ project, onClose }) {
       <button
         type="button"
         onClick={onClose}
-        className="absolute top-5 right-5 z-20 grid h-11 w-11 place-items-center rounded-full border border-white/15 bg-slate-950/90 text-xl text-slate-200 shadow-[0_8px_30px_rgba(2,6,23,0.45)] transition hover:border-cyan-200/40 hover:text-white sm:top-8 sm:right-8"
+        className="absolute top-5 right-5 z-20 grid h-11 w-11 place-items-center rounded-full border border-white/15 bg-black/90 text-xl text-slate-200 shadow-[0_8px_30px_rgba(0,0,0,0.45)] transition hover:border-white/25 hover:text-white sm:top-8 sm:right-8"
         aria-label="Cerrar detalle del proyecto"
       >
         &times;
       </button>
 
       <div
-        className="animate-modal-panel relative mt-16 flex max-h-[calc(94vh-4rem)] w-full max-w-6xl flex-col overflow-hidden rounded-t-4xl border border-white/10 bg-slate-950 shadow-[0_40px_120px_rgba(2,6,23,0.75)] sm:mt-0 sm:max-h-[94vh] sm:rounded-4xl"
+        className="animate-modal-panel relative mt-16 flex max-h-[calc(94vh-4rem)] w-full max-w-6xl flex-col overflow-hidden rounded-t-4xl border border-white/10 bg-black shadow-[0_40px_120px_rgba(0,0,0,0.75)] sm:mt-0 sm:max-h-[94vh] sm:rounded-4xl"
         onClick={(event) => event.stopPropagation()}
         role="dialog"
         aria-modal="true"
@@ -89,7 +89,7 @@ function ProjectModal({ project, onClose }) {
               />
             ) : (
               <div className="flex flex-col items-center gap-3 text-center">
-                <div className="grid h-20 w-20 place-items-center rounded-3xl border border-cyan-200/30 bg-cyan-300/10 text-2xl font-semibold tracking-[0.12em] text-cyan-100">
+                <div className="grid h-20 w-20 place-items-center rounded-3xl border border-white/15 bg-white/8 text-2xl font-semibold tracking-[0.12em] text-white">
                   {project.name?.[0] || "V"}
                 </div>
                 <p className="text-sm font-medium text-slate-400">
@@ -97,13 +97,13 @@ function ProjectModal({ project, onClose }) {
                 </p>
               </div>
             )}
-            <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-slate-950 via-transparent to-transparent" />
+            <div className="pointer-events-none absolute inset-0 bg-linear-to-t from-black via-transparent to-transparent" />
             {hasMultipleImages && (
               <>
                 <button
                   type="button"
                   onClick={showPreviousImage}
-                  className="absolute left-4 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white/10 bg-slate-950/70 text-white transition hover:border-cyan-200/40"
+                  className="absolute left-4 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white/10 bg-black/70 text-white transition hover:border-white/25"
                   aria-label="Imagen anterior"
                 >
                   &larr;
@@ -111,7 +111,7 @@ function ProjectModal({ project, onClose }) {
                 <button
                   type="button"
                   onClick={showNextImage}
-                  className="absolute right-4 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white/10 bg-slate-950/70 text-white transition hover:border-cyan-200/40"
+                  className="absolute right-4 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-full border border-white/10 bg-black/70 text-white transition hover:border-white/25"
                   aria-label="Imagen siguiente"
                 >
                   &rarr;
@@ -129,7 +129,7 @@ function ProjectModal({ project, onClose }) {
                   onClick={() => setActiveImage(index)}
                   className={`h-16 w-24 shrink-0 overflow-hidden rounded-2xl border transition ${
                     index === activeImage
-                      ? "border-cyan-300/70 shadow-[0_0_20px_rgba(103,232,249,0.25)]"
+                      ? "border-white/40 shadow-[0_0_20px_rgba(255,255,255,0.12)]"
                       : "border-white/10 opacity-70 hover:opacity-100"
                   }`}
                   aria-label={`Ver imagen ${index + 1}`}
@@ -148,7 +148,7 @@ function ProjectModal({ project, onClose }) {
             <div>
               <div className="flex flex-wrap items-center gap-2">
                 {project.badge && (
-                  <span className="rounded-full border border-cyan-200/35 bg-cyan-300/15 px-3 py-1 text-xs font-semibold text-cyan-100">
+                  <span className="rounded-full border border-white/18 bg-white/10 px-3 py-1 text-xs font-semibold text-white">
                     {project.badge}
                   </span>
                 )}
@@ -157,7 +157,7 @@ function ProjectModal({ project, onClose }) {
                     {project.partnership}
                   </span>
                 )}
-                <span className="rounded-full border border-cyan-200/25 bg-cyan-300/10 px-3 py-1 text-xs font-semibold text-cyan-100">
+                <span className="rounded-full border border-white/12 bg-white/8 px-3 py-1 text-xs font-semibold text-white">
                   {project.category}
                 </span>
                 {project.tags.map((tag) => (
@@ -184,7 +184,7 @@ function ProjectModal({ project, onClose }) {
 
             <div className="grid gap-5 lg:grid-cols-2 lg:items-stretch">
               <div className="flex h-full flex-col rounded-3xl border border-white/10 bg-white/4 p-6">
-                <p className="text-sm font-medium uppercase tracking-[0.28em] text-cyan-200/90">
+                <p className="text-sm font-medium uppercase tracking-[0.28em] text-white/50">
                   El desafío
                 </p>
                 <p className="mt-4 flex-1 leading-7 text-slate-300">
@@ -193,7 +193,7 @@ function ProjectModal({ project, onClose }) {
               </div>
 
               <div className="flex h-full flex-col rounded-3xl border border-white/10 bg-white/4 p-6">
-                <p className="text-sm font-medium uppercase tracking-[0.28em] text-cyan-200/90">
+                <p className="text-sm font-medium uppercase tracking-[0.28em] text-white/50">
                   La solución
                 </p>
                 <p className="mt-4 flex-1 leading-7 text-slate-300">
@@ -204,7 +204,7 @@ function ProjectModal({ project, onClose }) {
 
             {project.locations?.length > 0 && (
               <div>
-                <p className="text-sm font-medium uppercase tracking-[0.28em] text-cyan-200/90">
+                <p className="text-sm font-medium uppercase tracking-[0.28em] text-white/50">
                   Sucursales
                 </p>
                 <div className="mt-4 flex flex-wrap gap-3">
@@ -222,7 +222,7 @@ function ProjectModal({ project, onClose }) {
 
             {project.roles?.length > 0 && (
               <div>
-                <p className="text-sm font-medium uppercase tracking-[0.28em] text-cyan-200/90">
+                <p className="text-sm font-medium uppercase tracking-[0.28em] text-white/50">
                   Roles de acceso
                 </p>
                 <div className="mt-4 flex flex-wrap gap-3">
@@ -239,7 +239,7 @@ function ProjectModal({ project, onClose }) {
             )}
 
             <div>
-              <p className="text-sm font-medium uppercase tracking-[0.28em] text-cyan-200/90">
+              <p className="text-sm font-medium uppercase tracking-[0.28em] text-white/50">
                 Funcionalidades principales
               </p>
               <ul className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:items-stretch">
@@ -248,7 +248,7 @@ function ProjectModal({ project, onClose }) {
                     key={feature}
                     className="flex h-full min-h-12 items-center gap-3 rounded-2xl border border-white/10 bg-white/3 px-4 py-3 text-sm leading-6 text-slate-300"
                   >
-                    <span className="h-2 w-2 shrink-0 rounded-full bg-cyan-300 shadow-[0_0_12px_rgba(103,232,249,0.8)]" />
+                    <span className="h-2 w-2 shrink-0 rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,0.45)]" />
                     <span className="min-w-0 flex-1">{feature}</span>
                   </li>
                 ))}
@@ -256,8 +256,8 @@ function ProjectModal({ project, onClose }) {
             </div>
 
             {project.products && (
-              <div className="rounded-3xl border border-white/10 bg-linear-to-br from-slate-900 to-blue-950/50 p-6">
-                <p className="text-sm font-medium uppercase tracking-[0.28em] text-cyan-200/90">
+              <div className="rounded-3xl border border-white/10 bg-linear-to-br from-slate-900 to-neutral-950/50 p-6">
+                <p className="text-sm font-medium uppercase tracking-[0.28em] text-white/50">
                   Productos gestionados
                 </p>
                 <p className="mt-4 leading-7 text-slate-300">{project.products}</p>

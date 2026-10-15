@@ -1,8 +1,19 @@
-import { useEffect } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+  useSpring,
+} from "motion/react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/vireon-logo.svg";
 import { navItems } from "../data/nav";
 import { useActiveNav } from "../hooks/useActiveSection";
+import { useRichMotion } from "../hooks/useRichMotion";
+import { easeOutExpo } from "../lib/motion";
+import { Magnetic } from "./Magnetic";
 import PromoTopBar from "./PromoTopBar";
 import { WHATSAPP_URL } from "./WhatsAppFloat";
 
@@ -17,11 +28,33 @@ const whatsappIcon = (
   </svg>
 );
 
-function SiteHeader({ menuOpen, setMenuOpen, onSectionNav }) {
+const pillSpring = { type: "spring", stiffness: 420, damping: 34, mass: 0.7 };
+
+function itemKey(item) {
+  return item.type === "route" ? item.to : item.id;
+}
+
+function SiteHeader({ onSectionNav }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { isItemActive, markSection } = useActiveNav();
+  const reduceMotion = useReducedMotion();
+  const rich = useRichMotion();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [hovered, setHovered] = useState(null);
+  const [compact, setCompact] = useState(false);
+  const { scrollY, scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, {
+    stiffness: 140,
+    damping: 28,
+    restDelta: 0.001,
+  });
+
   const closeMenu = () => setMenuOpen(false);
+
+  useMotionValueEvent(scrollY, "change", (value) => {
+    setCompact(value > 28);
+  });
 
   useEffect(() => {
     const header = document.querySelector("header");
@@ -45,7 +78,26 @@ function SiteHeader({ menuOpen, setMenuOpen, onSectionNav }) {
       observer.disconnect();
       window.removeEventListener("resize", syncHeaderHeight);
     };
-  }, []);
+  }, [compact, menuOpen]);
+
+  useEffect(() => {
+    if (!menuOpen) {
+      return undefined;
+    }
+
+    window.dispatchEvent(new Event("lenis:stop"));
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.overflow = previous;
+      window.dispatchEvent(new Event("lenis:start"));
+    };
+  }, [menuOpen]);
+
+  useEffect(() => {
+    closeMenu();
+  }, [location.pathname]);
 
   const handleSectionClick = (event, id) => {
     event.preventDefault();
@@ -60,71 +112,134 @@ function SiteHeader({ menuOpen, setMenuOpen, onSectionNav }) {
     navigate({ pathname: "/", hash: id });
   };
 
-  const linkClass =
-    "transition hover:text-cyan-200 data-[active=true]:text-cyan-200";
-  const mobileLinkClass =
-    "rounded-2xl px-4 py-3 text-sm font-medium text-slate-200 transition hover:bg-white/5 hover:text-cyan-200 data-[active=true]:bg-white/5 data-[active=true]:text-cyan-200";
+  const navLinkClass =
+    "relative isolate block rounded-full px-3.5 py-1.5 text-sm text-slate-300 transition-colors duration-300 hover:text-white data-[active=true]:text-white";
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-slate-950/95 lg:bg-slate-950/55 lg:backdrop-blur-2xl">
+    <motion.header
+      className={`fixed inset-x-0 top-0 z-50 border-b transition-[border-color,background-color,box-shadow] duration-500 ${
+        compact
+          ? "border-white/12 bg-black/90 shadow-[0_12px_40px_rgba(0,0,0,0.45)] lg:bg-black/72 lg:backdrop-blur-2xl"
+          : "border-white/10 bg-black/95 lg:bg-black/50 lg:backdrop-blur-xl"
+      }`}
+      initial={reduceMotion ? false : { y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.7, ease: easeOutExpo }}
+    >
       <PromoTopBar />
-      <nav className="mx-auto grid max-w-7xl grid-cols-[1fr_auto] items-center gap-4 px-5 py-4 sm:px-8 lg:grid-cols-[1fr_auto_1fr]">
-        <Link
-          to="/"
-          className="group flex items-center justify-self-start"
-          aria-label="Ir al inicio"
-          onClick={closeMenu}
-        >
-          <img
-            src={logo}
-            alt="Vireon"
-            className="h-5 w-auto transition duration-300 group-hover:scale-105 sm:h-6 lg:h-7"
-          />
-        </Link>
+      <nav
+        className={`mx-auto grid max-w-7xl grid-cols-[1fr_auto] items-center gap-4 px-5 sm:px-8 lg:grid-cols-[1fr_auto_1fr] ${
+          compact ? "py-2.5" : "py-4"
+        }`}
+      >
+        <Magnetic enabled={rich} strength={0.16} className="justify-self-start">
+          <Link
+            to="/"
+            className="group relative flex items-center"
+            aria-label="Ir al inicio"
+            onClick={closeMenu}
+          >
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute top-1/2 left-1/2 h-10 w-20 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/0 blur-2xl transition duration-500 group-hover:bg-white/12"
+            />
+            <img
+              src={logo}
+              alt="Vireon"
+              className="relative z-10 h-5 w-auto transition duration-300 group-hover:scale-[1.06] sm:h-6 lg:h-7"
+            />
+          </Link>
+        </Magnetic>
 
-        <div className="hidden items-center gap-8 justify-self-center rounded-full border border-white/10 bg-white/3 px-6 py-3 text-sm text-slate-300 lg:flex">
-          {navItems.map((item) =>
-            item.type === "route" ? (
-              <Link
-                key={item.label}
-                to={item.to}
-                data-active={isItemActive(item)}
-                className={linkClass}
-                onClick={closeMenu}
-              >
-                {item.label}
-              </Link>
-            ) : (
-              <a
-                key={item.label}
-                href={`/#${item.id}`}
-                data-active={isItemActive(item)}
-                onClick={(event) => handleSectionClick(event, item.id)}
-                className={linkClass}
-              >
-                {item.label}
-              </a>
-            ),
-          )}
+        <div
+          className={`relative hidden items-center justify-self-center rounded-full border border-white/10 bg-white/[0.035] px-1.5 text-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.06)] lg:flex ${
+            compact ? "py-1" : "py-1.5"
+          }`}
+          onMouseLeave={() => setHovered(null)}
+        >
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-6 top-0 h-px bg-linear-to-r from-transparent via-white/25 to-transparent"
+          />
+          {navItems.map((item) => {
+            const active = isItemActive(item);
+            const key = itemKey(item);
+            const content = (
+              <>
+                {active ? (
+                  <motion.span
+                    layoutId={reduceMotion ? undefined : "nav-active-pill"}
+                    className="absolute inset-0 rounded-full border border-white/12 bg-white/8 shadow-[0_0_18px_rgba(255,255,255,0.08)]"
+                    transition={reduceMotion ? { duration: 0 } : pillSpring}
+                  />
+                ) : null}
+                {rich && hovered === key && !active ? (
+                  <motion.span
+                    layoutId="nav-hover-pill"
+                    className="absolute inset-0 rounded-full bg-white/[0.06]"
+                    transition={pillSpring}
+                  />
+                ) : null}
+                <span className="relative z-10">{item.label}</span>
+              </>
+            );
+
+            if (item.type === "route") {
+              return (
+                <Magnetic key={key} enabled={rich} strength={0.34}>
+                  <Link
+                    to={item.to}
+                    data-active={active}
+                    className={navLinkClass}
+                    onClick={closeMenu}
+                    onMouseEnter={() => setHovered(key)}
+                  >
+                    {content}
+                  </Link>
+                </Magnetic>
+              );
+            }
+
+            return (
+              <Magnetic key={key} enabled={rich} strength={0.34}>
+                <a
+                  href={`/#${item.id}`}
+                  data-active={active}
+                  className={navLinkClass}
+                  onClick={(event) => handleSectionClick(event, item.id)}
+                  onMouseEnter={() => setHovered(key)}
+                >
+                  {content}
+                </a>
+              </Magnetic>
+            );
+          })}
         </div>
 
         <div className="flex items-center justify-self-end">
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noreferrer"
-            className="hidden items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-medium text-slate-200 transition duration-300 hover:-translate-y-0.5 hover:border-cyan-200/40 hover:text-white lg:inline-flex"
-          >
-            {whatsappIcon}
-            Escribinos
-          </a>
+          <Magnetic enabled={rich} strength={0.2}>
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="group relative hidden items-center gap-2 overflow-hidden rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm font-medium text-slate-200 transition duration-300 hover:border-white/25 hover:text-white lg:inline-flex"
+            >
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 -translate-x-full bg-linear-to-r from-transparent via-white/20 to-transparent transition duration-700 group-hover:translate-x-full"
+              />
+              {whatsappIcon}
+              Escribinos
+            </a>
+          </Magnetic>
 
-          <button
+          <motion.button
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
-            className="grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-white/5 text-white transition hover:border-cyan-200/40 lg:hidden"
+            className="grid h-11 w-11 place-items-center rounded-full border border-white/10 bg-white/5 text-white transition hover:border-white/25 lg:hidden"
             aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
             aria-expanded={menuOpen}
+            whileTap={reduceMotion ? undefined : { scale: 0.92 }}
           >
             <span className="relative block h-3.5 w-4">
               <span
@@ -133,7 +248,7 @@ function SiteHeader({ menuOpen, setMenuOpen, onSectionNav }) {
                 }`}
               />
               <span
-                className={`absolute left-0 top-1.5 block h-0.5 w-4 rounded-full bg-current transition duration-300 ${
+                className={`absolute top-1.5 left-0 block h-0.5 w-4 rounded-full bg-current transition duration-300 ${
                   menuOpen ? "opacity-0" : "opacity-100"
                 }`}
               />
@@ -143,54 +258,110 @@ function SiteHeader({ menuOpen, setMenuOpen, onSectionNav }) {
                 }`}
               />
             </span>
-          </button>
+          </motion.button>
         </div>
       </nav>
 
-      <div
-        className={`overflow-hidden border-t border-white/10 bg-slate-950/95 transition-all duration-300 lg:hidden ${
-          menuOpen
-            ? "max-h-96 opacity-100"
-            : "pointer-events-none max-h-0 opacity-0"
-        }`}
-      >
-        <div className="mx-auto flex max-w-7xl flex-col gap-1 px-5 py-4 sm:px-8">
-          {navItems.map((item) =>
-            item.type === "route" ? (
-              <Link
-                key={item.label}
-                to={item.to}
-                data-active={isItemActive(item)}
-                onClick={closeMenu}
-                className={mobileLinkClass}
-              >
-                {item.label}
-              </Link>
-            ) : (
-              <a
-                key={item.label}
-                href={`/#${item.id}`}
-                data-active={isItemActive(item)}
-                onClick={(event) => handleSectionClick(event, item.id)}
-                className={mobileLinkClass}
-              >
-                {item.label}
-              </a>
-            ),
-          )}
-          <a
-            href={WHATSAPP_URL}
-            target="_blank"
-            rel="noreferrer"
-            onClick={closeMenu}
-            className="mt-2 inline-flex w-full max-w-xs items-center justify-center gap-2 self-center rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-medium text-slate-200 transition hover:border-cyan-200/40 hover:text-white"
+      <AnimatePresence initial={false}>
+        {menuOpen ? (
+          <motion.div
+            key="mobile-nav"
+            className="overflow-hidden border-t border-white/10 bg-black/96 lg:hidden"
+            initial={reduceMotion ? false : { height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={reduceMotion ? undefined : { height: 0, opacity: 0 }}
+            transition={{ duration: 0.38, ease: easeOutExpo }}
           >
-            {whatsappIcon}
-            Escribinos
-          </a>
-        </div>
-      </div>
-    </header>
+            <motion.div
+              className="mx-auto flex max-w-7xl flex-col gap-1 px-5 py-4 sm:px-8"
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              variants={{
+                hidden: {},
+                visible: {
+                  transition: { staggerChildren: 0.055, delayChildren: 0.04 },
+                },
+              }}
+            >
+              {navItems.map((item) => {
+                const active = isItemActive(item);
+                const className =
+                  "block w-full rounded-2xl px-4 py-3 text-sm font-medium text-slate-200 transition hover:bg-white/5 hover:text-white data-[active=true]:bg-white/8 data-[active=true]:text-white";
+                const variants = reduceMotion
+                  ? undefined
+                  : {
+                      hidden: { opacity: 0, y: 10 },
+                      visible: {
+                        opacity: 1,
+                        y: 0,
+                        transition: { duration: 0.4, ease: easeOutExpo },
+                      },
+                    };
+
+                if (item.type === "route") {
+                  return (
+                    <motion.div key={itemKey(item)} variants={variants}>
+                      <Link
+                        to={item.to}
+                        data-active={active}
+                        onClick={closeMenu}
+                        className={className}
+                      >
+                        {item.label}
+                      </Link>
+                    </motion.div>
+                  );
+                }
+
+                return (
+                  <motion.div key={itemKey(item)} variants={variants}>
+                    <a
+                      href={`/#${item.id}`}
+                      data-active={active}
+                      onClick={(event) => handleSectionClick(event, item.id)}
+                      className={className}
+                    >
+                      {item.label}
+                    </a>
+                  </motion.div>
+                );
+              })}
+              <motion.a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noreferrer"
+                onClick={closeMenu}
+                variants={
+                  reduceMotion
+                    ? undefined
+                    : {
+                        hidden: { opacity: 0, y: 10 },
+                        visible: {
+                          opacity: 1,
+                          y: 0,
+                          transition: { duration: 0.4, ease: easeOutExpo },
+                        },
+                      }
+                }
+                className="mt-2 inline-flex w-full max-w-xs items-center justify-center gap-2 self-center rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-medium text-slate-200 transition hover:border-white/25 hover:text-white"
+              >
+                {whatsappIcon}
+                Escribinos
+              </motion.a>
+            </motion.div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+
+      {reduceMotion ? null : (
+        <motion.div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-px origin-left bg-linear-to-r from-white/0 via-white/50 to-white/10"
+          style={{ scaleX: progress }}
+        />
+      )}
+    </motion.header>
   );
 }
 

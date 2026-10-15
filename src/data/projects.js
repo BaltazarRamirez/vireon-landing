@@ -3,6 +3,16 @@ import camposDeTrigoLogo from "../assets/campos-de-trigo.webp";
 import molinosLogo from "../assets/client-molinos.webp";
 import totemLogo from "../assets/client-totem.webp";
 import hotelusLogo from "../assets/hotelus-logo.webp";
+import camposAnalytics from "../assets/projects/campos-analytics.jpg";
+import camposPedidos from "../assets/projects/campos-pedidos.jpg";
+import camposPrecios from "../assets/projects/campos-precios.jpg";
+import llorensDetalle from "../assets/projects/llorens-detalle.jpg";
+import llorensResumen from "../assets/projects/llorens-resumen.jpg";
+import llorensStock from "../assets/projects/llorens-stock.jpg";
+import vidaPlenaAgenda from "../assets/projects/vidaplena-agenda.jpg";
+import vidaPlenaDashboard from "../assets/projects/vidaplena-dashboard.jpg";
+import vidaPlenaReportes from "../assets/projects/vidaplena-reportes.jpg";
+import vidaPlenaLogo from "../assets/client-vidaplena.png";
 
 export const flagshipProject = {
   id: "hotelus",
@@ -64,7 +74,11 @@ export const featuredProjects = [
       "Llorens Group es un sistema de gestión desarrollado a medida para una empresa dedicada a la comercialización de lubricantes, aceites y otros productos relacionados con el sector automotor y de combustibles. La aplicación permite centralizar la operación de diferentes sucursales en una sola plataforma, facilitando el control de ventas, productos, stock, usuarios y movimientos comerciales.",
     locations: ["Simoca", "Villa Quinteros", "Concepción"],
     image: llorensLogo,
-    gallery: [],
+    gallery: [
+      { src: llorensResumen, alt: "Llorens Group · Resumen mensual de facturación" },
+      { src: llorensDetalle, alt: "Llorens Group · Facturación por estación y forma de pago" },
+      { src: llorensStock, alt: "Llorens Group · Stock global por estación" },
+    ],
     features: [
       "Registro y control de ventas",
       "Administración de productos y lubricantes",
@@ -103,7 +117,11 @@ export const featuredProjects = [
     fullDescription:
       "Para Campos de Trigo desarrollamos un sistema de gestión para una panadería que procesa pedidos, stock de productos y entrega de pedidos a distintos repartidores. La plataforma centraliza la administración de pedidos, productos, precios, clientes, repartidores y usuarios. El objetivo del proyecto es reemplazar procesos manuales, reducir errores y mejorar la organización diaria, permitiendo que todo el equipo trabaje desde una misma plataforma.",
     image: camposDeTrigoLogo,
-    gallery: [],
+    gallery: [
+      { src: camposAnalytics, alt: "Campos de Trigo · Analytics de ventas" },
+      { src: camposPedidos, alt: "Campos de Trigo · Control general de pedidos" },
+      { src: camposPrecios, alt: "Campos de Trigo · Catálogo y precios" },
+    ],
     features: [
       "Registro y seguimiento de pedidos",
       "Actualización de estados de pedidos",
@@ -199,6 +217,48 @@ export const featuredProjects = [
       "El hotel necesitaba dejar atrás registros manuales, reducir errores y mejorar el control diario de reservas, habitaciones, huéspedes y limpieza desde una sola herramienta.",
     solution:
       "Desarrollamos una plataforma centralizada que organiza la operación del hotel: reservas, disponibilidad, ingresos, salidas, estados de limpieza y seguimiento de ocupación, con mayor claridad para el equipo.",
+  },
+  {
+    id: "vida-plena",
+    name: "Vida Plena",
+    category: "Sistema para clínicas",
+    tags: [
+      "Pacientes",
+      "Agenda",
+      "Autorizaciones",
+      "Obras sociales",
+      "Profesionales",
+      "Reportes",
+    ],
+    tagline:
+      "Sistema de gestión integral para un instituto de rehabilitación: pacientes, turnos, autorizaciones y obras sociales en un solo lugar.",
+    description:
+      "Plataforma que lleva el control total de la clínica: pacientes, agenda por profesional, sesiones, autorizaciones, obras sociales, horas de cada profesional, pagos y reportes de productividad.",
+    fullDescription:
+      "Para Vida Plena, Instituto de Rehabilitación Integral, desarrollamos un sistema que centraliza toda la operación de la clínica. La plataforma gestiona pacientes en tratamiento, la agenda de turnos organizada por profesional y especialidad, el registro de sesiones y asistencia, las autorizaciones y su vencimiento, las obras sociales y su liquidación, las horas trabajadas por cada profesional, los pagos pendientes y los reportes operativos. El objetivo es que administración y profesionales trabajen sobre la misma información, con alertas claras y sin planillas sueltas.",
+    image: vidaPlenaLogo,
+    gallery: [
+      { src: vidaPlenaDashboard, alt: "Vida Plena · Dashboard operativo de la clínica" },
+      { src: vidaPlenaAgenda, alt: "Vida Plena · Agenda de turnos por profesional" },
+      { src: vidaPlenaReportes, alt: "Vida Plena · Reportes de sesiones y productividad" },
+    ],
+    features: [
+      "Gestión de pacientes y tratamientos",
+      "Agenda de turnos por profesional y especialidad",
+      "Registro de sesiones, asistencia y ausentismo",
+      "Control de autorizaciones y vencimientos",
+      "Gestión y liquidación de obras sociales",
+      "Control de horas y productividad de profesionales",
+      "Pagos y cobros pendientes",
+      "Alertas operativas para administración",
+      "Reportes exportables a PDF y Excel",
+      "Roles para administración y profesionales",
+    ],
+    challenge:
+      "La clínica necesitaba controlar en un solo lugar turnos, sesiones, autorizaciones de obras sociales y la agenda de cada profesional, evitando vencimientos sin renovar y cobros perdidos.",
+    solution:
+      "Desarrollamos una plataforma integral que ordena la agenda, registra cada sesión, alerta sobre autorizaciones por vencer y consolida pagos, obras sociales y productividad de los profesionales en reportes claros.",
+    roles: ["Administración", "Profesionales", "Recepción"],
   },
 ];
 

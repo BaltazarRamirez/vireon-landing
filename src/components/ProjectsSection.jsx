@@ -54,12 +54,12 @@ function ProjectsSection({
               baseDelay={40}
               step={0}
             >
-              <article className="group relative w-full overflow-hidden rounded-3xl border border-white/10 bg-slate-950/70 px-5 py-5 shadow-[0_18px_60px_rgba(2,6,23,0.45)] transition duration-500 hover:-translate-y-1.5 hover:border-cyan-200/50 sm:px-6">
+              <article className="group relative w-full overflow-hidden rounded-3xl border border-white/10 bg-black/70 px-5 py-5 shadow-[0_18px_60px_rgba(0,0,0,0.45)] transition duration-500 hover:-translate-y-1.5 hover:border-white/30 sm:px-6">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.18),transparent_16rem)] opacity-70 transition duration-500 group-hover:opacity-100" />
                 <div className="relative flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                   <div className="max-w-2xl">
                     <div className="flex items-center gap-3 text-sm">
-                      <span className="rounded-full border border-cyan-200/25 bg-cyan-300/10 px-2.5 py-0.5 text-[11px] font-semibold text-cyan-100">
+                      <span className="rounded-full border border-white/12 bg-white/8 px-2.5 py-0.5 text-[11px] font-semibold text-white">
                         {project.category}
                       </span>
                       <span className="text-xs text-slate-500">
@@ -75,11 +75,11 @@ function ProjectsSection({
                   </div>
 
                   <div className="w-full rounded-2xl border border-white/10 bg-white/4 p-3 sm:max-w-48">
-                    <div className="mb-2.5 h-2 w-16 rounded-full bg-cyan-200/40" />
+                    <div className="mb-2.5 h-2 w-16 rounded-full bg-white/15" />
                     <div className="space-y-2">
                       <div className="h-2 rounded-full bg-white/10" />
                       <div className="h-2 w-10/12 rounded-full bg-white/10" />
-                      <div className="h-2 w-7/12 rounded-full bg-cyan-300/30" />
+                      <div className="h-2 w-7/12 rounded-full bg-white/12" />
                     </div>
                   </div>
                 </div>

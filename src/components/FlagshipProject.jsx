@@ -12,7 +12,7 @@ function FlagshipProject({ project, onOpen }) {
       className="relative mx-auto max-w-7xl px-5 pb-16 sm:px-8 sm:pb-20 lg:pb-24"
     >
       <div className={`max-w-2xl ${visible ? "reveal-copy is-revealed" : "reveal-copy"}`}>
-        <p className="text-xs font-medium tracking-[0.32em] text-cyan-200/90 uppercase">
+        <p className="text-xs font-medium tracking-[0.32em] text-white/50 uppercase">
           Producto propio
         </p>
         <h2 className="mt-3 text-2xl font-semibold tracking-[-0.03em] text-white sm:text-3xl">
@@ -25,14 +25,14 @@ function FlagshipProject({ project, onOpen }) {
       </div>
 
       <article
-        className={`reveal-card group relative mt-8 overflow-hidden rounded-2xl border border-white/10 bg-slate-950/65 sm:mt-10 ${
+        className={`reveal-card group relative mt-8 overflow-hidden rounded-2xl border border-white/10 bg-black/65 sm:mt-10 ${
           visible ? "is-revealed" : ""
         }`}
       >
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(34,211,238,0.08),transparent_18rem)]" />
 
         <div className="relative grid sm:grid-cols-[240px_1fr] lg:grid-cols-[300px_1fr]">
-          <div className="flex h-44 items-center justify-center border-b border-white/10 bg-slate-950/40 px-5 py-6 sm:h-auto sm:min-h-[12rem] sm:border-b-0 sm:border-r lg:min-h-[13rem]">
+          <div className="flex h-44 items-center justify-center border-b border-white/10 bg-black/40 px-5 py-6 sm:h-auto sm:min-h-[12rem] sm:border-b-0 sm:border-r lg:min-h-[13rem]">
             {project.image ? (
               <img
                 src={project.image}
@@ -41,7 +41,7 @@ function FlagshipProject({ project, onOpen }) {
               />
             ) : (
               <div className="flex flex-col items-center gap-2 text-center">
-                <div className="grid h-14 w-14 place-items-center rounded-2xl border border-cyan-200/30 bg-cyan-300/10 text-lg font-semibold tracking-[0.12em] text-cyan-100">
+                <div className="grid h-14 w-14 place-items-center rounded-2xl border border-white/15 bg-white/8 text-lg font-semibold tracking-[0.12em] text-white">
                   H
                 </div>
                 <p className="text-[10px] tracking-[0.18em] text-slate-500 uppercase">
@@ -82,7 +82,7 @@ function FlagshipProject({ project, onOpen }) {
                 >
                   {index > 0 && (
                     <span
-                      className="h-1 w-1 rounded-full bg-cyan-300/50"
+                      className="h-1 w-1 rounded-full bg-white/50"
                       aria-hidden="true"
                     />
                   )}
@@ -94,7 +94,7 @@ function FlagshipProject({ project, onOpen }) {
             <button
               type="button"
               onClick={() => onOpen(project)}
-              className="mt-0.5 inline-flex w-fit items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-slate-100 transition duration-300 hover:-translate-y-0.5 hover:border-cyan-200/40 hover:bg-white/10"
+              className="mt-0.5 inline-flex w-fit items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold text-slate-100 transition duration-300 hover:-translate-y-0.5 hover:border-white/25 hover:bg-white/10"
             >
               Ver Hotelus
               <span className="transition duration-300 group-hover:translate-x-1">

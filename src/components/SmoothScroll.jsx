@@ -1,6 +1,7 @@
 import { ReactLenis } from "lenis/react";
 import { useEffect, useRef } from "react";
 import "lenis/dist/lenis.css";
+import { refreshScrollTriggers, ScrollTrigger } from "../lib/gsap";
 
 function shouldUseLenis() {
   if (typeof window === "undefined") {
@@ -53,6 +54,26 @@ function SmoothScroll({ children, paused = false, lenisRef }) {
   }, [paused]);
 
   useEffect(() => {
+    const onScrollTo = (event) => {
+      const top = event.detail?.top;
+      if (typeof top !== "number") {
+        return;
+      }
+
+      const lenis = internalRef.current?.lenis;
+      if (lenis) {
+        lenis.scrollTo(top, { duration: 1.15 });
+        return;
+      }
+
+      window.scrollTo({ top, behavior: "smooth" });
+    };
+
+    window.addEventListener("lenis:scrollTo", onScrollTo);
+    return () => window.removeEventListener("lenis:scrollTo", onScrollTo);
+  }, []);
+
+  useEffect(() => {
     const onStop = () => internalRef.current?.lenis?.stop();
     const onStart = () => {
       if (!paused) {
@@ -68,6 +89,34 @@ function SmoothScroll({ children, paused = false, lenisRef }) {
       window.removeEventListener("lenis:start", onStart);
     };
   }, [paused]);
+
+  useEffect(() => {
+    if (!enabled) {
+      return undefined;
+    }
+
+    let raf = 0;
+    let lenis = null;
+    const onScroll = () => ScrollTrigger.update();
+
+    const attach = () => {
+      lenis = internalRef.current?.lenis ?? null;
+      if (!lenis) {
+        raf = requestAnimationFrame(attach);
+        return;
+      }
+
+      lenis.on("scroll", onScroll);
+      refreshScrollTriggers();
+    };
+
+    attach();
+
+    return () => {
+      cancelAnimationFrame(raf);
+      lenis?.off("scroll", onScroll);
+    };
+  }, [enabled]);
 
   if (!enabled) {
     return children;

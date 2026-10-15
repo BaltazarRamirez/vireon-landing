@@ -128,11 +128,11 @@ function ServiceCardBody({ service, index, chipHover, light = false }) {
             transition: { duration: 0.55, ease: easeOutExpo },
           },
         }}
-        className="pointer-events-none absolute inset-x-0 top-0 z-10 h-px origin-left bg-linear-to-r from-transparent via-cyan-300/85 to-transparent"
+        className="pointer-events-none absolute inset-x-0 top-0 z-10 h-px origin-left bg-linear-to-r from-transparent via-white/50 to-transparent"
       />
 
       <div
-        className="pointer-events-none absolute -right-12 -top-14 hidden h-44 w-44 rounded-full bg-cyan-400/15 blur-3xl transition duration-700 group-hover:bg-cyan-300/25 lg:block"
+        className="pointer-events-none absolute -right-12 -top-14 hidden h-44 w-44 rounded-full bg-white/8 blur-3xl transition duration-700 group-hover:bg-white/25 lg:block"
         aria-hidden="true"
       />
       <div
@@ -160,10 +160,10 @@ function ServiceCardBody({ service, index, chipHover, light = false }) {
         variants={item}
         className="relative z-10 flex items-center gap-3"
       >
-        <span className="grid h-10 w-10 place-items-center rounded-full border border-cyan-200/35 bg-cyan-300/12 text-[11px] font-semibold tracking-[0.14em] text-cyan-100">
+        <span className="grid h-10 w-10 place-items-center rounded-full border border-white/18 bg-white/8 text-[11px] font-semibold tracking-[0.14em] text-white">
           {service.number}
         </span>
-        <div className="h-px flex-1 origin-left bg-linear-to-r from-cyan-300/40 via-white/10 to-transparent" />
+        <div className="h-px flex-1 origin-left bg-linear-to-r from-white/40 via-white/10 to-transparent" />
         <span className="text-[10px] font-medium tracking-[0.22em] text-slate-600 uppercase">
           0{index + 1}
         </span>
@@ -194,7 +194,7 @@ function ServiceCardBody({ service, index, chipHover, light = false }) {
                   ? {
                       y: -3,
                       backgroundColor: "rgba(34,211,238,0.14)",
-                      borderColor: "rgba(165,243,252,0.35)",
+                      borderColor: "rgba(255,255,255,0.35)",
                       color: "rgb(226 232 240)",
                     }
                   : undefined
@@ -216,7 +216,7 @@ function DesktopServiceCard({ service, index }) {
   const mouseY = useMotionValue(0);
   const springX = useSpring(mouseX, { stiffness: 220, damping: 26 });
   const springY = useSpring(mouseY, { stiffness: 220, damping: 26 });
-  const spotlight = useMotionTemplate`radial-gradient(480px circle at ${springX}px ${springY}px, rgba(34,211,238,0.2), transparent 55%)`;
+  const spotlight = useMotionTemplate`radial-gradient(480px circle at ${springX}px ${springY}px, rgba(255,255,255,0.12), transparent 55%)`;
 
   const handleMouseMove = (event) => {
     if (!cardRef.current) {
@@ -238,7 +238,7 @@ function DesktopServiceCard({ service, index }) {
         scale: 1.015,
         transition: { type: "spring", stiffness: 280, damping: 20 },
       }}
-      className="group relative flex h-full min-h-[16rem] flex-col overflow-hidden rounded-[1.35rem] border border-white/10 bg-slate-950/65 p-5 shadow-[0_22px_70px_rgba(2,6,23,0.4)] sm:min-h-[17.25rem] sm:rounded-3xl sm:p-6"
+      className="group relative flex h-full min-h-[16rem] flex-col overflow-hidden rounded-[1.35rem] border border-white/10 bg-black/65 p-5 shadow-[0_22px_70px_rgba(0,0,0,0.4)] sm:min-h-[17.25rem] sm:rounded-3xl sm:p-6"
       style={{ transformStyle: "preserve-3d" }}
     >
       <motion.div
@@ -256,7 +256,7 @@ function MobileServiceCard({ service, index }) {
     <motion.article
       variants={cardVariantsMobile}
       whileTap={{ scale: 0.985 }}
-      className="group relative flex h-full min-h-[16rem] flex-col overflow-hidden rounded-[1.35rem] border border-white/10 bg-slate-950/65 p-5 shadow-[0_16px_48px_rgba(2,6,23,0.35)] sm:min-h-[17.25rem] sm:rounded-3xl sm:p-6"
+      className="group relative flex h-full min-h-[16rem] flex-col overflow-hidden rounded-[1.35rem] border border-white/10 bg-black/65 p-5 shadow-[0_16px_48px_rgba(0,0,0,0.35)] sm:min-h-[17.25rem] sm:rounded-3xl sm:p-6"
     >
       <ServiceCardBody
         service={service}
@@ -286,9 +286,9 @@ function ServicesSection({ services, intro }) {
           {services.map((service) => (
             <article
               key={service.title}
-              className="relative flex min-h-[16rem] flex-col overflow-hidden rounded-3xl border border-white/10 bg-slate-950/60 p-6"
+              className="relative flex min-h-[16rem] flex-col overflow-hidden rounded-3xl border border-white/10 bg-black/60 p-6"
             >
-              <span className="text-xs font-semibold tracking-[0.2em] text-cyan-200">
+              <span className="text-xs font-semibold tracking-[0.2em] text-zinc-300">
                 {service.number}
               </span>
               <h3 className="mt-4 text-xl font-semibold text-white">

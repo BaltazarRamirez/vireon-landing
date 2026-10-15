@@ -3,7 +3,10 @@ import { useState } from "react";
 const WHATSAPP_NUMBER = "543865454534";
 const WHATSAPP_MESSAGE =
   "Hola Vireon, quiero consultar por un sistema a medida para mi negocio.";
+const DIAGNOSIS_MESSAGE =
+  "Hola Vireon, quiero un diagnóstico de mi operación. Contame cómo trabajan.";
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
+const DIAGNOSIS_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(DIAGNOSIS_MESSAGE)}`;
 
 function WhatsAppFloat() {
   const [open, setOpen] = useState(false);
@@ -11,7 +14,7 @@ function WhatsAppFloat() {
   return (
     <div className="fixed right-4 bottom-4 z-[70] isolate flex flex-col items-end gap-3 sm:right-6 sm:bottom-6">
       {open && (
-        <div className="animate-whatsapp-panel relative z-10 w-[min(18.5rem,calc(100vw-2rem))] overflow-hidden rounded-3xl border border-white/10 bg-slate-950/95 shadow-[0_20px_60px_rgba(2,6,23,0.55)] backdrop-blur-xl">
+        <div className="animate-whatsapp-panel relative z-10 w-[min(18.5rem,calc(100vw-2rem))] overflow-hidden rounded-3xl border border-white/10 bg-black/95 shadow-[0_20px_60px_rgba(0,0,0,0.55)] backdrop-blur-xl">
           <div className="flex items-start justify-between gap-3 border-b border-white/10 px-4 py-3">
             <div>
               <p className="text-sm font-semibold text-white">Vireon</p>
@@ -67,5 +70,5 @@ function WhatsAppFloat() {
   );
 }
 
-export { WHATSAPP_URL, WHATSAPP_NUMBER };
+export { WHATSAPP_URL, WHATSAPP_NUMBER, DIAGNOSIS_URL };
 export default WhatsAppFloat;

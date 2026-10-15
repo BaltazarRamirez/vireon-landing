@@ -7,15 +7,27 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "remotion": "remotion studio remotion/index.js",
+    "remotion:render": "remotion render remotion/index.js VireonStory out/vireon-story.mp4",
+    "remotion:render:molinos": "remotion render remotion/index.js MolinosStory out/molinos-story.mp4 --scale=2 --crf=1 --x264-preset=slow --color-space=bt709",
+    "remotion:render:talk": "remotion render remotion/index.js VireonTalk out/vireon-talk.mp4 --scale=2 --crf=1 --x264-preset=slow --color-space=bt709",
+    "remotion:render:green": "remotion render remotion/index.js GreenScreenBroll out/vireon-green-broll.mp4 --crf=1 --x264-preset=slow",
+    "remotion:still:molinos-bg": "remotion still remotion/index.js MolinosBg out/molinos-bg.png --scale=2",
+    "remotion:render:vidaplena": "remotion render remotion/index.js VidaPlenaStory out/vidaplena-story.mp4 --scale=2 --crf=1 --x264-preset=slow --color-space=bt709",
+    "remotion:still:vidaplena": "remotion still remotion/index.js VidaPlenaStory out/vidaplena-story.png --frame=560 --scale=1"
   },
   "dependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "@remotion/cli": "4.0.502",
     "@tailwindcss/vite": "^4.3.2",
+    "gsap": "^3.15.0",
     "lenis": "^1.3.25",
     "motion": "^12.42.2",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
     "react-router-dom": "^7.18.1",
+    "remotion": "4.0.502",
     "tailwindcss": "^4.3.2"
   },
   "devDependencies": {

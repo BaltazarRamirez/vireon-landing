@@ -1,14 +1,13 @@
-import { useCallback, useEffect, useRef, useState, startTransition } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import {
   BrowserRouter,
   Navigate,
   Route,
   Routes,
   useLocation,
-  useNavigate,
 } from "react-router-dom";
 import AmbientBackground from "./components/AmbientBackground";
-import PageIntro from "./components/PageIntro";
+import FloatingNav from "./components/FloatingNav";
 import SmoothScroll from "./components/SmoothScroll";
 import WhatsAppFloat from "./components/WhatsAppFloat";
 import { scrollToSectionWhenReady } from "./lib/scrollToSection";
@@ -27,24 +26,9 @@ function resetScroll(lenis) {
 
 function AppShell() {
   const location = useLocation();
-  const navigate = useNavigate();
   const isHome = location.pathname === "/";
-  const [sawIntro, setSawIntro] = useState(false);
-  const [skipHomeIntro, setSkipHomeIntro] = useState(
-    () => typeof window !== "undefined" && window.location.pathname !== "/",
-  );
   const lenisRef = useRef(null);
   const scrollingToSection = useRef(false);
-  const introDone = !isHome || sawIntro || skipHomeIntro;
-
-  const finishIntro = useCallback(() => {
-    window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(() => {
-        setSawIntro(true);
-        resetScroll(lenisRef.current);
-      });
-    });
-  }, []);
 
   const goToSection = useCallback((sectionId) => {
     scrollingToSection.current = true;
@@ -60,30 +44,22 @@ function AppShell() {
     if ("scrollRestoration" in window.history) {
       window.history.scrollRestoration = "manual";
     }
+
+    const top = () => resetScroll(lenisRef.current);
+    top();
+    const frame = window.requestAnimationFrame(top);
+    const onLoad = () => {
+      top();
+      window.requestAnimationFrame(top);
+    };
+    window.addEventListener("load", onLoad);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("load", onLoad);
+    };
   }, []);
 
-  // Reload / first paint on home: always start at the top with the intro.
-  useEffect(() => {
-    if (!isHome || sawIntro) {
-      return;
-    }
-
-    if (location.hash) {
-      navigate("/", { replace: true });
-    }
-
-    resetScroll(lenisRef.current);
-  }, [isHome, sawIntro, location.hash, navigate]);
-
-  useEffect(() => {
-    if (!isHome) {
-      startTransition(() => {
-        setSkipHomeIntro(true);
-      });
-    }
-  }, [isHome]);
-
-  // Reset scroll on bare route changes only — never while navigating to a section.
   useEffect(() => {
     if (scrollingToSection.current) {
       return undefined;
@@ -102,9 +78,15 @@ function AppShell() {
     return () => window.cancelAnimationFrame(frame);
   }, [location.pathname, location.hash]);
 
-  // After intro, scroll to the first text of the hashed section and center it.
   useEffect(() => {
-    if (!isHome || !location.hash || !introDone) {
+    if (!isHome || !location.hash) {
+      return undefined;
+    }
+
+    const wasReload =
+      performance.getEntriesByType("navigation")[0]?.type === "reload";
+    if (wasReload) {
+      resetScroll(lenisRef.current);
       return undefined;
     }
 
@@ -119,34 +101,27 @@ function AppShell() {
     }, 80);
 
     return () => window.clearTimeout(timer);
-  }, [isHome, location.hash, location.key, introDone]);
+  }, [isHome, location.hash, location.key]);
 
   return (
-    <SmoothScroll paused={!introDone} lenisRef={lenisRef}>
-      <main className="relative z-10 min-h-screen overflow-x-clip text-slate-100">
-        {isHome && !introDone && <PageIntro onFinish={finishIntro} />}
-
-        <AmbientBackground active={introDone} />
-
-        {introDone ? (
-          <div className="page-ready relative z-10 animate-[fadeIn_0.45s_ease-out]">
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <LandingPage onSectionNav={goToSection} ready />
-                }
-              />
-              <Route
-                path="/proyectos"
-                element={<ProjectsPage onSectionNav={goToSection} />}
-              />
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
-          </div>
-        ) : null}
-
-        {introDone ? <WhatsAppFloat /> : null}
+    <SmoothScroll paused={false} lenisRef={lenisRef}>
+      <main className="relative z-10 min-h-screen overflow-x-clip text-zinc-100">
+        <AmbientBackground />
+        <div className="page-ready relative z-10">
+          <FloatingNav onSectionNav={goToSection} />
+          <Routes>
+            <Route
+              path="/"
+              element={<LandingPage onSectionNav={goToSection} />}
+            />
+            <Route
+              path="/proyectos"
+              element={<ProjectsPage onSectionNav={goToSection} />}
+            />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </div>
+        <WhatsAppFloat />
       </main>
     </SmoothScroll>
   );

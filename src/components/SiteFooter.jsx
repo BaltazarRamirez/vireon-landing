@@ -1,6 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../assets/vireon-logo.svg";
 import { navItems } from "../data/nav";
+import { goToHome } from "../lib/goHome";
 import { WHATSAPP_URL } from "./WhatsAppFloat";
 
 function SiteFooter({ onSectionNav }) {
@@ -21,10 +22,19 @@ function SiteFooter({ onSectionNav }) {
 
   return (
     <footer className="relative border-t border-white/10">
-      <div className="mx-auto flex max-w-7xl flex-col gap-8 px-5 py-10 sm:px-8 sm:py-12">
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
+      <div
+        data-reveal-group
+        className="mx-auto flex max-w-7xl flex-col gap-8 px-5 py-10 sm:px-8 sm:py-12"
+      >
+        <div data-reveal className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
           <div className="max-w-sm">
-            <img src={logo} alt="Vireon" className="h-8 w-auto opacity-80" />
+            <Link
+              to="/"
+              aria-label="Vireon · Inicio"
+              onClick={(event) => goToHome(event, navigate, location)}
+            >
+              <img src={logo} alt="Vireon" className="h-8 w-auto opacity-80 transition hover:opacity-100" />
+            </Link>
             <p className="mt-4 text-sm leading-7 text-slate-400">
               Sistemas a medida para ordenar la operación, ganar control y hacer
               crecer el negocio.
@@ -33,7 +43,7 @@ function SiteFooter({ onSectionNav }) {
 
           <div className="grid gap-8 sm:grid-cols-2 sm:gap-12">
             <div>
-              <p className="text-xs font-medium uppercase tracking-[0.28em] text-cyan-200/80">
+              <p className="text-xs font-medium uppercase tracking-[0.28em] text-white/45">
                 Navegación
               </p>
               <div className="mt-4 flex flex-col gap-2.5">
@@ -61,7 +71,7 @@ function SiteFooter({ onSectionNav }) {
             </div>
 
             <div>
-              <p className="text-xs font-medium uppercase tracking-[0.28em] text-cyan-200/80">
+              <p className="text-xs font-medium uppercase tracking-[0.28em] text-white/45">
                 Contacto
               </p>
               <div className="mt-4 flex flex-col gap-2.5">
@@ -84,13 +94,17 @@ function SiteFooter({ onSectionNav }) {
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
+        <div
+          data-reveal
+          className="flex flex-col gap-3 border-t border-white/10 pt-6 sm:flex-row sm:items-center sm:justify-between"
+        >
           <p className="text-sm text-slate-500">
             &copy; {currentYear} Vireon. Todos los derechos reservados.
           </p>
           <Link
             to="/"
-            className="text-sm text-slate-500 transition hover:text-cyan-200"
+            className="text-sm text-slate-500 transition hover:text-white"
+            onClick={(event) => goToHome(event, navigate, location)}
           >
             Volver al inicio
           </Link>
