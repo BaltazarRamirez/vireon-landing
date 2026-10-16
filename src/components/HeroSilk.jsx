@@ -89,7 +89,7 @@ function HeroSilk({ active = true }) {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas || !active) {
+    if (!canvas || !active || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       return undefined;
     }
 

@@ -117,11 +117,10 @@ function HubVisual() {
           "right-[2%] bottom-[2%]",
         ];
         return (
-          <span
-            key={name}
-            className={`sv-node absolute ${positions[index]} rounded-full border border-white/10 bg-black/80 px-3 py-1.5 text-[12px] text-zinc-300 backdrop-blur`}
-          >
-            {name}
+          <span key={name} className={`absolute ${positions[index]}`}>
+            <span className="sv-node inline-block will-change-transform rounded-full border border-white/10 bg-black/80 px-3 py-1.5 text-[12px] text-zinc-300 backdrop-blur">
+              {name}
+            </span>
           </span>
         );
       })}
@@ -247,14 +246,33 @@ function Services() {
         },
       );
     });
-    gsap.from(".sv-node", {
+    const nodes = gsap.utils.toArray(".sv-node");
+    gsap.from(nodes, {
       opacity: 0,
       scale: 0.7,
       duration: 0.9,
       ease: "back.out(2)",
       stagger: 0.08,
       delay: 0.7,
-      scrollTrigger: visualTrigger(scope.querySelector(".sv-node")),
+      scrollTrigger: visualTrigger(nodes[0]),
+    });
+    nodes.forEach((node, index) => {
+      const drift = [
+        { x: 6, y: -14 },
+        { x: -7, y: 11 },
+        { x: 5, y: -12 },
+        { x: 8, y: 10 },
+        { x: -6, y: -13 },
+      ][index];
+      gsap.to(node, {
+        x: drift.x,
+        y: drift.y,
+        duration: 2.4 + index * 0.35,
+        ease: "sine.inOut",
+        yoyo: true,
+        repeat: -1,
+        delay: 0.2 * index,
+      });
     });
 
     if (!fine) {
@@ -278,7 +296,7 @@ function Services() {
       <SectionHeading
         eyebrow="Servicios"
         title={["Todo lo que tu operación necesita,", { text: "en un solo sistema.", className: "text-gradient-muted" }]}
-        description="No vendemos software genérico. Construimos herramientas a medida que bajan a tierra tu operación y la vuelven simple de gestionar."
+        description="Construimos herramientas a medida que bajan a tierra tu operación y la vuelven simple de gestionar."
       />
 
       <div className="sv-grid mt-16 grid gap-4 lg:grid-cols-6">
