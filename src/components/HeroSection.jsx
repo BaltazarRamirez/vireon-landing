@@ -202,8 +202,8 @@ function HeroSection() {
           </h1>
 
           <p className="hero-lede mt-7 max-w-md text-base leading-7 text-zinc-400 sm:text-[17px] sm:leading-8">
-            Lo diseñamos con vos, lo dejamos operando en el local y nos quedamos
-            hasta que el equipo lo use.
+            Mejoramos los procesos de tu empresa y los convertimos en un
+            sistema claro: más control, menos desorden, listo para el día a día.
           </p>
 
           <p className="hero-live mt-5 flex h-7 items-center gap-2.5 overflow-hidden text-[13px] text-zinc-500">
