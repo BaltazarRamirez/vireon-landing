@@ -26,7 +26,7 @@ const VALUES = [
 const TEAM = [
   {
     name: "Baltazar Ramirez",
-    role: "Founder · Full Stack Engineer",
+    role: "Full Stack Engineer",
     photo: baltazarPhoto,
     photoPosition: "50% 8%",
     quote:
@@ -39,7 +39,7 @@ const TEAM = [
   },
   {
     name: "Benjamin D. Pinto",
-    role: "Co-Founder · Industrial Engineer",
+    role: "Industrial Engineer",
     photo: benjaminPhoto,
     photoPosition: "50% 42%",
     quote:
