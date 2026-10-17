@@ -38,7 +38,7 @@ const TEAM = [
     ],
   },
   {
-    name: "Benjamin D. Pinto",
+    name: "Benjamin D'Pinto",
     role: "Industrial Engineer",
     photo: benjaminPhoto,
     photoPosition: "50% 42%",
