@@ -26,7 +26,7 @@ const VALUES = [
 const TEAM = [
   {
     name: "Baltazar Ramirez",
-    role: "Full Stack Engineer",
+    role: "Full Stack Developer",
     photo: baltazarPhoto,
     photoPosition: "50% 8%",
     quote:
