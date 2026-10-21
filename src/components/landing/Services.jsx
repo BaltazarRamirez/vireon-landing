@@ -36,9 +36,9 @@ function ModulesVisual() {
 
 function FlowVisual() {
   return (
-    <div className="relative mt-10 pl-1">
-      <span className="sv-flow-line absolute top-4 bottom-4 left-[15px] w-px origin-top bg-linear-to-b from-white/50 via-white/25 to-transparent" />
-      <span className="sv-flow-dot absolute left-[11px] h-[9px] w-[9px] rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,0.8)]" />
+    <div className="relative mt-10">
+      <span className="sv-flow-line absolute top-[15px] bottom-[15px] left-[15px] w-px origin-top -translate-x-1/2 bg-linear-to-b from-white/50 via-white/25 to-transparent" />
+      <span className="sv-flow-dot absolute left-[15px] h-[9px] w-[9px] -translate-x-1/2 rounded-full bg-white shadow-[0_0_12px_rgba(255,255,255,0.8)]" />
       <div className="flex flex-col gap-3">
         {FLOW.map((step, index) => (
           <div key={step.title} className="sv-flow-step relative flex items-center gap-4">
@@ -80,51 +80,68 @@ function ChartVisual() {
 
 function HubVisual() {
   return (
-    <div className="relative mt-8 h-56">
-      <svg
-        className="absolute inset-0 h-full w-full"
-        viewBox="0 0 600 224"
-        preserveAspectRatio="none"
-        aria-hidden="true"
-      >
-        {[
-          [62, 204],
-          [170, 20],
-          [300, 204],
-          [430, 20],
-          [538, 204],
-        ].map(([x, y]) => (
-          <path
-            key={x}
-            className="sv-wire"
-            d={`M 300 112 C 300 ${y}, ${x} 112, ${x} ${y}`}
-            fill="none"
-            stroke="rgba(255,255,255,0.22)"
-            strokeWidth="1"
-            vectorEffect="non-scaling-stroke"
-          />
-        ))}
-      </svg>
-      <div className="absolute top-1/2 left-1/2 z-10 grid h-16 w-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-2xl border border-white/20 bg-white text-xl font-bold text-black shadow-[0_0_40px_rgba(255,255,255,0.25)]">
-        V
-      </div>
-      {INTEGRATIONS.map((name, index) => {
-        const positions = [
-          "left-[2%] bottom-[2%]",
-          "left-[20%] top-[2%]",
-          "left-1/2 -translate-x-1/2 bottom-[2%]",
-          "right-[20%] top-[2%]",
-          "right-[2%] bottom-[2%]",
-        ];
-        return (
-          <span key={name} className={`absolute ${positions[index]}`}>
-            <span className="sv-node inline-block will-change-transform rounded-full border border-white/10 bg-black/80 px-3 py-1.5 text-[12px] text-zinc-300 backdrop-blur">
-              {name}
+    <>
+      <div className="relative mt-8 hidden h-56 md:block">
+        <svg
+          className="absolute inset-0 h-full w-full"
+          viewBox="0 0 600 224"
+          preserveAspectRatio="none"
+          aria-hidden="true"
+        >
+          {[
+            [62, 204],
+            [170, 20],
+            [300, 204],
+            [430, 20],
+            [538, 204],
+          ].map(([x, y]) => (
+            <path
+              key={x}
+              className="sv-wire"
+              d={`M 300 112 C 300 ${y}, ${x} 112, ${x} ${y}`}
+              fill="none"
+              stroke="rgba(255,255,255,0.22)"
+              strokeWidth="1"
+              vectorEffect="non-scaling-stroke"
+            />
+          ))}
+        </svg>
+        <div className="absolute top-1/2 left-1/2 z-10 grid h-16 w-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-2xl border border-white/20 bg-white text-xl font-bold text-black shadow-[0_0_40px_rgba(255,255,255,0.25)]">
+          V
+        </div>
+        {INTEGRATIONS.map((name, index) => {
+          const positions = [
+            "left-[2%] bottom-[2%]",
+            "left-[8%] top-[2%]",
+            "left-1/2 -translate-x-1/2 bottom-[2%]",
+            "right-[8%] top-[2%]",
+            "right-[2%] bottom-[2%]",
+          ];
+          return (
+            <span key={name} className={`absolute ${positions[index]}`}>
+              <span className="sv-node inline-block will-change-transform rounded-full border border-white/10 bg-black/80 px-3 py-1.5 text-[12px] text-zinc-300 backdrop-blur">
+                {name}
+              </span>
             </span>
-          </span>
-        );
-      })}
-    </div>
+          );
+        })}
+      </div>
+      <div className="mt-8 md:hidden">
+        <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl border border-white/20 bg-white text-lg font-bold text-black">
+          V
+        </div>
+        <ul className="mt-5 flex flex-wrap justify-center gap-2">
+          {INTEGRATIONS.map((name) => (
+            <li
+              key={name}
+              className="rounded-full border border-white/10 bg-black/80 px-3 py-1.5 text-[12px] text-zinc-300"
+            >
+              {name}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
   );
 }
 
@@ -247,33 +264,35 @@ function Services() {
       );
     });
     const nodes = gsap.utils.toArray(".sv-node");
-    gsap.from(nodes, {
-      opacity: 0,
-      scale: 0.7,
-      duration: 0.9,
-      ease: "back.out(2)",
-      stagger: 0.08,
-      delay: 0.7,
-      scrollTrigger: visualTrigger(nodes[0]),
-    });
-    nodes.forEach((node, index) => {
-      const drift = [
-        { x: 6, y: -14 },
-        { x: -7, y: 11 },
-        { x: 5, y: -12 },
-        { x: 8, y: 10 },
-        { x: -6, y: -13 },
-      ][index];
-      gsap.to(node, {
-        x: drift.x,
-        y: drift.y,
-        duration: 2.4 + index * 0.35,
-        ease: "sine.inOut",
-        yoyo: true,
-        repeat: -1,
-        delay: 0.2 * index,
+    if (nodes[0]) {
+      gsap.from(nodes, {
+        opacity: 0,
+        scale: 0.7,
+        duration: 0.9,
+        ease: "back.out(2)",
+        stagger: 0.08,
+        delay: 0.7,
+        scrollTrigger: visualTrigger(nodes[0]),
       });
-    });
+      nodes.forEach((node, index) => {
+        const drift = [
+          { x: 6, y: -14 },
+          { x: -7, y: 11 },
+          { x: 5, y: -12 },
+          { x: 8, y: 10 },
+          { x: -6, y: -13 },
+        ][index];
+        gsap.to(node, {
+          x: drift.x,
+          y: drift.y,
+          duration: 2.4 + index * 0.35,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1,
+          delay: 0.2 * index,
+        });
+      });
+    }
 
     if (!fine) {
       return undefined;

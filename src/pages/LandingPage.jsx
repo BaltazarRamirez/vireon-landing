@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import HeroSection from "../components/HeroSection";
 import About from "../components/landing/About";
 import FinalCta from "../components/landing/FinalCta";
+import Fit from "../components/landing/Fit";
 import LogoStrip from "../components/landing/LogoStrip";
 import Manifesto from "../components/landing/Manifesto";
 import Metrics from "../components/landing/Metrics";
@@ -48,6 +49,7 @@ function LandingPage({ onSectionNav }) {
       <LogoStrip />
       <Manifesto />
       <Services />
+      <Fit />
       <Showcase onOpenProject={setSelectedProject} />
       <Voices />
       <Metrics />

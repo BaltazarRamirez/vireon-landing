@@ -5,19 +5,19 @@ import SectionHeading from "./SectionHeading";
 const VOICES = [
   {
     quote:
-      "Toda la clínica en un solo lugar: pacientes, agenda, autorizaciones y obras sociales. Sin planillas sueltas ni vencimientos que se escapan.",
+      "Lo que más nos complicaba eran las autorizaciones. Se vencían y nos enterábamos tarde. Ahora administración y los profesionales ven lo mismo, y eso ya no se escapa.",
     name: "Vida Plena",
     detail: "Instituto de Rehabilitación Integral",
   },
   {
     quote:
-      "Tres sucursales, un sistema. Ventas, stock y cierres de turno se ven juntos, no sucursal por sucursal en un Excel.",
+      "Con tres sucursales, para saber cómo había cerrado cada una había que pedir el Excel. Ahora miro ventas, stock y el turno junto, el mismo día.",
     name: "Llorens Group",
     detail: "Simoca · Villa Quinteros · Concepción",
   },
   {
     quote:
-      "120 pedidos por día, con producción y reparto en la misma plataforma. El mostrador, el horno y el repartidor trabajan con el mismo dato.",
+      "Son como 120 pedidos por día. Antes se armaba todo a mano y se mezclaba el mostrador con el reparto. Ahora cada uno ve su parte y no se pisan.",
     name: "Campos de Trigo",
     detail: "Panadería",
   },
@@ -40,8 +40,8 @@ function Voices() {
   return (
     <section ref={rootRef} id="voces" className="relative mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32">
       <SectionHeading
-        eyebrow="Lo que cambió"
-        title={["La operación,", { text: "en boca de quien la vive.", className: "text-gradient-muted", br: true }]}
+        eyebrow="Clientes"
+        title={["Lo que nos dicen", { text: "cuando ya está andando.", className: "text-gradient-muted" }]}
       />
 
       <ul className="mt-14 grid gap-5 lg:grid-cols-3">

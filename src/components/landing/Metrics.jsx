@@ -3,9 +3,8 @@ import { useGsap } from "../../hooks/useGsap";
 import { countUp } from "../../lib/gsap";
 
 const METRICS = [
-  { value: 10,prefix: "+", label: "Sistemas en producción", detail: "Usados todos los días" },
+  { value: 10, prefix: "+", label: "Sistemas en producción", detail: "Usados todos los días" },
   { value: 1000, prefix: "+", label: "Operaciones diarias", detail: "Gestionados a empresas" },
-  { value: 3, label: "Sucursales conectadas", detail: "Operando en tiempo real" },
   { value: 100, suffix: "%", label: "Desarrollo a medida", detail: "Sin plantillas genéricas" },
 ];
 
@@ -41,7 +40,7 @@ function Metrics() {
   return (
     <section ref={rootRef} id="metricas" className="relative mx-auto max-w-7xl px-5 py-24 sm:px-8 sm:py-32">
       <span data-section-anchor className="block h-0" />
-      <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+      <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
         {METRICS.map((metric) => (
           <div key={metric.label} className="mt-item">
             <span className="mt-rule block h-px w-full origin-left bg-linear-to-r from-white/40 to-white/5" />

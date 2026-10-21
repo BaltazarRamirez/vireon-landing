@@ -67,7 +67,6 @@ function HeroSection() {
     intro
       .from(".hero-beam", { opacity: 0, scaleX: 0.4, duration: 2.2, ease: "power3.out" }, 0)
       .from(".hero-logo", { opacity: 0, y: -12, duration: 1 }, 0.04)
-      .from(".hero-kicker", { opacity: 0, y: 10, duration: 0.8 }, 0.12)
       .from(".hero-mess .sw-i", {
         yPercent: 120,
         duration: 1.15,
@@ -169,18 +168,7 @@ function HeroSection() {
         <div className="hero-copy">
           <SiteLogo className="hero-logo" />
 
-          <Link
-            to="/proyectos"
-            className="hero-kicker mt-10 inline-flex items-center gap-2 text-[13px] text-zinc-500 transition hover:text-white sm:mt-12"
-          >
-            <span className="text-[11px] font-semibold tracking-[0.16em] text-white uppercase">
-              Nuevo
-            </span>
-            Hotelus para hoteles
-            <span aria-hidden="true">→</span>
-          </Link>
-
-          <h1 className="hero-title mt-6 text-[2.85rem] leading-[0.98] font-semibold tracking-[-0.06em] text-white sm:text-6xl lg:text-[5.15rem]">
+          <h1 className="hero-title mt-10 text-[2.85rem] leading-[0.98] font-semibold tracking-[-0.06em] text-white sm:text-6xl lg:text-[5.15rem] sm:mt-12">
             <span className="sr-only">
               WhatsApp, Excel y planillas. Un sistema.
             </span>
